@@ -12,7 +12,7 @@
   networking.useDHCP = false;
   networking.interfaces.enp2s0.useDHCP = true;
   networking.interfaces.enp3s0.useDHCP = false;
-  environment.systemPackages = with pkgs; [ vim wget git nixfmt ];
+  environment.systemPackages = with pkgs; [ vim wget git nixfmt git-crypt ];
 
   programs.gnupg.agent = {
     enable = true;

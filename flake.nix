@@ -7,23 +7,29 @@
     flake-utils.url = "github:numtide/flake-utils";
     flake-utils.inputs.nixpkgs.follows = "stable";
   };
-  
-   outputs = { stable, unstable, flake-utils, ... }: 
-   let 
-     system = "x86_64-linux";
-     pkgs = import stable {
-       inherit system;
-       config = { allowUnfree = true; };
-     };
-     lib = stable.lib;
+
+  outputs = { stable, unstable, flake-utils, ... }:
+    let
+      system = "x86_64-linux";
+      pkgs = import stable {
+        inherit system;
+        config = { allowUnfree = true; };
+      };
+      lib = stable.lib;
     in {
-       nixosConfigurations = {
-         random = lib.nixosSystem {
-            inherit system;
-            modules = [
-              ./system/random.nix
-            ];
-         };
-       };
+      nixosConfigurations = {
+        random = lib.nixosSystem {
+          inherit system;
+          modules = [
+            {
+              options.dotfiles_dir = lib.mkOption {
+                type = lib.types.str;
+                default = "/home/mog/code/dotfiles";
+              };
+            }
+            ./system/random.nix
+          ];
+        };
+      };
     };
 }

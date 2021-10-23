@@ -8,7 +8,7 @@
     extraOptions = ''
       experimental-features = nix-command flakes
     '';
-   };
+  };
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -19,11 +19,22 @@
   networking.useDHCP = false;
   networking.interfaces.enp2s0.useDHCP = true;
   networking.interfaces.enp3s0.useDHCP = false;
-  environment.systemPackages = with pkgs; [ vim wget git nixfmt git-crypt ];
+  environment.systemPackages = with pkgs; [
+    vim
+    wget
+    git
+    nixfmt
+    git-crypt
+    gnupg
+    pinentry
+    pinentry-curses
+  ];
 
+  services.pcscd.enable = true;
   programs.gnupg.agent = {
     enable = true;
     enableSSHSupport = true;
+    pinentryFlavor = "curses";
   };
 
   services.openssh.enable = true;

@@ -1,5 +1,5 @@
 { config, lib, pkgs, modulesPath, ... }:
-let hostname = "random";
+let dotfiles_dir = "/home/mog/code/dotfiles";
 in {
   imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
 
@@ -45,7 +45,7 @@ in {
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  networking.hostName = "${hostname}";
+  networking.hostName = "random";
 
   time.timeZone = "US/Eastern";
   networking.useDHCP = false;
@@ -95,14 +95,14 @@ in {
       "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC8ZL7Qr293/QIApN5iodPHf0rio/T6KsZYhomrBRZUIpu6THQrBLuop2VmJvqNnULuNz2WfJp220Arj7qLKrxlohkE+rssmYjHYxMuIdcToms+Pr9u1G9vmZ7DX1ms8d/1u7oyx8DQeE966nuVS229mrN8dy6DsfLOIj2ZHWb0Mf5EKiIBLFVR7fakKLkoX50sUVrns70yo5yM2EGQISM6K/pQ4FzbGndEy4x0HoF70406eF7TlKrEic4B8UOKFqe80cTZZTC+bBjeNUrG2EvSL4pFN64pqlRAZJeq2M3j1Ts1WKeewbtb1uJsbAZoM6d9TSffHr5cv/t5abq2KFZll2TzTpAr5zg9OOR80MCKhphoLBWlDOlMBuLtJO/BUVoFGoK1m9Nh+8g4RJAGS8WvQrVbkq6Rbo/rloXuEsXVrxwQwVH7gFj07NIO2322kJxBPaZ32RHnYrPIqAI3tH7Zz5TZrAxwhubVO3ZA65VbzDIFK0VP4hO4nRSaF1VYkm8wXv+LnefRp74FLzBjo1UN6CvBjzU5iWbQNsuGoXeyrarGIv53n6lY3VVtD51iEH2ZQB3Cr7YczJkwGFbe52QhmTAhNGZqd7uNyGJuXOo0NzNXWeXJ+/AbTZ5LtZ90f+/FyJcssyKcJHY6LjtTraN0FueRcFWv2GzKOEJj9cCoKw== cardno:000500006D02"
     ];
     hostKeys = [
-      "/home/mog/code/dotfiles/secrets/keys/${hostname}_initrd__ssh_host_rsa_key"
-      "/home/mog/code/dotfiles/secrets/keys/${hostname}_initrd__ssh_host_ed25519_key"
+      "${dotfiles_dir}/secrets/keys/${config.networking.hostName}_initrd__ssh_host_rsa_key"
+      "${dotfiles_dir}/secrets/keys/${config.networking.hostName}_initrd__ssh_host_ed25519_key"
     ];
   };
 
   boot.initrd.secrets = {
     "/etc/tor/onion/bootup" =
-      /home/mog/code/dotfiles/secrets/boot_onion; # maybe find a better spot to store this.
+      "${dotfiles_dir}/secrets/boot_onion"; # maybe find a better spot to store this.
   };
 
   # copy tor to you initrd

@@ -12,6 +12,7 @@
     "sd_mod"
     "sdhci_pci"
     "rtsx_usb_sdmmc"
+    "igb"
   ];
   boot.initrd.kernelModules = [ "dm-snapshot" ];
   boot.kernelModules = [ "kvm-intel" ];
@@ -97,6 +98,5 @@
       "/home/mog/code/dotfiles/secrets/keys/random_initrd__ssh_host_ed25519_key"
     ];
   };
-  boot.initrd.availableKernelModules = [ "igb" ];
 }
 

@@ -48,6 +48,8 @@
   environment.systemPackages = with pkgs; [
     vim
     wget
+    curl
+    nmap
     git
     nixfmt
     git-crypt

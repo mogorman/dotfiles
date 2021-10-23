@@ -21,7 +21,7 @@
          random = lib.nixosSystem {
             inherit system;
             modules = [
-              ./configuration.nix
+              ./system/random.nix
             ];
          };
        };

@@ -1,6 +1,6 @@
 { config, lib, pkgs, modulesPath, ... }:
-
-{
+let hostname = "random";
+in {
   imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
 
   # HARDWARE CONFIG
@@ -45,7 +45,7 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  networking.hostName = "random";
+  networking.hostName = "${hostname}";
 
   time.timeZone = "US/Eastern";
   networking.useDHCP = false;
@@ -95,42 +95,43 @@
       "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC8ZL7Qr293/QIApN5iodPHf0rio/T6KsZYhomrBRZUIpu6THQrBLuop2VmJvqNnULuNz2WfJp220Arj7qLKrxlohkE+rssmYjHYxMuIdcToms+Pr9u1G9vmZ7DX1ms8d/1u7oyx8DQeE966nuVS229mrN8dy6DsfLOIj2ZHWb0Mf5EKiIBLFVR7fakKLkoX50sUVrns70yo5yM2EGQISM6K/pQ4FzbGndEy4x0HoF70406eF7TlKrEic4B8UOKFqe80cTZZTC+bBjeNUrG2EvSL4pFN64pqlRAZJeq2M3j1Ts1WKeewbtb1uJsbAZoM6d9TSffHr5cv/t5abq2KFZll2TzTpAr5zg9OOR80MCKhphoLBWlDOlMBuLtJO/BUVoFGoK1m9Nh+8g4RJAGS8WvQrVbkq6Rbo/rloXuEsXVrxwQwVH7gFj07NIO2322kJxBPaZ32RHnYrPIqAI3tH7Zz5TZrAxwhubVO3ZA65VbzDIFK0VP4hO4nRSaF1VYkm8wXv+LnefRp74FLzBjo1UN6CvBjzU5iWbQNsuGoXeyrarGIv53n6lY3VVtD51iEH2ZQB3Cr7YczJkwGFbe52QhmTAhNGZqd7uNyGJuXOo0NzNXWeXJ+/AbTZ5LtZ90f+/FyJcssyKcJHY6LjtTraN0FueRcFWv2GzKOEJj9cCoKw== cardno:000500006D02"
     ];
     hostKeys = [
-      "/home/mog/code/dotfiles/secrets/keys/random_initrd__ssh_host_rsa_key"
-      "/home/mog/code/dotfiles/secrets/keys/random_initrd__ssh_host_ed25519_key"
+      "/home/mog/code/dotfiles/secrets/keys/${hostname}_initrd__ssh_host_rsa_key"
+      "/home/mog/code/dotfiles/secrets/keys/${hostname}_initrd__ssh_host_ed25519_key"
     ];
   };
 
-boot.initrd.secrets = {
-  "/etc/tor/onion/bootup" = /home/mog/code/dotfiles/secrets/boot_onion; # maybe find a better spot to store this.
-};
+  boot.initrd.secrets = {
+    "/etc/tor/onion/bootup" =
+      /home/mog/code/dotfiles/secrets/boot_onion; # maybe find a better spot to store this.
+  };
 
-# copy tor to you initrd
-boot.initrd.extraUtilsCommands = ''
-  copy_bin_and_libs ${pkgs.tor}/bin/tor
-'';
+  # copy tor to you initrd
+  boot.initrd.extraUtilsCommands = ''
+    copy_bin_and_libs ${pkgs.tor}/bin/tor
+  '';
 
-# start tor during boot process
-boot.initrd.network.postCommands = let
-  torRc = (pkgs.writeText "tor.rc" ''
-    DataDirectory /etc/tor
-    SOCKSPort 127.0.0.1:9050 IsolateDestAddr
-    SOCKSPort 127.0.0.1:9063
-    HiddenServiceDir /etc/tor/onion/bootup
-    HiddenServicePort 22 127.0.0.1:22
-  '');
-in ''
-  echo "tor: preparing onion folder"
-  sleep 3
-  # have to do this otherwise tor does not want to start
-  chmod -R 700 /etc/tor
+  # start tor during boot process
+  boot.initrd.network.postCommands = let
+    torRc = (pkgs.writeText "tor.rc" ''
+      DataDirectory /etc/tor
+      SOCKSPort 127.0.0.1:9050 IsolateDestAddr
+      SOCKSPort 127.0.0.1:9063
+      HiddenServiceDir /etc/tor/onion/bootup
+      HiddenServicePort 22 127.0.0.1:22
+    '');
+  in ''
+    echo "tor: preparing onion folder"
+    sleep 3
+    # have to do this otherwise tor does not want to start
+    chmod -R 700 /etc/tor
 
-  echo "make sure localhost is up"
-  ip a a 127.0.0.1/8 dev lo
-  ip link set lo up
+    echo "make sure localhost is up"
+    ip a a 127.0.0.1/8 dev lo
+    ip link set lo up
 
-  echo "tor: starting tor"
-  tor -f ${torRc} --verify-config
-  tor -f ${torRc} &
-'';
+    echo "tor: starting tor"
+    tor -f ${torRc} --verify-config
+    tor -f ${torRc} &
+  '';
 }
 

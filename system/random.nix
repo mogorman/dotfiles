@@ -15,7 +15,8 @@
   ];
   boot.initrd.kernelModules = [ "dm-snapshot" ];
   boot.kernelModules = [ "kvm-intel" ];
-  boot.extraModulePackages = [ ];
+  boot.extraModulePackages =
+    [ (config.boot.kernelPackages.callPackage ../packages/gasket.nix { }) ];
 
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/41c0df27-00a5-40ee-9334-bb5737a0a124";

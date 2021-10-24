@@ -1,4 +1,4 @@
-{ config, lib, pkgs, dotfiles_dir, ... }: {
+{ config, lib, pkgs, ... }: {
   services.openssh.enable = true;
   services.openssh.hostKeys = [
     {

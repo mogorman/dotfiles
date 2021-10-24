@@ -3,10 +3,11 @@
     (modulesPath + "/installer/scan/not-detected.nix")
     ../services/ssh.nix
     ../packages/packages.nix
+    ../users/mog.nix
   ];
 
   services.udev.extraRules = ''
-    SUBSYSTEM=="apex", MODE="0660", GROUP="apex"
+    SUBSYSTEM=="apex", MODE="0660", GROUP="users"
   '';
 
   # HARDWARE CONFIG
@@ -58,13 +59,6 @@
     preLVM = true;
     allowDiscards = true;
   };
-
-  users.users.mog = {
-    isNormalUser = true;
-    openssh.authorizedKeys.keys = config.mog_keys;
-    extraGroups = [ "wheel" "docker" "apex" ];
-  };
-
   boot.initrd.network.enable = true;
   boot.initrd.network.ssh = {
     enable = true;

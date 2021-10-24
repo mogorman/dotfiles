@@ -31,6 +31,6 @@ stdenv.mkDerivation rec {
     homepage = "https://www.coral.ai";
     license = licenses.gpl2;
     maintainers = [ maintainers.mog ];
-    platforms = linux.platforms;
+    platforms = platforms.linux;
   };
 }

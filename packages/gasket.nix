@@ -20,6 +20,7 @@ stdenv.mkDerivation rec {
   installPhase = ''
     xz apex.ko
     xz gasket.ko
+    install -Dm 644 $src/debian/gasket-dkms.udev $out/lib/udev/rules.d/51-gasket-dkms.rules
     install -m644 -b -D gasket.ko.xz $out/lib/modules/${kernel.modDirVersion}/kernel/drivers/staging/gasket/gasket.ko.xz
     install -m644 -b -D apex.ko.xz $out/lib/modules/${kernel.modDirVersion}/kernel/drivers/staging/gasket/apex.ko.xz
   '';
@@ -30,6 +31,6 @@ stdenv.mkDerivation rec {
     homepage = "https://www.coral.ai";
     license = licenses.gpl2;
     maintainers = [ maintainers.mog ];
-    platforms = platforms.linux;
+    platforms = linux.platforms;
   };
 }

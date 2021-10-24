@@ -1,6 +1,13 @@
 { config, lib, pkgs, modulesPath, ... }: {
-  imports =
-    [ (modulesPath + "/installer/scan/not-detected.nix") ../services/ssh.nix ];
+  imports = [
+    (modulesPath + "/installer/scan/not-detected.nix")
+    ../services/ssh.nix
+    ../packages/packages.nix
+  ];
+
+  services.udev.extraRules = ''
+    SUBSYSTEM=="apex", MODE="0660", GROUP="apex"
+  '';
 
   # HARDWARE CONFIG
   boot.initrd.availableKernelModules = [
@@ -35,13 +42,6 @@
   hardware.video.hidpi.enable = true;
   # HARDWARE CONFIG 
 
-  nix = {
-    package = pkgs.nixUnstable;
-    extraOptions = ''
-      experimental-features = nix-command flakes
-    '';
-  };
-
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
@@ -51,27 +51,6 @@
   networking.useDHCP = false;
   networking.interfaces.enp2s0.useDHCP = true;
   networking.interfaces.enp3s0.useDHCP = false;
-  environment.systemPackages = with pkgs; [
-    vim
-    wget
-    curl
-    nmap
-    git
-    nixfmt
-    git-crypt
-    gnupg
-    pinentry
-    pinentry-curses
-    pciutils
-  ];
-
-  services.pcscd.enable = true;
-  programs.gnupg.agent = {
-    enable = true;
-    enableSSHSupport = true;
-    pinentryFlavor = "curses";
-  };
-
   system.stateVersion = "21.05";
   fileSystems."/".options = [ "noatime" "nodiratime" "discard" ];
   boot.initrd.luks.devices.luksroot = {
@@ -83,7 +62,7 @@
   users.users.mog = {
     isNormalUser = true;
     openssh.authorizedKeys.keys = config.mog_keys;
-    extraGroups = [ "wheel" "docker" ];
+    extraGroups = [ "wheel" "docker" "apex" ];
   };
 
   boot.initrd.network.enable = true;

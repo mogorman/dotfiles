@@ -1,0 +1,65 @@
+birdseye:
+  # Optional: Enable birdseye view (default: shown below)
+  enabled: False
+
+mqtt:
+  host: sync.rldn.net
+  port: 8883
+  user: "home2"
+  password: "homesliceyo"
+  client_id: frigate
+  topic_prefix: home
+
+# Optional: Detectors configuration. Defaults to a single CPU detector
+detectors:
+  # Required: name of the detector
+  coral:
+    # Required: type of the detector
+    # Valid values are 'edgetpu' (requires device property below) and 'cpu'.
+    type: edgetpu
+    # Optional: device name as defined here: https://coral.ai/docs/edgetpu/multiple-edgetpu/#using-the-tensorflow-lite-python-api
+    device: pci
+    # Optional: num_threads value passed to the tflite.Interpreter (default: shown below)
+    # This value is only used for CPU types
+    num_threads: 3
+
+objects:
+  # Optional: list of objects to track from labelmap.txt (default: shown below)
+  track:
+    - person
+    - mouse
+    - dog
+
+ffmpeg:
+  hwaccel_args:
+    - -hwaccel
+    - vaapi
+    - -hwaccel_device
+    - /dev/dri/renderD128
+    - -hwaccel_output_format
+    - yuv420p
+
+cameras:
+  back:
+    ffmpeg:
+      inputs:
+        - path: rtsp://doorcam:8554/unicast
+          roles:
+            - detect
+            - rtmp
+    detect:
+      width: 1600
+      height: 900
+
+snapshots:
+  # Optional: Enable writing jpg snapshot to /media/frigate/clips (default: shown below)
+  # This value can be set via MQTT and will be updated in startup based on retained value
+  enabled: True
+  # Optional: print a timestamp on the snapshots (default: shown below)
+  timestamp: True
+  # Optional: draw bounding box on the snapshots (default: shown below)
+  bounding_box: True
+  # Optional: Camera override for retention settings (default: global values)
+  retain:
+    # Required: Default retention days (default: shown below)
+    default: 10

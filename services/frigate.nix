@@ -3,7 +3,7 @@
   virtualisation.oci-containers.containers.frigate = {
     image = "blakeblackshear/frigate:stable-amd64";
     ports = [ "5000:5000" "1935:1935" ];
-    environment = { FRIGATE_RTSP_PASSWORD = "password"; };
+    environmentFiles = [ ../secrets/frigate.env ];
     volumes = [
       "/state/frigate/media:/media/frigate"
       "/etc/nixos/frigate_config.yml:/config/config.yml:ro"

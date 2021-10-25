@@ -3,6 +3,7 @@
     (modulesPath + "/installer/scan/not-detected.nix")
     ../services/ssh.nix
     ../services/frigate.nix
+    ../services/mosquitto.nix
     ../packages/packages.nix
     ../users/mog.nix
   ];

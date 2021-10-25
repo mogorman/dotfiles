@@ -16,4 +16,8 @@
       "--mount=type=tmpfs,target=/tmp/cache,tmpfs-size=1000000000"
     ];
   };
+  systemd.services.docker-frigate = {
+    after = [ "mosquitto.service" ];
+    requires = [ "mosquitto.service" ];
+  };
 }

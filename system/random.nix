@@ -5,6 +5,7 @@
     ../services/frigate.nix
     ../services/mosquitto.nix
     ../services/mumble.nix
+    ../services/jellyfin.nix
     ../packages/packages.nix
     ../users/mog.nix
   ];

@@ -4,10 +4,11 @@
     ../services/ssh.nix
     ../services/frigate.nix
     ../services/mosquitto.nix
+    ../services/mumble.nix
     ../packages/packages.nix
     ../users/mog.nix
   ];
-
+  networking.firewall.enable = false;
   services.udev.extraRules = ''
     SUBSYSTEM=="apex", MODE="0660", GROUP="users"
   '';

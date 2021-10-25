@@ -1,5 +1,4 @@
 birdseye:
-  # Optional: Enable birdseye view (default: shown below)
   enabled: False
 
 mqtt:

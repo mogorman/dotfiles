@@ -1,12 +1,11 @@
 { config, lib, pkgs, ... }: {
-  environment.etc."nixos/frigate_config.yml".source = ./frigate.yml;
   virtualisation.oci-containers.containers.frigate = {
     image = "blakeblackshear/frigate:stable-amd64";
     ports = [ "5000:5000" "1935:1935" ];
     environmentFiles = [ ../secrets/frigate.env ];
     volumes = [
       "/state/frigate/media:/media/frigate"
-      "/etc/nixos/frigate_config.yml:/config/config.yml:ro"
+      "${./frigate.yml}:/config/config.yml:ro"
       "/etc/localtime:/etc/localtime:ro"
     ];
     extraOptions = [

@@ -2,12 +2,10 @@ birdseye:
   enabled: False
 
 mqtt:
-  host: sync.rldn.net
-  port: 8883
-  user: "home2"
-  password: "homesliceyo"
+  host: localhost
+  user: frigate
+  password: "{FRIGATE_MQTT_PASSWORD}"
   client_id: frigate
-  topic_prefix: home
 
 # Optional: Detectors configuration. Defaults to a single CPU detector
 detectors:

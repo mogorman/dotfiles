@@ -6,6 +6,8 @@
     ../services/mosquitto.nix
     ../services/mumble.nix
     ../services/jellyfin.nix
+    ../services/postgresql.nix
+    ../services/homeassistant.nix
     ../packages/packages.nix
     ../users/mog.nix
   ];

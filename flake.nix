@@ -16,11 +16,19 @@
         config = { allowUnfree = true; };
       };
       lib = stable.lib;
+      overlays = {
+        unstable = final: prev: {
+          unstable = (import unstable {
+            inherit system;
+          });
+        };
+      };
     in {
       nixosConfigurations = {
         random = lib.nixosSystem {
           inherit system;
           modules = [
+            ({ config, pkgs, lib, ... }: {nixpkgs.overlays = [ overlays.unstable ];})
             {
               options.dotfiles_dir = lib.mkOption {
                 type = lib.types.str;

@@ -21,6 +21,10 @@
     pciutils
     docker
     docker-compose
+    htop
+    sshfs
+    lsof
+    youtube-dl
   ];
 
   services.pcscd.enable = true;

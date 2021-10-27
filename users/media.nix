@@ -1,9 +1,9 @@
 { config, lib, pkgs, ... }: {
 
-  users.users.mog = {
+  users.users.media = {
     isNormalUser = true;
     openssh.authorizedKeys.keys = config.mog_keys;
-    extraGroups = [ "wheel" "docker" "render" "media" ];
+    extraGroups = [ "media" ];
   };
 
 }

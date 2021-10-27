@@ -5,16 +5,19 @@
     ../services/frigate.nix
     ../services/mosquitto.nix
     ../services/mumble.nix
-    ../services/jellyfin.nix
     ../services/postgresql.nix
     ../services/homeassistant.nix
+    ../services/media.nix
     ../packages/packages.nix
     ../users/mog.nix
+    ../users/media.nix
   ];
   networking.firewall.enable = false;
   services.udev.extraRules = ''
     SUBSYSTEM=="apex", MODE="0660", GROUP="users"
   '';
+
+  nixpkgs.config.allowUnfree = true;
 
   # HARDWARE CONFIG
   boot.initrd.availableKernelModules = [

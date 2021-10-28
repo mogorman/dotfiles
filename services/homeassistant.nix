@@ -1,4 +1,5 @@
 { config, lib, inputs, pkgs, ... }: {
+    imports = [ ../secrets/homeassistant.nix ];
   services.home-assistant = {
     enable = true;
     configWritable = true;
@@ -34,7 +35,7 @@
           {
             type = "markdown";
             title = "Lovelace";
-            content = "Welcome to your **Lovelace UI**.";
+            content = "Welcome to no more pi";
           }
           {
             type = "entities";
@@ -62,7 +63,7 @@
             controls = { nextprev = "chevrons"; };
             live_provider = "webrtc";
             camera_entity = "camera.back";
-            webrtc = { url = "rtsp://192.168.3.246:8554/unicast"; };
+            webrtc = { url = "rtsp://doorcam:8554/unicast"; };
             view_default = "snapshot";
             menu_buttons = {
               frigate_ui = true;
@@ -91,7 +92,6 @@
       mqtt = {
         broker = "localhost";
         username = "home";
-        password = "homesliceyo";
         discovery = true;
         discovery_prefix = "homeassistant";
 

@@ -2,7 +2,7 @@
   services.home-assistant = {
     enable = true;
     package = (pkgs.unstable.home-assistant.override {
-      extraPackages = py: with py; [ psycopg2 aiohttp-cors netdisco zeroconf pymetno ];
+      extraPackages = py: with py; [ psycopg2 aiohttp-cors netdisco zeroconf pymetno pyipp ];
     });
 
     config = {

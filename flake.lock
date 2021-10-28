@@ -15,20 +15,38 @@
         "type": "github"
       }
     },
+    "frigate-hass-integration": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1635188788,
+        "narHash": "sha256-Y3aQzYjuGNEMNQI/DoCMuCtqwYZ9vHwIyvgkVRkTcW4=",
+        "owner": "blakeblackshear",
+        "repo": "frigate-hass-integration",
+        "rev": "e6e050f558faf1947627c200cbf4c9bbb55de634",
+        "type": "github"
+      },
+      "original": {
+        "owner": "blakeblackshear",
+        "repo": "frigate-hass-integration",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "flake-utils": "flake-utils",
+        "frigate-hass-integration": "frigate-hass-integration",
         "stable": "stable",
-        "unstable": "unstable"
+        "unstable": "unstable",
+        "webrtc-card": "webrtc-card"
       }
     },
     "stable": {
       "locked": {
-        "lastModified": 1635024461,
-        "narHash": "sha256-yUU86lOsqqe/qI2pItEJGxx87cHeJiEJhDZvAXvrqfQ=",
+        "lastModified": 1635373256,
+        "narHash": "sha256-6QERROygyZN2itA2JUZzhf+o2jfqd6ykJZHQcCAE0r4=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "95eed9b64eee24975b880308065654fd059f22c3",
+        "rev": "d14d83a3691121642be1b0579cf3408a83c558d7",
         "type": "github"
       },
       "original": {
@@ -40,17 +58,33 @@
     },
     "unstable": {
       "locked": {
-        "lastModified": 1634782485,
-        "narHash": "sha256-psfh4OQSokGXG0lpq3zKFbhOo3QfoeudRcaUnwMRkQo=",
+        "lastModified": 1635314702,
+        "narHash": "sha256-/CEuEaXFVl2vQ+o3lYzDPz4lfbHbMebyJqQ4jZ1PT30=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "34ad3ffe08adfca17fcb4e4a47bb5f3b113687be",
+        "rev": "a4bf44345706231f9dd56f85757499af1e940847",
         "type": "github"
       },
       "original": {
         "owner": "NixOS",
         "ref": "nixos-unstable",
         "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "webrtc-card": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1630501275,
+        "narHash": "sha256-pnDJHdumhfQchZXdJacZFiXMNsTF/jwr0xRyf04aD8s=",
+        "owner": "AlexxIT",
+        "repo": "WebRTC",
+        "rev": "308a42e6fdb333b327b1408b78ed42eb9ad06232",
+        "type": "github"
+      },
+      "original": {
+        "owner": "AlexxIT",
+        "repo": "WebRTC",
         "type": "github"
       }
     }

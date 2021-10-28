@@ -6,9 +6,25 @@
     unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
     flake-utils.inputs.nixpkgs.follows = "stable";
+    frigate-hass-integration = {
+      url = "github:blakeblackshear/frigate-hass-integration";
+      flake = false;
+    };
+    webrtc-card = {
+      url = "github:AlexxIT/WebRTC";
+      flake = false;
+    };
+#    frigate-hass-card = {
+#      url = "https://github.com/dermotduffy/frigate-hass-card/releases/latest/download/frigate-hass-card.js";
+#      flake = false;
+#    };
+#    simple-thermostat-card = {
+#      url = "https://github.com/nervetattoo/simple-thermostat/releases/latest/download/simple-thermostat.js";
+#      flake = false;
+#    };
   };
 
-  outputs = { stable, unstable, flake-utils, ... }:
+  outputs = { stable, unstable, flake-utils, ... }@inputs:
     let
       system = "x86_64-linux";
       pkgs = import stable {
@@ -27,6 +43,7 @@
       nixosConfigurations = {
         random = lib.nixosSystem {
           inherit system;
+          specialArgs = { inherit inputs; };
           modules = [
             ({ config, pkgs, lib, ... }: {nixpkgs.overlays = [ overlays.unstable ];})
             {

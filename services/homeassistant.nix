@@ -1,5 +1,5 @@
 { config, lib, inputs, pkgs, ... }: {
-    imports = [ ../secrets/homeassistant.nix ];
+  imports = [ ../secrets/homeassistant.nix ];
   services.home-assistant = {
     enable = true;
     configWritable = true;
@@ -26,6 +26,14 @@
           url = "/local/simple-thermostat.js";
           type = "module";
         }
+        {
+          url = "/local/upcoming-media-card.js";
+          type = "module";
+        }
+        {
+          url = "/local/zha-network-card.js";
+          type = "js";
+        }
       ];
 
       title = "Home";
@@ -36,6 +44,10 @@
             type = "markdown";
             title = "Lovelace";
             content = "Welcome to no more pi";
+          }
+          {
+            type = "weather-forecast";
+            entity = "weather.home";
           }
           {
             type = "entities";
@@ -72,7 +84,11 @@
             };
             menu_mode = "hover-top";
           }
-
+          {
+            type = "custom:upcoming-media-card";
+            entity = "sensor.sonarr_upcoming_media";
+            title = "Upcoming TV";
+          }
         ];
       }];
     };
@@ -89,6 +105,21 @@
       zeroconf = { };
       webrtc = { };
       frigate = { };
+      sensor = [{
+        platform = "sonarr_upcoming_media";
+        api_key = "5ee9c6e6d58a428db80cd15540f58fec";
+        host = "127.0.0.1";
+        port = 8989;
+        days = 7;
+        ssl = false;
+        max = 10;
+      }];
+      notify = { };
+      met = {
+        name = "Home";
+        latitude = 42.22589962769912;
+        longitude = -70.94125270843507;
+      };
       mqtt = {
         broker = "localhost";
         username = "home";
@@ -99,6 +130,12 @@
       recorder.db_url = "postgresql://@/hass";
       feedreader.urls = [ "https://nixos.org/blogs.xml" ];
       zha = { database_path = "/state/hass/zigbee.db"; };
+      owntracks = { };
+      media_player = [{
+        platform = "emby";
+        host = "127.0.0.1";
+        api_key = "23011c9c5ae84f66a8ea6d65e9fb238f";
+      }];
     };
   };
 
@@ -107,6 +144,7 @@
     "d /var/lib/hass/custom_components 0755 hass hass"
     "L /var/lib/hass/custom_components/frigate - - - - ${inputs.frigate-hass-integration}/custom_components/frigate"
     "L /var/lib/hass/custom_components/webrtc - - - - ${inputs.webrtc-card}/custom_components/webrtc"
+    "L /var/lib/hass/custom_components/sonarr_upcoming_media - - - - ${inputs.sonarr_ha}/custom_components/sonarr_upcoming_media"
 
     # #front end
     "d /var/lib/hass/www 0755 hass hass"
@@ -116,5 +154,8 @@
     "C /var/lib/hass/www/simple-thermostat.js 0755 hass hass - ${
       ../hass/frontend/simple-thermostat.js
     }"
+    "C /var/lib/hass/www/upcoming-media-card.js - - - - ${inputs.upcoming-media-card}/upcoming-media-card.js"
+    "C /var/lib/hass/www/zha-network-card.js - - - - ${inputs.zha-network-card}/zha-network-card.js"
+
   ];
 }

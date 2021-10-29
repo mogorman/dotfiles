@@ -14,14 +14,18 @@
       url = "github:AlexxIT/WebRTC";
       flake = false;
     };
-#    frigate-hass-card = {
-#      url = "https://github.com/dermotduffy/frigate-hass-card/releases/latest/download/frigate-hass-card.js";
-#      flake = false;
-#    };
-#    simple-thermostat-card = {
-#      url = "https://github.com/nervetattoo/simple-thermostat/releases/latest/download/simple-thermostat.js";
-#      flake = false;
-#    };
+    sonarr_ha = {
+      url = "github:custom-components/sensor.sonarr_upcoming_media";
+      flake = false;
+    };
+    upcoming-media-card = {
+      url = "github:custom-cards/upcoming-media-card";
+      flake = false;
+    };
+    zha-network-card = {
+      url = "github:dmulcahey/zha-network-card";
+      flake = false;
+    };
   };
 
   outputs = { stable, unstable, flake-utils, ... }@inputs:
@@ -34,9 +38,7 @@
       lib = stable.lib;
       overlays = {
         unstable = final: prev: {
-          unstable = (import unstable {
-            inherit system;
-          });
+          unstable = (import unstable { inherit system; });
         };
       };
     in {
@@ -45,7 +47,9 @@
           inherit system;
           specialArgs = { inherit inputs; };
           modules = [
-            ({ config, pkgs, lib, ... }: {nixpkgs.overlays = [ overlays.unstable ];})
+            ({ config, pkgs, lib, ... }: {
+              nixpkgs.overlays = [ overlays.unstable ];
+            })
             {
               options.dotfiles_dir = lib.mkOption {
                 type = lib.types.str;

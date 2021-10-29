@@ -35,18 +35,37 @@
       "inputs": {
         "flake-utils": "flake-utils",
         "frigate-hass-integration": "frigate-hass-integration",
+        "sonarr_ha": "sonarr_ha",
         "stable": "stable",
         "unstable": "unstable",
-        "webrtc-card": "webrtc-card"
+        "upcoming-media-card": "upcoming-media-card",
+        "webrtc-card": "webrtc-card",
+        "zha-network-card": "zha-network-card"
+      }
+    },
+    "sonarr_ha": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1614740689,
+        "narHash": "sha256-atipmT09hgWFlYiqC5mqVUYzPu02YQpTqbsT6iqcwvY=",
+        "owner": "custom-components",
+        "repo": "sensor.sonarr_upcoming_media",
+        "rev": "add0b2ad467fdf6aa0f5c083ccb34ad901eed5b7",
+        "type": "github"
+      },
+      "original": {
+        "owner": "custom-components",
+        "repo": "sensor.sonarr_upcoming_media",
+        "type": "github"
       }
     },
     "stable": {
       "locked": {
-        "lastModified": 1635373256,
-        "narHash": "sha256-6QERROygyZN2itA2JUZzhf+o2jfqd6ykJZHQcCAE0r4=",
+        "lastModified": 1635456205,
+        "narHash": "sha256-CLZxFvwec8BhFlB5tkIq08UBDNNrijOY780UF6ubJXc=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "d14d83a3691121642be1b0579cf3408a83c558d7",
+        "rev": "66d6ec6ed2ddc77d08cf677cc8230db39f051793",
         "type": "github"
       },
       "original": {
@@ -58,17 +77,33 @@
     },
     "unstable": {
       "locked": {
-        "lastModified": 1635314702,
-        "narHash": "sha256-/CEuEaXFVl2vQ+o3lYzDPz4lfbHbMebyJqQ4jZ1PT30=",
+        "lastModified": 1635403963,
+        "narHash": "sha256-0actzfzBAXvvDJ/EvPSGbtCPXUwSObQrcq0RpsPWZgA=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "a4bf44345706231f9dd56f85757499af1e940847",
+        "rev": "2deb07f3ac4eeb5de1c12c4ba2911a2eb1f6ed61",
         "type": "github"
       },
       "original": {
         "owner": "NixOS",
         "ref": "nixos-unstable",
         "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "upcoming-media-card": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1610684259,
+        "narHash": "sha256-lgCgjtSurIFJCMbhq/SA8EqtGGjH+G+znref1siMlAg=",
+        "owner": "custom-cards",
+        "repo": "upcoming-media-card",
+        "rev": "c0c83a12c51014303427c61f15d3aa12a44cdd8b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "custom-cards",
+        "repo": "upcoming-media-card",
         "type": "github"
       }
     },
@@ -85,6 +120,22 @@
       "original": {
         "owner": "AlexxIT",
         "repo": "WebRTC",
+        "type": "github"
+      }
+    },
+    "zha-network-card": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1606243170,
+        "narHash": "sha256-4ALrFtfBw02WptmaQ0c2aqB/eGpSgxRXem0rY6ylhg0=",
+        "owner": "dmulcahey",
+        "repo": "zha-network-card",
+        "rev": "b6b05fa1591d0b9ea86ff81d7ebd92f3b45ef644",
+        "type": "github"
+      },
+      "original": {
+        "owner": "dmulcahey",
+        "repo": "zha-network-card",
         "type": "github"
       }
     }

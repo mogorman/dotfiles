@@ -25,6 +25,7 @@
     sshfs
     lsof
     youtube-dl
+    screen
   ];
 
   services.pcscd.enable = true;

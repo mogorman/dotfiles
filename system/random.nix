@@ -1,6 +1,7 @@
 { config, lib, pkgs, inputs, modulesPath, ... }: {
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
+    ./common.nix
     ../services/ssh.nix
     ../services/frigate.nix
     ../services/mosquitto.nix
@@ -12,12 +13,12 @@
     ../users/mog.nix
     ../users/media.nix
   ];
-  networking.firewall.enable = false;
+
   services.udev.extraRules = ''
     SUBSYSTEM=="apex", MODE="0660", GROUP="users"
   '';
-
-  nixpkgs.config.allowUnfree = true;
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
 
   # HARDWARE CONFIG
   boot.initrd.availableKernelModules = [
@@ -35,34 +36,6 @@
   boot.extraModulePackages =
     [ (config.boot.kernelPackages.callPackage ../packages/gasket.nix { }) ];
 
-  fileSystems."/" = {
-    device = "/dev/disk/by-uuid/41c0df27-00a5-40ee-9334-bb5737a0a124";
-    fsType = "ext4";
-  };
-
-  fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/C833-35FD";
-    fsType = "vfat";
-  };
-
-  swapDevices =
-    [{ device = "/dev/disk/by-uuid/d9d19b7c-2abc-415b-95e5-3d4410f490f0"; }];
-
-  # high-resolution display
-  hardware.video.hidpi.enable = true;
-  # HARDWARE CONFIG 
-
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-
-  networking.hostName = "random";
-
-  time.timeZone = "US/Eastern";
-  networking.useDHCP = false;
-  networking.interfaces.enp2s0.useDHCP = true;
-  networking.interfaces.enp3s0.useDHCP = false;
-  system.stateVersion = "21.05";
-  fileSystems."/".options = [ "noatime" "nodiratime" "discard" ];
   boot.initrd.luks.devices.luksroot = {
     device = "/dev/disk/by-uuid/6143d5ea-2cf1-41b8-ab52-da5d6c4b4e86";
     preLVM = true;
@@ -112,5 +85,29 @@
     tor -f ${torRc} --verify-config
     tor -f ${torRc} &
   '';
+
+  fileSystems."/" = {
+    device = "/dev/disk/by-uuid/41c0df27-00a5-40ee-9334-bb5737a0a124";
+    fsType = "ext4";
+  };
+
+  fileSystems."/boot" = {
+    device = "/dev/disk/by-uuid/C833-35FD";
+    fsType = "vfat";
+  };
+
+  swapDevices =
+    [{ device = "/dev/disk/by-uuid/d9d19b7c-2abc-415b-95e5-3d4410f490f0"; }];
+
+  # high-resolution display
+  hardware.video.hidpi.enable = true;
+  # HARDWARE CONFIG 
+
+  networking.firewall.enable = false;
+  networking.hostName = "random";
+
+  networking.useDHCP = false;
+  networking.interfaces.enp2s0.useDHCP = true;
+  networking.interfaces.enp3s0.useDHCP = false;
 }
 

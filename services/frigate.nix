@@ -10,7 +10,7 @@
     ];
     extraOptions = [
       "--shm-size=64m"
-      "--network=host"
+      "--add-host=host.docker.internal:host-gateway"
       "--device=/dev/apex_0:/dev/apex_0"
       "--device=/dev/dri/renderD128"
       "--mount=type=tmpfs,target=/tmp/cache,tmpfs-size=1000000000"

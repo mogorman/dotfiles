@@ -2,7 +2,7 @@ birdseye:
   enabled: False
 
 mqtt:
-  host: localhost
+  host: host.docker.internal
   user: frigate
   password: "{FRIGATE_MQTT_PASSWORD}"
   client_id: frigate

@@ -19,6 +19,7 @@
   '';
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  boot.initrd.luks.reusePassphrases = true;
 
   # HARDWARE CONFIG
   boot.initrd.availableKernelModules = [
@@ -41,6 +42,25 @@
     preLVM = true;
     allowDiscards = true;
   };
+
+  boot.initrd.luks.devices."06tb" = {
+    device = "/dev/disk/by-uuid/88c2c241-b24c-4420-881f-be7df6663734";
+    preLVM = false;
+    allowDiscards = true;
+  };
+  boot.initrd.luks.devices."04tb" = {
+    device = "/dev/disk/by-uuid/07f589a2-3312-4337-8ceb-ff6226b341f3";
+    preLVM = false;
+    allowDiscards = true;
+  };
+  boot.initrd.luks.devices."02tb" = {
+    device = "/dev/disk/by-uuid/8651a7c7-006b-45e3-8782-1bf06d415df5";
+    preLVM = false;
+    allowDiscards = true;
+  };
+
+
+
   boot.initrd.network.enable = true;
   boot.initrd.network.ssh = {
     enable = true;
@@ -90,6 +110,22 @@
     device = "/dev/disk/by-uuid/41c0df27-00a5-40ee-9334-bb5737a0a124";
     fsType = "ext4";
   };
+
+  fileSystems."/external/06tb" = {
+    device = "/dev/disk/by-uuid/d40907e4-0ca8-44bc-b145-bf191e499c7c";
+    fsType = "ext4";
+  };
+  fileSystems."/external/04tb" = {
+    device = "/dev/disk/by-uuid/c8f67343-9418-4c66-acf7-7d62f1b1acd2";
+    fsType = "ext4";
+  };
+  fileSystems."/external/02tb" = {
+    device = "/dev/disk/by-uuid/92cca9f5-e56a-4bf0-82c8-192c73758598";
+    fsType = "ext4";
+  };
+
+
+
 
   fileSystems."/boot" = {
     device = "/dev/disk/by-uuid/C833-35FD";

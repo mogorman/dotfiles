@@ -10,21 +10,21 @@
     enable = true;
     user = "media";
     group = "users";
-    dataDir = "/state/jackett";
+    dataDir = "/external/06tb/state/jackett";
   };
 
   services.sonarr = {
     enable = true;
     user = "media";
     group = "users";
-    dataDir = "/state/sonarr";
+    dataDir = "/external/06tb/state/sonarr";
   };
 
   services.radarr = {
     enable = true;
     user = "media";
     group = "users";
-    dataDir = "/state/radarr";
+    dataDir = "/external/06tb/state/radarr";
   };
 
   services.bazarr = {

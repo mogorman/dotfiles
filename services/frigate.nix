@@ -4,7 +4,7 @@
     image = "blakeblackshear/frigate:stable-amd64";
     ports = [ "5000:5000" "1935:1935" ];
     volumes = [
-      "/state/frigate/media:/media/frigate"
+      "/external/04tb/state/frigate/media:/media/frigate"
       "${./frigate.yml}:/config/config.yml:ro"
       "/etc/localtime:/etc/localtime:ro"
     ];
@@ -20,5 +20,6 @@
   systemd.services.docker-frigate = {
     after = [ "mosquitto.service" ];
     requires = [ "mosquitto.service" ];
+    wants = [ "home-assistant.service" ];
   };
 }

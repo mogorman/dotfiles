@@ -1,5 +1,9 @@
 { config, lib, inputs, pkgs, ... }: {
   imports = [ ../secrets/homeassistant.nix ];
+  systemd.services.home-assistant = {
+    after = [ "docker-frigate.service" ];
+    requires = [ "docker-frigate.service" ];
+  };
   services.home-assistant = {
     enable = true;
     configWritable = true;

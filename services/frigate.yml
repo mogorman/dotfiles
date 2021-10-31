@@ -59,7 +59,7 @@ snapshots:
   # Optional: Camera override for retention settings (default: global values)
   retain:
     # Required: Default retention days (default: shown below)
-    default: 10
+    default: 365
 
 record:
   # Optional: Enable recording (default: shown below)

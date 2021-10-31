@@ -60,3 +60,28 @@ snapshots:
   retain:
     # Required: Default retention days (default: shown below)
     default: 10
+
+record:
+  # Optional: Enable recording (default: shown below)
+  enabled: True
+  # Optional: Number of days to retain recordings regardless of events (default: shown below)
+  # NOTE: This should be set to 0 and retention should be defined in events section below
+  #       if you only want to retain recordings of events.
+  retain_days: 10
+  # Optional: Event recording settings
+  events:
+    # Optional: Maximum length of time to retain video during long events. (default: shown below)
+    # NOTE: If an object is being tracked for longer than this amount of time, the retained recordings
+    #       will be the last x seconds of the event unless retain_days under record is > 0.
+    max_seconds: 300
+    # Optional: Number of seconds before the event to include (default: shown below)
+    pre_capture: 5
+    # Optional: Number of seconds after the event to include (default: shown below)
+    post_capture: 5
+    # Optional: Objects to save recordings for. (default: all tracked objects)
+    objects:
+      - person
+      - mouse
+    retain:
+      # Required: Default retention days (default: shown below)
+      default: 365

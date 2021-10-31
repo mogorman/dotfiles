@@ -16,6 +16,8 @@
 
   services.udev.extraRules = ''
     SUBSYSTEM=="apex", MODE="0660", GROUP="users"
+    ACTION=="add", SUBSYSTEM=="net", ATTR{address}=="00:e0:4c:02:05:f5", NAME="lan0"
+    ACTION=="add", SUBSYSTEM=="net", ATTR{address}=="00:e0:4c:02:05:f4", NAME="eth0"
   '';
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -58,8 +60,6 @@
     preLVM = false;
     allowDiscards = true;
   };
-
-
 
   boot.initrd.network.enable = true;
   boot.initrd.network.ssh = {
@@ -124,9 +124,6 @@
     fsType = "ext4";
   };
 
-
-
-
   fileSystems."/boot" = {
     device = "/dev/disk/by-uuid/C833-35FD";
     fsType = "vfat";
@@ -139,11 +136,48 @@
   hardware.video.hidpi.enable = true;
   # HARDWARE CONFIG 
 
-  networking.firewall.enable = false;
   networking.hostName = "random";
 
   networking.useDHCP = false;
-  networking.interfaces.enp2s0.useDHCP = true;
-  networking.interfaces.enp3s0.useDHCP = false;
-}
 
+  networking.interfaces = {
+    eth0.useDHCP = true;
+    lan0 = {
+      useDHCP = false;
+      ipv4.addresses = [{
+        address = "10.0.0.1";
+        prefixLength = 8;
+      }];
+    };
+  };
+  boot.kernel.sysctl = {
+    "net.ipv4.conf.all.forwarding" = 1;
+    "net.ipv4.conf.default.forwarding" = 1;
+  };
+
+  #  networking.nameservers = [ "4.4.4.4" "8.8.8.8" ];
+
+  networking.nat = {
+    enable = true;
+    internalIPs = [ "10.0.0.0/8" ];
+    internalInterfaces = [ "lan0" ];
+    externalInterface = "eth0";
+    forwardPorts = [ ];
+  };
+
+  networking.firewall = {
+    enable = false;
+    allowPing = true;
+    trustedInterfaces = [ "lo" "lan0" ];
+    checkReversePath = false; # https://github.com/NixOS/nixpkgs/issues/10101
+
+    extraCommands = ''
+      iptables -t nat -A POSTROUTING -s 10.0.0.0/8 -o eth0 -j MASQUERADE
+    '';
+    allowedTCPPortRanges = [ ];
+
+    allowedTCPPorts = [ ];
+    allowedUDPPorts = [ ];
+  };
+
+}

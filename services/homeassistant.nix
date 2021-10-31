@@ -20,6 +20,7 @@
           brother
         ];
     });
+
     lovelaceConfig = {
       resources = [
         {

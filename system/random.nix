@@ -4,6 +4,7 @@
     ./common.nix
     ../services/ssh.nix
     ../services/frigate.nix
+    ../services/tubesync.nix
     ../services/mosquitto.nix
     ../services/mumble.nix
     ../services/postgresql.nix
@@ -135,49 +136,76 @@
   # high-resolution display
   hardware.video.hidpi.enable = true;
   # HARDWARE CONFIG 
-
-  networking.hostName = "random";
-
-  networking.useDHCP = false;
-
-  networking.interfaces = {
-    eth0.useDHCP = true;
-    lan0 = {
-      useDHCP = false;
-      ipv4.addresses = [{
-        address = "10.0.0.1";
-        prefixLength = 8;
-      }];
-    };
-  };
   boot.kernel.sysctl = {
     "net.ipv4.conf.all.forwarding" = 1;
     "net.ipv4.conf.default.forwarding" = 1;
   };
 
-  #  networking.nameservers = [ "4.4.4.4" "8.8.8.8" ];
+  networking = {
+    hostName = "random";
+    useDHCP = false;
+    vlans = {
+      vlan100 = {
+        id = 100;
+        interface = "lan0";
+      };
+      vlan10 = {
+        id = 10;
+        interface = "lan0";
+      };
+      vlan1 = {
+        id = 1;
+        interface = "lan0";
+      };
+    };
 
-  networking.nat = {
-    enable = true;
-    internalIPs = [ "10.0.0.0/8" ];
-    internalInterfaces = [ "lan0" ];
-    externalInterface = "eth0";
-    forwardPorts = [ ];
+    interfaces = {
+      eth0.useDHCP = true;
+
+      vlan1.ipv4.addresses = [{
+        address = "10.0.1.1";
+        prefixLength = 24;
+      }];
+      vlan10.ipv4.addresses = [{
+        address = "10.0.10.1";
+        prefixLength = 24;
+      }];
+      vlan100.ipv4.addresses = [{
+        address = "10.0.100.1";
+        prefixLength = 24;
+      }];
+
+      # lan0 = {
+      #   useDHCP = false;
+      #   ipv4.addresses = [{
+      #     address = "10.0.0.1";
+      #     prefixLength = 8;
+      #   }];
+      # };
+    };
+    #nameservers = [ "4.4.4.4" "8.8.8.8" ];
+    nat = {
+      enable = true;
+      internalIPs = [ "10.0.1.0/24" "10.0.10.0/24" "10.0.100.0/24" ];
+      internalInterfaces = [ "vlan1" ];
+      externalInterface = "eth0";
+      forwardPorts = [ ];
+    };
+    firewall = {
+      enable = false;
+      allowPing = true;
+      trustedInterfaces = [ "lo" "vlan1" ];
+      checkReversePath = false; # https://github.com/NixOS/nixpkgs/issues/10101
+
+      extraCommands = ''
+        iptables -t nat -A POSTROUTING -s 10.0.1.0/24 -o eth0 -j MASQUERADE
+        iptables -t nat -A POSTROUTING -s 10.0.10.0/24 -o eth0 -j MASQUERADE
+        iptables -t nat -A POSTROUTING -s 10.0.100.0/24 -o eth0 -j MASQUERADE
+      '';
+      allowedTCPPortRanges = [ ];
+
+      allowedTCPPorts = [ ];
+      allowedUDPPorts = [ ];
+    };
   };
-
-  networking.firewall = {
-    enable = false;
-    allowPing = true;
-    trustedInterfaces = [ "lo" "lan0" ];
-    checkReversePath = false; # https://github.com/NixOS/nixpkgs/issues/10101
-
-    extraCommands = ''
-      iptables -t nat -A POSTROUTING -s 10.0.0.0/8 -o eth0 -j MASQUERADE
-    '';
-    allowedTCPPortRanges = [ ];
-
-    allowedTCPPorts = [ ];
-    allowedUDPPorts = [ ];
-  };
-
 }

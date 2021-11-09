@@ -26,14 +26,26 @@
     lsof
     youtube-dl
     screen
+    ethtool
+    tcpdump
+    conntrack-tools
+    mcfly
+    direnv
   ];
 
+  programs.bash.shellInit = ''
+export JAVA_TOOL_OPTIONS="-Dcom.eteks.sweethome3d.j3d.useOffScreen3DView=true"
+eval "$(direnv hook bash)"
+eval "$(mcfly init bash)"
+  '';
   services.pcscd.enable = true;
   programs.gnupg.agent = {
     enable = true;
     enableSSHSupport = true;
     pinentryFlavor = "curses";
   };
-  virtualisation.docker.enable = true;
-
+  virtualisation.docker = {
+       enable        = true;
+#      extraOptions  = "--iptables=False";
+  };
 }

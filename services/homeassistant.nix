@@ -92,7 +92,9 @@
           {
             type = "custom:upcoming-media-card";
             entity = "sensor.sonarr_upcoming_media";
-            title = "Upcoming TV";
+            image_style = "fanart";
+            max = 10;
+            hide_empty = true;
           }
         ];
       }];

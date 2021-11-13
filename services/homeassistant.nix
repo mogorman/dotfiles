@@ -148,12 +148,14 @@
 
   systemd.tmpfiles.rules = [
     # integrations
+    "R /var/lib/hass/custom_components"
     "d /var/lib/hass/custom_components 0755 hass hass"
     "L /var/lib/hass/custom_components/frigate - - - - ${inputs.frigate-hass-integration}/custom_components/frigate"
     "L /var/lib/hass/custom_components/webrtc - - - - ${inputs.webrtc-card}/custom_components/webrtc"
     "L /var/lib/hass/custom_components/sonarr_upcoming_media - - - - ${inputs.sonarr_ha}/custom_components/sonarr_upcoming_media"
 
     # #front end
+    "R /var/lib/hass/www"
     "d /var/lib/hass/www 0755 hass hass"
     "C /var/lib/hass/www/frigate-hass-card.js 0755 hass hass - ${
       ../hass/frontend/frigate-hass-card.js

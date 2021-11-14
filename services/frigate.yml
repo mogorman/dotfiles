@@ -40,7 +40,7 @@ cameras:
   back:
     ffmpeg:
       inputs:
-        - path: rtsp://doorcam:8554/unicast
+        - path: rtsp://192.168.3.246:8554/unicast
           roles:
             - detect
             - rtmp

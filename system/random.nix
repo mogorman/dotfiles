@@ -10,6 +10,7 @@
     ../services/postgresql.nix
     ../services/homeassistant.nix
     ../services/media.nix
+    ../services/dnsmasq.nix
     ../packages/packages.nix
     ../users/mog.nix
     ../users/media.nix
@@ -17,7 +18,7 @@
 
   services.udev.extraRules = ''
     SUBSYSTEM=="apex", MODE="0660", GROUP="users"
-    ACTION=="add", SUBSYSTEM=="net", ATTR{address}=="00:e0:4c:02:05:f5", NAME="lan0"
+    ACTION=="add", SUBSYSTEM=="net", ATTR{address}=="00:e0:4c:02:05:f5", NAME="eth1"
     ACTION=="add", SUBSYSTEM=="net", ATTR{address}=="00:e0:4c:02:05:f4", NAME="eth0"
   '';
   boot.loader.systemd-boot.enable = true;
@@ -35,6 +36,7 @@
     "rtsx_usb_sdmmc"
     "igb"
   ];
+
   boot.initrd.kernelModules = [ "dm-snapshot" ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages =
@@ -142,70 +144,70 @@
   };
 
   networking = {
+    hostId = "72209696";
     hostName = "random";
     useDHCP = false;
+
     vlans = {
-      vlan100 = {
+      iot0 = {
         id = 100;
-        interface = "lan0";
+        interface = "eth1";
       };
-      vlan10 = {
+      guest0 = {
         id = 10;
-        interface = "lan0";
+        interface = "eth1";
       };
-      vlan1 = {
-        id = 1;
-        interface = "lan0";
+      lan0 = {
+        id = 2;
+        interface = "eth1";
       };
     };
 
     interfaces = {
       eth0.useDHCP = true;
+      eth1.useDHCP = false;
 
-      vlan1.ipv4.addresses = [{
-        address = "10.0.1.1";
+      lan0.ipv4.addresses = [{
+        address = "10.0.2.1";
         prefixLength = 24;
       }];
-      vlan10.ipv4.addresses = [{
+      guest0.ipv4.addresses = [{
         address = "10.0.10.1";
         prefixLength = 24;
       }];
-      vlan100.ipv4.addresses = [{
+      iot0.ipv4.addresses = [{
         address = "10.0.100.1";
         prefixLength = 24;
       }];
-
-      # lan0 = {
-      #   useDHCP = false;
-      #   ipv4.addresses = [{
-      #     address = "10.0.0.1";
-      #     prefixLength = 8;
-      #   }];
-      # };
     };
+
     #nameservers = [ "4.4.4.4" "8.8.8.8" ];
     nat = {
       enable = true;
-      internalIPs = [ "10.0.1.0/24" "10.0.10.0/24" "10.0.100.0/24" ];
-      internalInterfaces = [ "vlan1" ];
+      internalIPs = [ "10.0.2.0/24" "10.0.10.0/24" "10.0.100.0/24" ];
+      internalInterfaces = [ "lan0" "guest0" "iot0" ];
       externalInterface = "eth0";
       forwardPorts = [ ];
     };
     firewall = {
-      enable = false;
+      enable = true;
       allowPing = true;
-      trustedInterfaces = [ "lo" "vlan1" ];
+      trustedInterfaces = [ "lo" "lan0" "guest0" "docker0" "iot0" ];
       checkReversePath = false; # https://github.com/NixOS/nixpkgs/issues/10101
 
       extraCommands = ''
-        iptables -t nat -A POSTROUTING -s 10.0.1.0/24 -o eth0 -j MASQUERADE
+        iptables -t nat -A POSTROUTING -s 10.0.2.0/24 -o eth0 -j MASQUERADE
         iptables -t nat -A POSTROUTING -s 10.0.10.0/24 -o eth0 -j MASQUERADE
-        iptables -t nat -A POSTROUTING -s 10.0.100.0/24 -o eth0 -j MASQUERADE
+        #BLOCK IOT FROM INTERNET but allow my laptop to access internet
+        iptables -A FORWARD -i iot0 -m mac --mac-source B4:69:21:62:5A:C5  -j ACCEPT
+        iptables -A FORWARD -i iot0 -o eth0 -j REJECT
       '';
-      allowedTCPPortRanges = [ ];
 
-      allowedTCPPorts = [ ];
-      allowedUDPPorts = [ ];
+      allowedTCPPortRanges = [ ];
+      allowedUDPPortRanges = [ ];
+
+      allowedTCPPorts = [ 22 8096 8123 5000 7878 ];
+      allowedUDPPorts = [ 53 ];
     };
   };
 }

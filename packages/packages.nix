@@ -46,6 +46,5 @@ eval "$(mcfly init bash)"
   };
   virtualisation.docker = {
        enable        = true;
-#      extraOptions  = "--iptables=False";
   };
 }

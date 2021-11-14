@@ -206,7 +206,14 @@
       allowedTCPPortRanges = [ ];
       allowedUDPPortRanges = [ ];
 
-      allowedTCPPorts = [ 22 8096 8123 5000 7878 ];
+      allowedTCPPorts = [
+        22 # SSH
+        8096 # Jellyfin
+        8123 # Home assistant
+        5000 # Frigate
+        7878 # Radarr
+        8989 # Sonarr
+      ];
       allowedUDPPorts = [ 53 ];
     };
   };

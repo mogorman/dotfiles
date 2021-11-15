@@ -40,13 +40,24 @@ cameras:
   back:
     ffmpeg:
       inputs:
-        - path: rtsp://192.168.3.246:8554/unicast
+        - path: rtsp://doorcam:8554/unicast
           roles:
             - detect
             - rtmp
     detect:
       width: 1600
       height: 900
+  outdoor1:
+    ffmpeg:
+      inputs:
+        - path: "rtsp://admin:{FRIGATE_CAMERA_PASSWORD}@outdoor1.lan:554/"
+          roles:
+            - detect
+            - rtmp
+    detect:
+      width: 1920
+      height: 1080
+
 
 snapshots:
   # Optional: Enable writing jpg snapshot to /media/frigate/clips (default: shown below)

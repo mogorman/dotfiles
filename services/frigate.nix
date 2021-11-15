@@ -11,6 +11,7 @@
     extraOptions = [
       "--shm-size=64m"
       "--add-host=host.docker.internal:host-gateway"
+      "--dns=10.0.2.1"
       "--device=/dev/apex_0:/dev/apex_0"
       "--device=/dev/dri/renderD128"
       "--mount=type=tmpfs,target=/tmp/cache,tmpfs-size=1000000000"

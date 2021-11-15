@@ -199,7 +199,7 @@
         iptables -t nat -A POSTROUTING -s 10.0.2.0/24 -o eth0 -j MASQUERADE
         iptables -t nat -A POSTROUTING -s 10.0.10.0/24 -o eth0 -j MASQUERADE
         #BLOCK IOT FROM INTERNET but allow my laptop to access internet
-        iptables -A FORWARD -i iot0 -m mac --mac-source B4:69:21:62:5A:C5  -j ACCEPT
+        iptables -A FORWARD -i iot0 -s 10.0.100.30  -j ACCEPT
         iptables -A FORWARD -i iot0 -o eth0 -j REJECT
       '';
 

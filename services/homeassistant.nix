@@ -18,8 +18,9 @@
           pymetno
           pyipp
           brother
+          yarl
         ];
-    });
+    }).overrideAttrs(oldAttrs: {doInstallCheck = false; });
 
     lovelaceConfig = {
       resources = [
@@ -70,6 +71,15 @@
               "sensor.back_person"
               "sensor.back_process_fps"
               "sensor.back_skipped_fps"
+
+              "sensor.outdoor1_camera_fps"
+              "sensor.outdoor1_detection_fps"
+              "sensor.outdoor1_dog"
+              "sensor.outdoor1_mouse"
+              "sensor.outdoor1_person"
+              "sensor.outdoor1_process_fps"
+              "sensor.outdoor1_skipped_fps"
+
               "sensor.coral_inference_speed"
               "sensor.detection_fps"
             ];
@@ -89,6 +99,22 @@
             };
             menu_mode = "hover-top";
           }
+          {
+            type = "custom:frigate-card";
+            dimensions = { };
+            controls = { nextprev = "chevrons"; };
+            live_provider = "webrtc";
+            camera_entity = "camera.outdoor1";
+            webrtc = { url = "rtsp://admin:${config.camera_password}@outdoor1:554/"; };
+            view_default = "snapshot";
+            menu_buttons = {
+              frigate_ui = true;
+              fullscreen = true;
+              frigate = false;
+            };
+            menu_mode = "hover-top";
+          }
+
           {
             type = "custom:upcoming-media-card";
             entity = "sensor.sonarr_upcoming_media";

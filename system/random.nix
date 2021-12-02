@@ -2,6 +2,7 @@
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
     ./common.nix
+    ../secrets/secrets.nix
     ../services/ssh.nix
     ../services/frigate.nix
     ../services/tubesync.nix
@@ -164,7 +165,10 @@
     };
 
     interfaces = {
-      eth0.useDHCP = true;
+      eth0 = {
+        useDHCP = true;
+#        macAddress = "00:0e:c4:d2:3a:31";
+      };
       eth1.useDHCP = false;
 
       lan0.ipv4.addresses = [{
@@ -213,6 +217,7 @@
         5000 # Frigate
         7878 # Radarr
         8989 # Sonarr
+        4848 # tubesync
       ];
       allowedUDPPorts = [ 53 ];
     };

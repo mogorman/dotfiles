@@ -2,7 +2,8 @@
   description = "my dotfiles for servers and laptops";
 
   inputs = {
-    stable.url = "github:NixOS/nixpkgs/nixos-21.05";
+    oldstable.url = "github:NixOS/nixpkgs/nixos-21.05";
+    stable.url = "github:NixOS/nixpkgs/nixos-21.11";
     unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
     flake-utils.inputs.nixpkgs.follows = "stable";
@@ -38,7 +39,7 @@
       lib = stable.lib;
       overlays = {
         unstable = final: prev: {
-          unstable = (import unstable { inherit system; });
+          unstable = (import unstable { inherit system; config = { allowUnfree = true; }; });
         };
       };
     in {
@@ -54,6 +55,10 @@
               options.dotfiles_dir = lib.mkOption {
                 type = lib.types.str;
                 default = "/home/mog/code/dotfiles";
+              };
+              options.camera_password = lib.mkOption {
+                type = lib.types.str;
+                default = "nope";
               };
               options.mog_keys = lib.mkOption {
                 type = lib.types.listOf lib.types.str;

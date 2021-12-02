@@ -162,7 +162,7 @@
       };
       recorder.db_url = "postgresql://@/hass";
       feedreader.urls = [ "https://nixos.org/blogs.xml" ];
-      zha = { database_path = "/state/hass/zigbee.db"; };
+      zha = { };
       owntracks = { };
       media_player = [{
         platform = "emby";

@@ -82,6 +82,10 @@
 
               "sensor.coral_inference_speed"
               "sensor.detection_fps"
+
+              "sensor.wallbox_portal_charging_speed"
+              "sensor.wallbox_portal_status_description"
+              "sensor.wallbox_portal_cost"
             ];
           }
           {
@@ -138,6 +142,7 @@
       zeroconf = { };
       webrtc = { };
       frigate = { };
+      wallbox = { };
       sensor = [{
         platform = "sonarr_upcoming_media";
         api_key = "5ee9c6e6d58a428db80cd15540f58fec";

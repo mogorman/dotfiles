@@ -12,6 +12,7 @@
     ../services/homeassistant.nix
     ../services/media.nix
     ../services/dnsmasq.nix
+    ../services/avahi.nix
     ../packages/packages.nix
     ../users/mog.nix
     ../users/media.nix
@@ -149,6 +150,11 @@
     hostName = "random";
     useDHCP = false;
 
+    hosts = {
+    "127.0.0.1" = [ "random" ];
+    "10.0.2.1" = [ "home-assistant.local" "random.local" ];
+  };
+
     vlans = {
       iot0 = {
         id = 100;
@@ -167,7 +173,6 @@
     interfaces = {
       eth0 = {
         useDHCP = true;
-#        macAddress = "00:0e:c4:d2:3a:31";
       };
       eth1.useDHCP = false;
 
@@ -184,6 +189,78 @@
         prefixLength = 24;
       }];
     };
+
+#  nat.enable = false;
+#  firewall.enable = false;
+#  nftables = {
+#    enable = true;
+#    ruleset = ''
+#      table ip filter {
+#        # enable flow offloading for better throughput
+#        flowtable f {
+#          hook ingress priority 0;
+#          devices = { eth0, lan0, guest0 };
+#        }
+#
+#        chain output {
+#          type filter hook output priority 100; policy accept;
+#        }
+#
+#        chain input {
+#          type filter hook input priority filter; policy drop;
+#
+#          # Allow trusted networks to access the router
+#          iifname {
+#            "lan0",
+#          } counter accept
+# 
+# #         # Allow trusted networks to access the router
+# #         iifname {
+# #           "guest0",
+# #         } counter accept
+#
+#
+#          # Allow returning traffic from ppp0 and drop everthing else
+#          iifname "eth0" ct state { established, related } counter accept
+#          iifname "eth0" drop
+#        }
+#        
+#        chain forward {
+#          type filter hook forward priority filter; policy drop;
+#
+#          # enable flow offloading for better throughput
+#          ip protocol { tcp, udp } flow offload @f
+#
+#          # Allow trusted network WAN access
+#          iifname {
+#                  "lan0",
+#          } oifname {
+#                  "eth0",
+#          } counter accept comment "Allow trusted LAN to WAN"
+#
+#          # Allow established WAN to return
+#          iifname {
+#                  "eth0",
+#          } oifname {
+#                  "lan0",
+#          } ct state established,related counter accept comment "Allow established back to LANs"
+#        }
+#      }
+#
+#      table ip nat {
+#        chain prerouting {
+#          type nat hook output priority filter; policy accept;
+#        }
+#
+#        # Setup NAT masquerading on the ppp0 interface
+#        chain postrouting {
+#          type nat hook postrouting priority filter; policy accept;
+#          oifname "eth0" masquerade
+#        } 
+#      }
+#    '';
+#  };
+
 
     #nameservers = [ "4.4.4.4" "8.8.8.8" ];
     nat = {
@@ -212,12 +289,12 @@
 
       allowedTCPPorts = [
         22 # SSH
-        8096 # Jellyfin
-        8123 # Home assistant
-        5000 # Frigate
-        7878 # Radarr
-        8989 # Sonarr
-        4848 # tubesync
+#        8096 # Jellyfin
+#        8123 # Home assistant
+#        5000 # Frigate
+#        7878 # Radarr
+#        8989 # Sonarr
+#        4848 # tubesync
       ];
       allowedUDPPorts = [ 53 ];
     };

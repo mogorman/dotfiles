@@ -31,6 +31,7 @@
     conntrack-tools
     mcfly
     direnv
+    usbutils
   ];
 
   programs.bash.shellInit = ''

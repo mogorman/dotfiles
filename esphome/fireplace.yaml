@@ -1,0 +1,24 @@
+esphome:
+  name: fireplace
+  platform: ESP32
+  board: esp32dev
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+
+ota:
+  password: "5b9230d079c34c91e9290d9cb1526f71"
+
+wifi:
+  ssid: "redgroup"
+  password: !secret wifi_password
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Fireplace Fallback Hotspot"
+    password: "Ehn1uMmcFx82"
+
+captive_portal:

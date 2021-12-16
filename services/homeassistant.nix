@@ -174,6 +174,7 @@
         host = "127.0.0.1";
         api_key = "23011c9c5ae84f66a8ea6d65e9fb238f";
       }];
+      esphome = { };
     };
   };
 
@@ -198,4 +199,17 @@
     "C /var/lib/hass/www/zha-network-card.js - - - - ${inputs.zha-network-card}/zha-network-card.js"
 
   ];
+
+  systemd.services.esphome = {
+    description = "esphome";
+    after = [ "multi-user.target" ];
+    wantedBy = [ "multi-user.target" ];
+    path = [ pkgs.esphome ];
+    serviceConfig = {
+      User = "mog";
+      ExecStart = "${pkgs.esphome}/bin/esphome dashboard /home/mog/code/dotfiles/esphome";
+    };
+  };
+
+
 }

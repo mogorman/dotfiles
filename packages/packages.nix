@@ -32,6 +32,7 @@
     mcfly
     direnv
     usbutils
+    esphome
   ];
 
   programs.bash.shellInit = ''

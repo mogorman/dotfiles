@@ -1,11 +1,25 @@
 { config, lib, pkgs, ... }: {
+environment.etc = {
+  # Creates /etc/nanorc
+  dnsmasq_hosts = {
+    text = ''
+10.0.2.1 random
+10.0.2.1 home-assistant.local random.local
+    '';
+
+    # The UNIX file mode bits
+#    mode = "0440";
+  };
+};
+
   services.dnsmasq = {
     enable = true;
     servers = [ "8.8.8.8" "8.8.4.4" ];
     extraConfig = ''
       local=/lan/
       domain=lan
-      expand-hosts
+      no-hosts
+      addn-hosts=/etc/dnsmasq_hosts
 
       interface=lan0
       dhcp-range=lan0,10.0.2.10,10.0.2.244,24h

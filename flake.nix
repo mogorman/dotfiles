@@ -11,7 +11,11 @@
       url = "github:blakeblackshear/frigate-hass-integration";
       flake = false;
     };
-    webrtc-card = {
+    ocpp-hass-integration = {
+      url = "github:lbbrhzn/ocpp";
+      flake = false;
+    };
+   webrtc-card = {
       url = "github:AlexxIT/WebRTC";
       flake = false;
     };

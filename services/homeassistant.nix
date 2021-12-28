@@ -13,6 +13,7 @@
         with py; [
           psycopg2
           aiohttp-cors
+          websockets
           netdisco
           zeroconf
           pymetno
@@ -22,6 +23,7 @@
           pyruckus
           getmac
           (callPackage ../packages/mac_vendor_lookup.nix {})
+          (callPackage ../packages/ocpp.nix {})
           python-nmap
           pkgs.openssh
           pkgs.nmap
@@ -150,6 +152,7 @@
       zeroconf = { };
       webrtc = { };
       frigate = { };
+      ocpp = { };
       wallbox = { };
       ruckus = { };
       nmap = { };
@@ -206,6 +209,7 @@
     "R /var/lib/hass/custom_components"
     "d /var/lib/hass/custom_components 0755 hass hass"
     "L /var/lib/hass/custom_components/frigate - - - - ${inputs.frigate-hass-integration}/custom_components/frigate"
+    "L /var/lib/hass/custom_components/ocpp - - - - ${inputs.ocpp-hass-integration}/custom_components/ocpp"
     "L /var/lib/hass/custom_components/webrtc - - - - ${inputs.webrtc-card}/custom_components/webrtc"
     "L /var/lib/hass/custom_components/sonarr_upcoming_media - - - - ${inputs.sonarr_ha}/custom_components/sonarr_upcoming_media"
 

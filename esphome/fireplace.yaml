@@ -22,3 +22,13 @@ wifi:
     password: "Ehn1uMmcFx82"
 
 captive_portal:
+
+sensor:
+  - platform: dht
+    pin: GPIO23
+    model: DHT22_TYPE2
+    temperature:
+      name: "fireplace temperature"
+    humidity:
+      name: "fireplace humidity"
+    update_interval: 60s

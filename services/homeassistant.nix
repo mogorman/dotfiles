@@ -19,8 +19,14 @@
           pyipp
           brother
           yarl
+          pyruckus
+          getmac
+          (callPackage ../packages/mac_vendor_lookup.nix {})
+          python-nmap
+          pkgs.openssh
+          pkgs.nmap
         ];
-    }).overrideAttrs(oldAttrs: {doInstallCheck = false; });
+    }).overrideAttrs (oldAttrs: { doInstallCheck = false; });
 
     lovelaceConfig = {
       resources = [
@@ -109,7 +115,9 @@
             controls = { nextprev = "chevrons"; };
             live_provider = "webrtc";
             camera_entity = "camera.outdoor1";
-            webrtc = { url = "rtsp://admin:${config.camera_password}@outdoor1:554/"; };
+            webrtc = {
+              url = "rtsp://admin:${config.camera_password}@outdoor1:554/";
+            };
             view_default = "snapshot";
             menu_buttons = {
               frigate_ui = true;
@@ -143,15 +151,30 @@
       webrtc = { };
       frigate = { };
       wallbox = { };
-      sensor = [{
-        platform = "sonarr_upcoming_media";
-        api_key = "5ee9c6e6d58a428db80cd15540f58fec";
-        host = "127.0.0.1";
-        port = 8989;
-        days = 7;
-        ssl = false;
-        max = 10;
-      }];
+      ruckus = { };
+      nmap = { };
+      sensor = [
+        {
+          platform = "sonarr_upcoming_media";
+          api_key = "5ee9c6e6d58a428db80cd15540f58fec";
+          host = "127.0.0.1";
+          port = 8989;
+          days = 7;
+          ssl = false;
+          max = 10;
+        }
+        {
+          platform = "template";
+          sensors = {
+            outdoor_temperature = {
+              friendly_name = "outside";
+              unit_of_measurement = "°F";
+              value_template =
+                "{{ state_attr('weather.home', 'temperature') }}";
+            };
+          };
+        }
+      ];
       notify = { };
       met = {
         name = "Home";
@@ -207,9 +230,9 @@
     path = [ pkgs.esphome ];
     serviceConfig = {
       User = "mog";
-      ExecStart = "${pkgs.esphome}/bin/esphome dashboard /home/mog/code/dotfiles/esphome";
+      ExecStart =
+        "${pkgs.esphome}/bin/esphome dashboard /home/mog/code/dotfiles/esphome";
     };
   };
-
 
 }

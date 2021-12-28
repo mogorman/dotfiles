@@ -33,6 +33,7 @@
     direnv
     usbutils
     esphome
+    ffmpeg
   ];
 
   programs.bash.shellInit = ''

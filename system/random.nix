@@ -13,6 +13,7 @@
     ../services/media.nix
     ../services/dnsmasq.nix
     ../services/avahi.nix
+#    ../services/nginx.nix
     ../packages/packages.nix
     ../users/mog.nix
     ../users/media.nix

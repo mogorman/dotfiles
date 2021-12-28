@@ -1,4 +1,5 @@
 { config, lib, pkgs, ... }: {
+  programs.ssh.hostKeyAlgorithms = [ "ssh-rsa" "ecdsa-sha2-nistp256" "ssh-ed25519" ];
   services.openssh.enable = true;
   services.openssh.hostKeys = [
     {

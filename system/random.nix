@@ -13,7 +13,7 @@
     ../services/media.nix
     ../services/dnsmasq.nix
     ../services/avahi.nix
-#    ../services/nginx.nix
+    #    ../services/nginx.nix
     ../packages/packages.nix
     ../users/mog.nix
     ../users/media.nix
@@ -152,9 +152,9 @@
     useDHCP = false;
 
     hosts = {
-    "127.0.0.1" = [ "random" ];
-    "10.0.2.1" = [ "home-assistant.local" "random.local" ];
-  };
+      "127.0.0.1" = [ "random" ];
+      "10.0.2.1" = [ "home-assistant.local" "random.local" ];
+    };
 
     vlans = {
       iot0 = {
@@ -172,9 +172,7 @@
     };
 
     interfaces = {
-      eth0 = {
-        useDHCP = true;
-      };
+      eth0 = { useDHCP = true; };
       eth1.useDHCP = false;
 
       lan0.ipv4.addresses = [{
@@ -191,77 +189,76 @@
       }];
     };
 
-#  nat.enable = false;
-#  firewall.enable = false;
-#  nftables = {
-#    enable = true;
-#    ruleset = ''
-#      table ip filter {
-#        # enable flow offloading for better throughput
-#        flowtable f {
-#          hook ingress priority 0;
-#          devices = { eth0, lan0, guest0 };
-#        }
-#
-#        chain output {
-#          type filter hook output priority 100; policy accept;
-#        }
-#
-#        chain input {
-#          type filter hook input priority filter; policy drop;
-#
-#          # Allow trusted networks to access the router
-#          iifname {
-#            "lan0",
-#          } counter accept
-# 
-# #         # Allow trusted networks to access the router
-# #         iifname {
-# #           "guest0",
-# #         } counter accept
-#
-#
-#          # Allow returning traffic from ppp0 and drop everthing else
-#          iifname "eth0" ct state { established, related } counter accept
-#          iifname "eth0" drop
-#        }
-#        
-#        chain forward {
-#          type filter hook forward priority filter; policy drop;
-#
-#          # enable flow offloading for better throughput
-#          ip protocol { tcp, udp } flow offload @f
-#
-#          # Allow trusted network WAN access
-#          iifname {
-#                  "lan0",
-#          } oifname {
-#                  "eth0",
-#          } counter accept comment "Allow trusted LAN to WAN"
-#
-#          # Allow established WAN to return
-#          iifname {
-#                  "eth0",
-#          } oifname {
-#                  "lan0",
-#          } ct state established,related counter accept comment "Allow established back to LANs"
-#        }
-#      }
-#
-#      table ip nat {
-#        chain prerouting {
-#          type nat hook output priority filter; policy accept;
-#        }
-#
-#        # Setup NAT masquerading on the ppp0 interface
-#        chain postrouting {
-#          type nat hook postrouting priority filter; policy accept;
-#          oifname "eth0" masquerade
-#        } 
-#      }
-#    '';
-#  };
-
+    #  nat.enable = false;
+    #  firewall.enable = false;
+    #  nftables = {
+    #    enable = true;
+    #    ruleset = ''
+    #      table ip filter {
+    #        # enable flow offloading for better throughput
+    #        flowtable f {
+    #          hook ingress priority 0;
+    #          devices = { eth0, lan0, guest0 };
+    #        }
+    #
+    #        chain output {
+    #          type filter hook output priority 100; policy accept;
+    #        }
+    #
+    #        chain input {
+    #          type filter hook input priority filter; policy drop;
+    #
+    #          # Allow trusted networks to access the router
+    #          iifname {
+    #            "lan0",
+    #          } counter accept
+    # 
+    # #         # Allow trusted networks to access the router
+    # #         iifname {
+    # #           "guest0",
+    # #         } counter accept
+    #
+    #
+    #          # Allow returning traffic from ppp0 and drop everthing else
+    #          iifname "eth0" ct state { established, related } counter accept
+    #          iifname "eth0" drop
+    #        }
+    #        
+    #        chain forward {
+    #          type filter hook forward priority filter; policy drop;
+    #
+    #          # enable flow offloading for better throughput
+    #          ip protocol { tcp, udp } flow offload @f
+    #
+    #          # Allow trusted network WAN access
+    #          iifname {
+    #                  "lan0",
+    #          } oifname {
+    #                  "eth0",
+    #          } counter accept comment "Allow trusted LAN to WAN"
+    #
+    #          # Allow established WAN to return
+    #          iifname {
+    #                  "eth0",
+    #          } oifname {
+    #                  "lan0",
+    #          } ct state established,related counter accept comment "Allow established back to LANs"
+    #        }
+    #      }
+    #
+    #      table ip nat {
+    #        chain prerouting {
+    #          type nat hook output priority filter; policy accept;
+    #        }
+    #
+    #        # Setup NAT masquerading on the ppp0 interface
+    #        chain postrouting {
+    #          type nat hook postrouting priority filter; policy accept;
+    #          oifname "eth0" masquerade
+    #        } 
+    #      }
+    #    '';
+    #  };
 
     #nameservers = [ "4.4.4.4" "8.8.8.8" ];
     nat = {
@@ -269,7 +266,10 @@
       internalIPs = [ "10.0.2.0/24" "10.0.10.0/24" "10.0.100.0/24" ];
       internalInterfaces = [ "lan0" "guest0" "iot0" ];
       externalInterface = "eth0";
-      forwardPorts = [ ];
+      forwardPorts = [{
+        destination = "10.0.2.91:22";
+        sourcePort = 5001;
+      }];
     };
     firewall = {
       enable = true;
@@ -290,12 +290,12 @@
 
       allowedTCPPorts = [
         22 # SSH
-#        8096 # Jellyfin
-#        8123 # Home assistant
-#        5000 # Frigate
-#        7878 # Radarr
-#        8989 # Sonarr
-#        4848 # tubesync
+        #        8096 # Jellyfin
+        #        8123 # Home assistant
+        #        5000 # Frigate
+        #        7878 # Radarr
+        #        8989 # Sonarr
+        #        4848 # tubesync
       ];
       allowedUDPPorts = [ 53 ];
     };

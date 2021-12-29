@@ -22,8 +22,8 @@
           yarl
           pyruckus
           getmac
-          (callPackage ../packages/mac_vendor_lookup.nix {})
-          (callPackage ../packages/ocpp.nix {})
+          (callPackage ../packages/mac_vendor_lookup.nix { })
+          (callPackage ../packages/ocpp.nix { })
           python-nmap
           pkgs.openssh
           pkgs.nmap
@@ -156,6 +156,28 @@
       wallbox = { };
       ruckus = { };
       nmap = { };
+
+# {"id": "1640747399287", "alias": "New Automation", "description": "", "trigger": [{"platform": "device", "type": "turned_off", "device_id": "58c923e15372dfada5e4622bb53747ee", "entity_id": "switch.wallbox_availability", "domain": "switch"}], "condition": [], "action": [{"type": "turn_on", "device_id": "58c923e15372dfada5e4622bb53747ee", "entity_id": "switch.wallbox_charge_control", "domain": "switch"}], "mode": "single"}
+
+      "automation charger" = {
+        id = "1627073230476";
+        alias = "Charge Car";
+        description = "Flip switch to allow ocpp to charge car";
+        mode = "single";
+        trigger = [{
+          platform = "device";
+          type = "turned_off";
+          entity_id = "switch.wallbox_availability";
+          domain = "switch";
+          device_id = "58c923e15372dfada5e4622bb53747ee";
+        }];
+        action = [{
+          type = "turn_on";
+          entity_id = "switch.wallbox_charge_control";
+          domain = "switch";
+          device_id = "58c923e15372dfada5e4622bb53747ee";
+        }];
+      };
       sensor = [
         {
           platform = "sonarr_upcoming_media";

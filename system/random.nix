@@ -169,6 +169,11 @@
         id = 2;
         interface = "eth1";
       };
+      lan1 = {
+        id = 3;
+        interface = "eth1";
+      };
+
     };
 
     interfaces = {
@@ -177,6 +182,10 @@
 
       lan0.ipv4.addresses = [{
         address = "10.0.2.1";
+        prefixLength = 24;
+      }];
+      lan1.ipv4.addresses = [{
+        address = "10.0.3.1";
         prefixLength = 24;
       }];
       guest0.ipv4.addresses = [{
@@ -263,22 +272,21 @@
     #nameservers = [ "4.4.4.4" "8.8.8.8" ];
     nat = {
       enable = true;
-      internalIPs = [ "10.0.2.0/24" "10.0.10.0/24" "10.0.100.0/24" ];
-      internalInterfaces = [ "lan0" "guest0" "iot0" ];
+      internalIPs =
+        [ "10.0.2.0/24" "10.0.2.0/24" "10.0.10.0/24" "10.0.100.0/24" ];
+      internalInterfaces = [ "lan0" "lan1" "guest0" "iot0" ];
       externalInterface = "eth0";
-      forwardPorts = [{
-        destination = "10.0.2.91:22";
-        sourcePort = 5001;
-      }];
+      forwardPorts = [ ];
     };
     firewall = {
       enable = true;
       allowPing = true;
-      trustedInterfaces = [ "lo" "lan0" "guest0" "docker0" "iot0" ];
+      trustedInterfaces = [ "lo" "lan0" "lan1" "guest0" "docker0" "iot0" ];
       checkReversePath = false; # https://github.com/NixOS/nixpkgs/issues/10101
 
       extraCommands = ''
         iptables -t nat -A POSTROUTING -s 10.0.2.0/24 -o eth0 -j MASQUERADE
+        iptables -t nat -A POSTROUTING -s 10.0.3.0/24 -o eth0 -j MASQUERADE
         iptables -t nat -A POSTROUTING -s 10.0.10.0/24 -o eth0 -j MASQUERADE
         #BLOCK IOT FROM INTERNET but allow my laptop to access internet
         iptables -A FORWARD -i iot0 -s 10.0.100.30  -j ACCEPT

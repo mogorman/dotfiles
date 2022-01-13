@@ -1,16 +1,19 @@
-{ config, lib, pkgs, ... }: {
-environment.etc = {
-  # Creates /etc/nanorc
-  dnsmasq_hosts = {
-    text = ''
-10.0.2.1 random
-10.0.2.1 home-assistant.local random.local
-    '';
+{ config, lib, inputs, pkgs, ... }: {
+  environment.etc = {
+    # Creates /etc/nanorc
+    adblock_hosts = {
+      source = "${inputs.dns_block}/dnsmasq/dnsmasq.blacklist.txt";
+    };
+    dnsmasq_hosts = {
+      text = ''
+        10.0.2.1 random
+        10.0.2.1 home-assistant.local random.local
+            '';
 
-    # The UNIX file mode bits
-#    mode = "0440";
+      # The UNIX file mode bits
+      #    mode = "0440";
+    };
   };
-};
 
   services.dnsmasq = {
     enable = true;
@@ -37,7 +40,39 @@ environment.etc = {
       dhcp-host=1c:b9:c4:36:0f:00,r600,10.0.2.252
       dhcp-host=1c:b9:c4:07:f1:50,r310,10.0.2.253
       dhcp-host=b4:69:21:62:5a:c5,reddirk,10.0.100.30
-      dhcp-host=34:68:95:a6:f4:06,printer,10.0.100.100
+      dhcp-host=30:05:5c:4d:9d:b6,printer,10.0.2.100
     '';
+  };
+  containers.adfreenetwork = {
+    autoStart = true;
+    additionalCapabilities = [ "CAP_NET_ADMIN" ];
+    bindMounts = {
+      "/rootetc" = {
+        hostPath = "/etc";
+        isReadOnly = true;
+      };
+    };
+    config = {
+      networking.firewall.enable = false;
+      services.dnsmasq = {
+        enable = true;
+        servers = [ "8.8.8.8" "8.8.4.4" ];
+        extraConfig = ''
+          local=/lan/
+          domain=lan
+          no-hosts
+
+          except-interface=lo
+          interface=lan1
+          dhcp-range=lan1,10.0.3.10,10.0.3.244,24h
+          address=/floop.com/127.0.0.1
+
+          bind-interfaces
+
+          no-negcache
+          conf-file=${inputs.dns_block}/dnsmasq/dnsmasq.blacklist.txt
+        '';
+      };
+    };
   };
 }

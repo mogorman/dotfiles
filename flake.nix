@@ -15,7 +15,11 @@
       url = "github:lbbrhzn/ocpp";
       flake = false;
     };
-   webrtc-card = {
+    dns_block = {
+      url = "github:notracking/hosts-blocklists";
+      flake = false;
+    };
+    webrtc-card = {
       url = "github:AlexxIT/WebRTC";
       flake = false;
     };
@@ -43,7 +47,10 @@
       lib = stable.lib;
       overlays = {
         unstable = final: prev: {
-          unstable = (import unstable { inherit system; config = { allowUnfree = true; }; });
+          unstable = (import unstable {
+            inherit system;
+            config = { allowUnfree = true; };
+          });
         };
       };
     in {

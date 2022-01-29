@@ -143,7 +143,7 @@
     config = {
       homeassistant = { name = "Home"; };
       frontend = { themes = "!include_dir_merge_named themes"; };
-      http = { };
+      http = {trusted_proxies = [ "127.0.0.1" ]; use_x_forwarded_for = true;  };
       default_config = { };
       config = { };
       frontend = { };

@@ -14,7 +14,7 @@
     ../services/dnsmasq.nix
     ../services/avahi.nix
     ../services/acme.nix
-    #    ../services/nginx.nix
+    ../services/nginx.nix
     ../packages/packages.nix
     ../users/mog.nix
     ../users/media.nix
@@ -299,6 +299,8 @@
 
       allowedTCPPorts = [
         22 # SSH
+        80 # nginx
+        443 # nginx
         #        8096 # Jellyfin
         #        8123 # Home assistant
         #        5000 # Frigate

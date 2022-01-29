@@ -34,6 +34,7 @@
     usbutils
     esphome
     ffmpeg
+    gitit
   ];
 
   programs.bash.shellInit = ''

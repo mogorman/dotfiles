@@ -89,6 +89,19 @@
  
       };
      };
+       "www.ogormanvein.com" = {
+        forceSSL = true;
+        useACMEHost = "ogormanvein.com";
+
+        locations."/" = {
+          root = "/var/www/ogormanvein.com";
+          extraConfig = ''
+            autoindex on;
+            autoindex_localtime on;
+          '';
+ 
+      };
+     };
     };
   };
 }

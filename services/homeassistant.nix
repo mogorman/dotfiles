@@ -48,6 +48,10 @@
           url = "/local/zha-network-card.js";
           type = "js";
         }
+        {
+          url = "/local/entity-attributes-card.js";
+          type = "js";
+        }
       ];
 
       title = "Home";
@@ -223,6 +227,14 @@
         api_key = "23011c9c5ae84f66a8ea6d65e9fb238f";
       }];
       esphome = { };
+      habitica = [{
+        api_user = "c254025e-c368-45f8-937a-279260a0be37";
+        api_key = "7bcd4487-148b-47fb-9a51-83cf324048d9";
+        name = "mog";
+        url ="https://habitica.com";
+      }];
+      timer =  { test = { duration = "01:00:00";};};
+      shopping_list = {};
     };
   };
 
@@ -246,7 +258,7 @@
     }"
     "C /var/lib/hass/www/upcoming-media-card.js - - - - ${inputs.upcoming-media-card}/upcoming-media-card.js"
     "C /var/lib/hass/www/zha-network-card.js - - - - ${inputs.zha-network-card}/zha-network-card.js"
-
+    "C /var/lib/hass/www/entity-attributes-card.js - - - - ${inputs.entity-attributes-card}/entity-attributes-card.js"
   ];
 
   systemd.services.esphome = {

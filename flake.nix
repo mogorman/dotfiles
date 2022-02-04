@@ -35,6 +35,10 @@
       url = "github:dmulcahey/zha-network-card";
       flake = false;
     };
+    entity-attributes-card = {
+      url = "github:custom-cards/entity-attributes-card";
+      flake = false;
+    };
   };
 
   outputs = { stable, unstable, flake-utils, ... }@inputs:

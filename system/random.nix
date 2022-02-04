@@ -15,6 +15,7 @@
     ../services/avahi.nix
     ../services/acme.nix
     ../services/nginx.nix
+    ../secrets/wireguard.nix
     ../packages/packages.nix
     ../users/mog.nix
     ../users/media.nix
@@ -275,7 +276,7 @@
       enable = true;
       internalIPs =
         [ "10.0.2.0/24" "10.0.2.0/24" "10.0.10.0/24" "10.0.100.0/24" ];
-      internalInterfaces = [ "lan0" "lan1" "guest0" "iot0" ];
+      internalInterfaces = [ "lan0" "lan1" "guest0" "iot0" "ve-seedbox" ];
       externalInterface = "eth0";
       forwardPorts = [ ];
     };
@@ -308,7 +309,10 @@
         #        8989 # Sonarr
         #        4848 # tubesync
       ];
-      allowedUDPPorts = [ 53 ];
+      allowedUDPPorts = [
+        53 #DNS
+        51820 #wireguard
+      ];
     };
   };
 }

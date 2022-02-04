@@ -35,6 +35,7 @@
     esphome
     ffmpeg
     gitit
+    wireguard-tools
   ];
 
   programs.bash.shellInit = ''

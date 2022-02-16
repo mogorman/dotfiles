@@ -40,7 +40,55 @@
        "jelly.rldn.net" = {
         forceSSL = true;
         useACMEHost = "rldn.net";
-        locations."/".proxyPass = "http://127.0.0.1:8096";
+        extraConfig = ''
+    add_header X-Frame-Options "SAMEORIGIN";
+    add_header X-XSS-Protection "1; mode=block";
+    add_header X-Content-Type-Options "nosniff";
+
+    location = / {
+       # return 302 http://$host/web/;
+        return 302 https://$host/web/;
+    }
+    location / {
+        # Proxy main Jellyfin traffic
+        proxy_pass http://127.0.0.1:8096;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-Protocol $scheme;
+        proxy_set_header X-Forwarded-Host $http_host;
+
+        # Disable buffering when the nginx proxy gets very resource heavy upon streaming
+        proxy_buffering off;
+    }
+
+    # location block for /web - This is purely for aesthetics so /web/#!/ works instead of having to go to /web/index.html/#!/
+    location = /web/ {
+        # Proxy main Jellyfin traffic
+        proxy_pass http://127.0.0.1:8096/web/index.html;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-Protocol $scheme;
+        proxy_set_header X-Forwarded-Host $http_host;
+    }
+
+    location /socket {
+        # Proxy Jellyfin Websockets traffic
+        proxy_pass http://127.0.0.1:8096;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-Protocol $scheme;
+        proxy_set_header X-Forwarded-Host $http_host;
+    }
+        '';
       };
       "tv.rldn.net" = {
         forceSSL = true;
@@ -66,6 +114,23 @@
                   auth_basic           "weymouth area";
                   auth_basic_user_file ${./../secrets/htpasswd}; 
 
+             '';
+      };
+      "books.rldn.net" = {
+        forceSSL = true;
+        useACMEHost = "rldn.net";
+        locations."/".proxyPass = "http://127.0.0.1:4849";
+        extraConfig = ''
+                 proxy_set_header Host $host;
+                proxy_set_header X-Forwarded-Proto $scheme;
+                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                proxy_set_header X-Real-IP $remote_addr;
+                proxy_redirect off;
+    proxy_http_version 1.1;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection "upgrade";
+    proxy_read_timeout 86400;
+    client_max_body_size 10000M;
              '';
       };
       "movies.rldn.net" = {

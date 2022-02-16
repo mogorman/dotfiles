@@ -41,6 +41,7 @@
       dhcp-host=1c:b9:c4:07:f1:50,r310,10.0.2.253
       dhcp-host=b4:69:21:62:5a:c5,reddirk,10.0.100.30
       dhcp-host=30:05:5c:4d:9d:b6,printer,10.0.2.100
+      dhcp-host=9c:8e:cd:32:16:9b,babycam,10.0.100.40
     '';
   };
   containers.adfreenetwork = {

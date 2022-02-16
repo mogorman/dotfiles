@@ -3,7 +3,7 @@
   users.users.media = {
     isNormalUser = true;
     openssh.authorizedKeys.keys = config.mog_keys;
-    extraGroups = [ "media" ];
+    extraGroups = [ "media" "video" "render" ];
   };
 
 }

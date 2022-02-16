@@ -33,9 +33,13 @@
     direnv
     usbutils
     esphome
-    ffmpeg
+    ffmpeg-full
     gitit
     wireguard-tools
+    ccextractor
+    unstable.bazarr
+    libva-utils
+    intel-gpu-tools
   ];
 
   programs.bash.shellInit = ''

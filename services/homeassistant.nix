@@ -49,7 +49,7 @@
           type = "js";
         }
         {
-          url = "/local/entity-attributes-card.js";
+          url = "/local/entity-attributes-card.js?=v2";
           type = "js";
         }
       ];
@@ -256,9 +256,9 @@
     "C /var/lib/hass/www/simple-thermostat.js 0755 hass hass - ${
       ../hass/frontend/simple-thermostat.js
     }"
-    "C /var/lib/hass/www/upcoming-media-card.js - - - - ${inputs.upcoming-media-card}/upcoming-media-card.js"
-    "C /var/lib/hass/www/zha-network-card.js - - - - ${inputs.zha-network-card}/zha-network-card.js"
-    "C /var/lib/hass/www/entity-attributes-card.js - - - - ${inputs.entity-attributes-card}/entity-attributes-card.js"
+    "C /var/lib/hass/www/upcoming-media-card.js 0755 hass hass - ${inputs.upcoming-media-card}/upcoming-media-card.js"
+    "C /var/lib/hass/www/zha-network-card.js 0755 hass hass - ${inputs.zha-network-card}/zha-network-card.js"
+    "C /var/lib/hass/www/entity-attributes-card.js 0755 hass hass - ${inputs.entity-attributes-card}/entity-attributes-card.js"
   ];
 
   systemd.services.esphome = {

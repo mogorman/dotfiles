@@ -23,7 +23,7 @@
           pyruckus
           getmac
           (callPackage ../packages/mac_vendor_lookup.nix { })
-          (callPackage ../packages/ocpp.nix { })
+#          (callPackage ../packages/ocpp.nix { })
           python-nmap
           pkgs.openssh
           pkgs.nmap
@@ -156,32 +156,32 @@
       zeroconf = { };
       webrtc = { };
       frigate = { };
-      ocpp = { };
+#      ocpp = { };
       wallbox = { };
       ruckus = { };
       nmap = { };
 
 # {"id": "1640747399287", "alias": "New Automation", "description": "", "trigger": [{"platform": "device", "type": "turned_off", "device_id": "58c923e15372dfada5e4622bb53747ee", "entity_id": "switch.wallbox_availability", "domain": "switch"}], "condition": [], "action": [{"type": "turn_on", "device_id": "58c923e15372dfada5e4622bb53747ee", "entity_id": "switch.wallbox_charge_control", "domain": "switch"}], "mode": "single"}
 
-      "automation charger" = {
-        id = "1627073230476";
-        alias = "Charge Car";
-        description = "Flip switch to allow ocpp to charge car";
-        mode = "single";
-        trigger = [{
-          platform = "device";
-          type = "turned_off";
-          entity_id = "switch.wallbox_availability";
-          domain = "switch";
-          device_id = "58c923e15372dfada5e4622bb53747ee";
-        }];
-        action = [{
-          type = "turn_on";
-          entity_id = "switch.wallbox_charge_control";
-          domain = "switch";
-          device_id = "58c923e15372dfada5e4622bb53747ee";
-        }];
-      };
+#      "automation charger" = {
+#        id = "1627073230476";
+#        alias = "Charge Car";
+#        description = "Flip switch to allow ocpp to charge car";
+#        mode = "single";
+#        trigger = [{
+#          platform = "device";
+#          type = "turned_off";
+#          entity_id = "switch.wallbox_availability";
+#          domain = "switch";
+#          device_id = "58c923e15372dfada5e4622bb53747ee";
+#        }];
+#        action = [{
+#          type = "turn_on";
+#          entity_id = "switch.wallbox_charge_control";
+#          domain = "switch";
+#          device_id = "58c923e15372dfada5e4622bb53747ee";
+#        }];
+#      };
       sensor = [
         {
           platform = "sonarr_upcoming_media";
@@ -243,7 +243,7 @@
     "R /var/lib/hass/custom_components"
     "d /var/lib/hass/custom_components 0755 hass hass"
     "L /var/lib/hass/custom_components/frigate - - - - ${inputs.frigate-hass-integration}/custom_components/frigate"
-    "L /var/lib/hass/custom_components/ocpp - - - - ${inputs.ocpp-hass-integration}/custom_components/ocpp"
+#    "L /var/lib/hass/custom_components/ocpp - - - - ${inputs.ocpp-hass-integration}/custom_components/ocpp"
     "L /var/lib/hass/custom_components/webrtc - - - - ${inputs.webrtc-card}/custom_components/webrtc"
     "L /var/lib/hass/custom_components/sonarr_upcoming_media - - - - ${inputs.sonarr_ha}/custom_components/sonarr_upcoming_media"
 

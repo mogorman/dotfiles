@@ -1,8 +1,18 @@
-{ config, lib, inputs, pkgs, ... }: {
-  imports = [ ../secrets/homeassistant.nix ];
+{ config, lib, inputs, pkgs, ... }:
+{
+  imports = [ ../secrets/homeassistant.nix 
+    "${inputs.unstable}/nixos/modules/services/misc/home-assistant.nix"
+  ];
+
+
+  disabledModules = [
+    "services/misc/home-assistant.nix"
+  ];
+
   systemd.services.home-assistant = {
     after = [ "docker-frigate.service" ];
     requires = [ "docker-frigate.service" ];
+#    serviceConfig.ExecStart = pkgs.lib.mkForce "${mog_package}/bin/hass --config /var/lib/hass";
   };
   services.home-assistant = {
     enable = true;
@@ -12,6 +22,7 @@
       extraPackages = py:
         with py; [
           psycopg2
+          aiohttp
           aiohttp-cors
           websockets
           netdisco

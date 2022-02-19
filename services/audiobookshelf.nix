@@ -3,7 +3,7 @@
     image = "advplyr/audiobookshelf:latest";
     ports = [ "4849:80" ];
     volumes = [
-      "/external/06tb/state/audiobooks/audioboks:/audiobooks"
+      "/external/06tb/state/audiobooks/audiobooks:/audiobooks"
       "/external/06tb/state/audiobooks/config:/config"
       "/external/06tb/state/audiobooks/metadata:/metadata"
       "/etc/localtime:/etc/localtime:ro"

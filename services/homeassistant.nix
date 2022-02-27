@@ -272,16 +272,16 @@
     "C /var/lib/hass/www/entity-attributes-card.js 0755 hass hass - ${inputs.entity-attributes-card}/entity-attributes-card.js"
   ];
 
-  systemd.services.esphome = {
-    description = "esphome";
-    after = [ "multi-user.target" ];
-    wantedBy = [ "multi-user.target" ];
-    path = [ pkgs.esphome ];
-    serviceConfig = {
-      User = "mog";
-      ExecStart =
-        "${pkgs.esphome}/bin/esphome dashboard /home/mog/code/dotfiles/esphome";
-    };
-  };
+#  systemd.services.esphome = {
+#    description = "esphome";
+#    after = [ "multi-user.target" ];
+#    wantedBy = [ "multi-user.target" ];
+#    path = [ pkgs.unstable.esphome pkgs.esptool pkgs.git ];
+#    serviceConfig = {
+#      User = "mog";
+#      ExecStart =
+#        "${pkgs.unstable.esphome}/bin/esphome dashboard /home/mog/code/dotfiles/esphome";
+#    };
+#  };
 
 }

@@ -1,0 +1,29 @@
+diff --git a/esphome/components/esp32/post_build.py.script b/esphome/components/esp32/post_build.py.script
+index 2bb1a6c3..44fa16f1 100644
+--- a/esphome/components/esp32/post_build.py.script
++++ b/esphome/components/esp32/post_build.py.script
+@@ -1,6 +1,10 @@
+ # Source https://github.com/letscontrolit/ESPEasy/pull/3845#issuecomment-1005864664
+ 
+-import esptool
++import os
++if os.environ.get("ESPHOME_USE_SUBPROCESS") is None:
++    import esptool
++else:
++    import subprocess
+ from SCons.Script import ARGUMENTS
+ 
+ # pylint: disable=E0602
+@@ -42,8 +45,11 @@ def esp32_create_combined_bin(source, target, env):
+         print()
+         print(f"Using esptool.py arguments: {' '.join(cmd)}")
+         print()
+-    esptool.main(cmd)
+ 
++    if os.environ.get("ESPHOME_USE_SUBPROCESS") is None:
++        esptool.main(cmd)
++    else:
++        subprocess.run(["esptool.py", *cmd])
+ 
+ # pylint: disable=E0602
+ env.AddPostAction("$BUILD_DIR/${PROGNAME}.bin", esp32_create_combined_bin)  # noqa

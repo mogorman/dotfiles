@@ -32,7 +32,6 @@
     mcfly
     direnv
     usbutils
-    esphome
     ffmpeg-full
     gitit
     wireguard-tools
@@ -40,6 +39,8 @@
     unstable.bazarr
     libva-utils
     intel-gpu-tools
+    (callPackage ./mog_esphome.nix { })
+    esptool
   ];
 
   programs.bash.shellInit = ''

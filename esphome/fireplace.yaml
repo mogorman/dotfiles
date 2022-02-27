@@ -1,3 +1,6 @@
+substitutions:
+  friendly_name: fireplace
+  
 esphome:
   name: fireplace
   platform: ESP32
@@ -35,7 +38,27 @@ sensor:
   - platform: uptime
     id: uptime_s
     update_interval: 60s
-    
+
+binary_sensor:
+  - platform: gpio
+    pin:
+      number: GPIO14
+      mode:
+        input: true
+        pullup: true
+    name: Garage Door
+
+output:
+  - platform: gpio
+    pin: 13
+    id: output1
+
+button:
+  - platform: output
+    name: "Move Garage Door"
+    output: output1
+    duration: 500ms
+  
 #Enable WEB
 web_server:
   port: 80
@@ -43,7 +66,7 @@ web_server:
 # Extra sensor to keep track of gateway uptime
 text_sensor:
   - platform: template
-    name: "fireplace Uptime"
+    name: "Uptime"
     lambda: |-
       uint32_t dur = id(uptime_s).state;
       int dys = 0;

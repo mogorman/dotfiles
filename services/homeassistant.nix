@@ -1,12 +1,11 @@
-{ config, lib, inputs, pkgs, ... }:
+{ config, lib, inputs, pkgs, modulePath, ... }:
 {
   imports = [ ../secrets/homeassistant.nix 
-    "${inputs.unstable}/nixos/modules/services/misc/home-assistant.nix"
+    "${inputs.unstable}/nixos/modules/services/home-automation/home-assistant.nix"
   ];
 
-
   disabledModules = [
-    "services/misc/home-assistant.nix"
+"${modulePath}/services/home-automation/home-assistant.nix"
   ];
 
   systemd.services.home-assistant = {

@@ -1,6 +1,5 @@
-{ config, lib, pkgs, inputs, modulesPath, ... }: {
+{ config, lib, pkgs, inputs, ... }: {
   imports = [
-    (modulesPath + "/installer/scan/not-detected.nix")
     ./common.nix
     ../secrets/secrets.nix
     ../services/ssh.nix
@@ -31,6 +30,8 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.initrd.luks.reusePassphrases = true;
+
+  hardware.enableRedistributableFirmware = true;
 
   # HARDWARE CONFIG
   boot.initrd.availableKernelModules = [

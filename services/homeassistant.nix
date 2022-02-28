@@ -1,25 +1,23 @@
-{ config, lib, inputs, pkgs, modulePath, ... }:
-{
-  imports = [ ../secrets/homeassistant.nix 
+{ config, lib, inputs, pkgs, ... }: {
+  imports = [
+    ../secrets/homeassistant.nix
     "${inputs.unstable}/nixos/modules/services/home-automation/home-assistant.nix"
   ];
 
-  disabledModules = [
-"${modulePath}/services/home-automation/home-assistant.nix"
-  ];
+  disabledModules = [ "services/misc/home-assistant.nix" ];
 
   systemd.services.home-assistant = {
     after = [ "docker-frigate.service" ];
     requires = [ "docker-frigate.service" ];
-#    serviceConfig.ExecStart = pkgs.lib.mkForce "${mog_package}/bin/hass --config /var/lib/hass";
   };
+
   services.home-assistant = {
     enable = true;
     configWritable = true;
     lovelaceConfigWritable = true;
     package = (pkgs.unstable.home-assistant.override {
-      extraPackages = py:
-        with py; [
+      extraPackages = python3Packages:
+        with python3Packages; [
           psycopg2
           aiohttp
           aiohttp-cors
@@ -32,11 +30,11 @@
           yarl
           pyruckus
           getmac
-          (callPackage ../packages/mac_vendor_lookup.nix { })
-#          (callPackage ../packages/ocpp.nix { })
           python-nmap
           pkgs.openssh
-          pkgs.nmap
+          pkgs.unstable.nmap
+          (callPackage ../packages/mac_vendor_lookup.nix { })
+#          (callPackage ../packages/ocpp.nix { })
         ];
     }).overrideAttrs (oldAttrs: { doInstallCheck = false; });
 
@@ -157,7 +155,10 @@
     config = {
       homeassistant = { name = "Home"; };
       frontend = { themes = "!include_dir_merge_named themes"; };
-      http = {trusted_proxies = [ "127.0.0.1" ]; use_x_forwarded_for = true;  };
+      http = {
+        trusted_proxies = [ "127.0.0.1" ];
+        use_x_forwarded_for = true;
+      };
       default_config = { };
       config = { };
       frontend = { };
@@ -166,32 +167,32 @@
       zeroconf = { };
       webrtc = { };
       frigate = { };
-#      ocpp = { };
+      #      ocpp = { };
       wallbox = { };
       ruckus = { };
       nmap = { };
 
-# {"id": "1640747399287", "alias": "New Automation", "description": "", "trigger": [{"platform": "device", "type": "turned_off", "device_id": "58c923e15372dfada5e4622bb53747ee", "entity_id": "switch.wallbox_availability", "domain": "switch"}], "condition": [], "action": [{"type": "turn_on", "device_id": "58c923e15372dfada5e4622bb53747ee", "entity_id": "switch.wallbox_charge_control", "domain": "switch"}], "mode": "single"}
+      # {"id": "1640747399287", "alias": "New Automation", "description": "", "trigger": [{"platform": "device", "type": "turned_off", "device_id": "58c923e15372dfada5e4622bb53747ee", "entity_id": "switch.wallbox_availability", "domain": "switch"}], "condition": [], "action": [{"type": "turn_on", "device_id": "58c923e15372dfada5e4622bb53747ee", "entity_id": "switch.wallbox_charge_control", "domain": "switch"}], "mode": "single"}
 
-#      "automation charger" = {
-#        id = "1627073230476";
-#        alias = "Charge Car";
-#        description = "Flip switch to allow ocpp to charge car";
-#        mode = "single";
-#        trigger = [{
-#          platform = "device";
-#          type = "turned_off";
-#          entity_id = "switch.wallbox_availability";
-#          domain = "switch";
-#          device_id = "58c923e15372dfada5e4622bb53747ee";
-#        }];
-#        action = [{
-#          type = "turn_on";
-#          entity_id = "switch.wallbox_charge_control";
-#          domain = "switch";
-#          device_id = "58c923e15372dfada5e4622bb53747ee";
-#        }];
-#      };
+      #      "automation charger" = {
+      #        id = "1627073230476";
+      #        alias = "Charge Car";
+      #        description = "Flip switch to allow ocpp to charge car";
+      #        mode = "single";
+      #        trigger = [{
+      #          platform = "device";
+      #          type = "turned_off";
+      #          entity_id = "switch.wallbox_availability";
+      #          domain = "switch";
+      #          device_id = "58c923e15372dfada5e4622bb53747ee";
+      #        }];
+      #        action = [{
+      #          type = "turn_on";
+      #          entity_id = "switch.wallbox_charge_control";
+      #          domain = "switch";
+      #          device_id = "58c923e15372dfada5e4622bb53747ee";
+      #        }];
+      #      };
       sensor = [
         {
           platform = "sonarr_upcoming_media";
@@ -241,10 +242,10 @@
         api_user = "c254025e-c368-45f8-937a-279260a0be37";
         api_key = "7bcd4487-148b-47fb-9a51-83cf324048d9";
         name = "mog";
-        url ="https://habitica.com";
+        url = "https://habitica.com";
       }];
-      timer =  { test = { duration = "01:00:00";};};
-      shopping_list = {};
+      timer = { test = { duration = "01:00:00"; }; };
+      shopping_list = { };
     };
   };
 
@@ -253,7 +254,7 @@
     "R /var/lib/hass/custom_components"
     "d /var/lib/hass/custom_components 0755 hass hass"
     "L /var/lib/hass/custom_components/frigate - - - - ${inputs.frigate-hass-integration}/custom_components/frigate"
-#    "L /var/lib/hass/custom_components/ocpp - - - - ${inputs.ocpp-hass-integration}/custom_components/ocpp"
+    #    "L /var/lib/hass/custom_components/ocpp - - - - ${inputs.ocpp-hass-integration}/custom_components/ocpp"
     "L /var/lib/hass/custom_components/webrtc - - - - ${inputs.webrtc-card}/custom_components/webrtc"
     "L /var/lib/hass/custom_components/sonarr_upcoming_media - - - - ${inputs.sonarr_ha}/custom_components/sonarr_upcoming_media"
 
@@ -271,16 +272,16 @@
     "C /var/lib/hass/www/entity-attributes-card.js 0755 hass hass - ${inputs.entity-attributes-card}/entity-attributes-card.js"
   ];
 
-#  systemd.services.esphome = {
-#    description = "esphome";
-#    after = [ "multi-user.target" ];
-#    wantedBy = [ "multi-user.target" ];
-#    path = [ pkgs.unstable.esphome pkgs.esptool pkgs.git ];
-#    serviceConfig = {
-#      User = "mog";
-#      ExecStart =
-#        "${pkgs.unstable.esphome}/bin/esphome dashboard /home/mog/code/dotfiles/esphome";
-#    };
-#  };
+    systemd.services.esphome = {
+      description = "esphome";
+      after = [ "multi-user.target" ];
+      wantedBy = [ "multi-user.target" ];
+      path = [ pkgs.unstable.esphome pkgs.esptool pkgs.git ];
+      serviceConfig = {
+        User = "mog";
+        ExecStart =
+          "${(pkgs.callPackage ../packages/mog_esphome.nix { })}/bin/esphome dashboard /home/mog/code/dotfiles/esphome";
+      };
+    };
 
 }

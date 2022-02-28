@@ -1,6 +1,6 @@
-{ config, lib, pkgs, inputs, modulesPath, ... }: {
+{ config, lib, pkgs, inputs, ... }: {
   imports = [
-    (modulesPath + "/installer/scan/not-detected.nix")
+    "${inputs.nixos-hardware}/microsoft/surface/firmware/surface-go/ath10k"
     ./common.nix
     ../secrets/secrets.nix
     ../packages/packages.nix
@@ -27,7 +27,7 @@
     ];
 
   powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
-  hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+  hardware.cpu.intel.updateMicrocode = true;
   virtualisation.hypervGuest.enable = true;
 
 #  imports =

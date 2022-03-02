@@ -1,0 +1,171 @@
+From b1dd33eeee04cde179bdf779912504cf8f645877 Mon Sep 17 00:00:00 2001
+From: Maximilian Luz <luzmaximilian@gmail.com>
+Date: Wed, 8 Dec 2021 16:22:50 +0100
+Subject: [PATCH] acpi/battery: Add device HID and quirk for Microsoft Surface
+ Go 3
+
+For some reason, the Microsoft Surface Go 3 uses the standard ACPI
+interface for battery information, but does not use the standard PNP0C0A
+HID. Instead it uses MSHW0146 as identifier. Add that ID to the driver
+as this seems to work well.
+
+Additionally, the power state is not updated immediately after the AC
+has been (un-)plugged, so add the respective quirk for that.
+
+Signed-off-by: Maximilian Luz <luzmaximilian@gmail.com>
+Patchset: misc-fixes
+---
+ drivers/acpi/battery.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+
+diff --git a/drivers/acpi/battery.c b/drivers/acpi/battery.c
+index ead0114f27c9..56db7b4da514 100644
+--- a/drivers/acpi/battery.c
++++ b/drivers/acpi/battery.c
+@@ -60,6 +60,10 @@ MODULE_PARM_DESC(cache_time, "cache time in milliseconds");
+ 
+ static const struct acpi_device_id battery_device_ids[] = {
+ 	{"PNP0C0A", 0},
++
++	/* Microsoft Surface Go 3 */
++	{"MSHW0146", 0},
++
+ 	{"", 0},
+ };
+ 
+@@ -1177,6 +1181,14 @@ static const struct dmi_system_id bat_dmi_table[] __initconst = {
+ 			DMI_MATCH(DMI_PRODUCT_VERSION, "ThinkPad"),
+ 		},
+ 	},
++	{
++		/* Microsoft Surface Go 3 */
++		.callback = battery_notification_delay_quirk,
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Microsoft Corporation"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "Surface Go 3"),
++		},
++	},
+ 	{},
+ };
+ 
+-- 
+2.35.1
+
+From a20b4e65fde16e0b3f397a8e294a3855bfff0cad Mon Sep 17 00:00:00 2001
+From: Maximilian Luz <luzmaximilian@gmail.com>
+Date: Tue, 8 Feb 2022 01:29:48 +0100
+Subject: [PATCH] ACPI: battery: Add "Not Charging" quirk for Microsoft Surface
+ devices
+
+Microsoft Surface devices have a limiter that sets a fixed maximum
+charge capacity for the battery. When that maximum capacity has been
+reached, charging stops. In that case, _BST returns a battery state
+field with both "charging" and "discharging" bits cleared. The battery
+driver, however, returns "unknown" as status.
+
+This seems to be the same behavior as observed on the ThinkPads, so
+let's use the same quirk to handle that as well.
+
+Signed-off-by: Maximilian Luz <luzmaximilian@gmail.com>
+Patchset: misc-fixes
+
+---
+For what it's worth, I don't think the ACPI spec explicitly states that
+any of the status bits need to be set, or that there are only the
+"charging" and "discharging" states. As far as I can tell, ACPI only
+states:
+
+    Notice that the Charging bit and the Discharging bit are mutually
+    exclusive and must not both be set at the same time. Even in
+    critical state, hardware should report the corresponding
+    charging/discharging state.
+
+But that does not exclude the case that no bit is set. So, strictly
+going by spec, I don't think it's necessary to put all of this behind a
+quirk.
+---
+ drivers/acpi/battery.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/drivers/acpi/battery.c b/drivers/acpi/battery.c
+index 56db7b4da514..8edaa3020af3 100644
+--- a/drivers/acpi/battery.c
++++ b/drivers/acpi/battery.c
+@@ -1181,6 +1181,14 @@ static const struct dmi_system_id bat_dmi_table[] __initconst = {
+ 			DMI_MATCH(DMI_PRODUCT_VERSION, "ThinkPad"),
+ 		},
+ 	},
++	{
++		.callback = battery_quirk_not_charging,
++		.ident = "Microsoft Surface",
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Microsoft Corporation"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "Surface"),
++		},
++	},
+ 	{
+ 		/* Microsoft Surface Go 3 */
+ 		.callback = battery_notification_delay_quirk,
+-- 
+2.35.1
+
+From 63858e3816f00b90bd2fcd27c589e03a3298a1f6 Mon Sep 17 00:00:00 2001
+From: Hans de Goede <hdegoede@redhat.com>
+Date: Thu, 24 Feb 2022 11:18:48 +0100
+Subject: [PATCH] surface: surface3_power: Fix battery readings on batteries
+ without a serial number
+
+The battery on the 2nd hand Surface 3 which I recently bought appears to
+not have a serial number programmed in. This results in any I2C reads from
+the registers containing the serial number failing with an I2C NACK.
+
+This was causing mshw0011_bix() to fail causing the battery readings to
+not work at all.
+
+Ignore EREMOTEIO (I2C NACK) errors when retrieving the serial number and
+continue with an empty serial number to fix this.
+
+Fixes: b1f81b496b0d ("platform/x86: surface3_power: MSHW0011 rev-eng implementation")
+BugLink: https://github.com/linux-surface/linux-surface/issues/608
+Reviewed-by: Benjamin Tissoires <benjamin.tissoires@redhat.com>
+Reviewed-by: Maximilian Luz <luzmaximilian@gmail.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20220224101848.7219-1-hdegoede@redhat.com
+Patchset: misc-fixes
+---
+ drivers/platform/surface/surface3_power.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/platform/surface/surface3_power.c b/drivers/platform/surface/surface3_power.c
+index abac3eec565e..444ec81ba02d 100644
+--- a/drivers/platform/surface/surface3_power.c
++++ b/drivers/platform/surface/surface3_power.c
+@@ -232,14 +232,21 @@ static int mshw0011_bix(struct mshw0011_data *cdata, struct bix *bix)
+ 	}
+ 	bix->last_full_charg_capacity = ret;
+ 
+-	/* get serial number */
++	/*
++	 * Get serial number, on some devices (with unofficial replacement
++	 * battery?) reading any of the serial number range addresses gets
++	 * nacked in this case just leave the serial number empty.
++	 */
+ 	ret = i2c_smbus_read_i2c_block_data(client, MSHW0011_BAT0_REG_SERIAL_NO,
+ 					    sizeof(buf), buf);
+-	if (ret != sizeof(buf)) {
++	if (ret == -EREMOTEIO) {
++		/* no serial number available */
++	} else if (ret != sizeof(buf)) {
+ 		dev_err(&client->dev, "Error reading serial no: %d\n", ret);
+ 		return ret;
++	} else {
++		snprintf(bix->serial, ARRAY_SIZE(bix->serial), "%3pE%6pE", buf + 7, buf);
+ 	}
+-	snprintf(bix->serial, ARRAY_SIZE(bix->serial), "%3pE%6pE", buf + 7, buf);
+ 
+ 	/* get cycle count */
+ 	ret = i2c_smbus_read_word_data(client, MSHW0011_BAT0_REG_CYCLE_CNT);
+-- 
+2.35.1
+
+

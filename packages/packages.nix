@@ -45,8 +45,10 @@
 
   programs.bash.shellInit = ''
 export JAVA_TOOL_OPTIONS="-Dcom.eteks.sweethome3d.j3d.useOffScreen3DView=true"
-eval "$(direnv hook bash)"
-eval "$(mcfly init bash)"
+  '';
+  programs.bash.interactiveShellInit = ''
+eval "$(${pkgs.direnv}/bin/direnv hook bash)"
+eval "$(${pkgs.mcfly}/bin/mcfly init bash)"
   '';
   services.pcscd.enable = true;
   programs.gnupg.agent = {

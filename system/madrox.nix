@@ -4,6 +4,7 @@
     ./common.nix
     ../secrets/secrets.nix
     ../packages/packages.nix
+    ../packages/gui_packages.nix
     ../users/mog.nix
   ];
 
@@ -23,6 +24,7 @@
     CHASSIS=laptop
     ICON_NAME=computer
   '';
+
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -67,76 +69,7 @@
     "mem_sleep_default=deep"
     "acpi_enforce_resources=lax"
   ];
-
-  networking.networkmanager.enable = true;
-
-  # Enable the X11 windowing system.
-  services.xserver.enable = true;
-
-  # Enable the GNOME Desktop Environment.
-  services.xserver.displayManager.gdm.enable = true;
-  services.xserver.desktopManager.gnome.enable = true;
-  services.gnome.gnome-remote-desktop.enable = true;
-  # Enable CUPS to print documents.
-  services.printing.enable = true;
-
-  # Enable sound.
-  sound.enable = true;
-  hardware.pulseaudio.enable = true;
-
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
-  environment.systemPackages = with pkgs; [
-    firefox
-    ecryptfs
-    ecryptfs-helper
-    gnome.gnome-tweaks
-    jellyfin-media-player
-    tilix
-    vlc
-    gpa
-    signal-desktop
-    gnomeExtensions.gsconnect
-    lm_sensors
-    waydroid
-    unstable.libcamera
-    dmidecode
-    gst_all_1.gstreamer.dev
-    gst_all_1.gstreamer
-    gst_all_1.gst-plugins-good
-    gst_all_1.gst-plugins-bad
-    gst_all_1.gst-plugins-ugly
-
-    ((pkgs.emacsPackagesGen pkgs.emacsPgtkGcc).emacsWithPackages (epkgs:
-      (with epkgs; [
-        vterm
-        use-package
-        direnv
-        darkokai-theme
-        company
-        dashboard
-        flycheck
-        counsel
-        counsel-projectile
-        magit
-        #          forge
-        #          emacsql
-        magit-popup
-        projectile
-        lsp-mode
-        lsp-ui
-        company-quickhelp
-        #          elixir-mode
-        #          exunit
-        #          erlang
-      ])))
-
-  ];
-
-  powerManagement.powertop.enable = true;
-
-  programs.steam.enable = true;
-  security.pam.enableEcryptfs = true;
+ security.pam.enableEcryptfs = true;
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
@@ -145,5 +78,4 @@
 
   services.thermald.enable = true;
   services.thermald.configFile = ../packages/thermald.xml;
-  virtualisation.waydroid.enable = true;
 }

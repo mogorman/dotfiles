@@ -3,7 +3,7 @@
   users.users.mog = {
     isNormalUser = true;
     openssh.authorizedKeys.keys = config.mog_keys;
-    extraGroups = [ "wheel" "docker" "render" "media" ];
+    extraGroups = [ "wheel" "docker" "render" "media" "video" ];
   };
 
 }

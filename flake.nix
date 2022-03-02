@@ -6,6 +6,7 @@
     oldstable.url = "github:NixOS/nixpkgs/nixos-21.05";
     stable.url = "github:NixOS/nixpkgs/nixos-21.11";
     unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+    emacs-overlay.url = "github:nix-community/emacs-overlay/master";
     flake-utils.url = "github:numtide/flake-utils";
     flake-utils.inputs.nixpkgs.follows = "stable";
     frigate-hass-integration = {
@@ -42,7 +43,7 @@
     };
   };
 
-  outputs = { stable, unstable, nixos-hardware, flake-utils, ... }@inputs:
+  outputs = { stable, unstable, nixos-hardware, emacs-overlay, flake-utils, ... }@inputs:
     let
       system = "x86_64-linux";
       pkgs = import stable {
@@ -65,7 +66,7 @@
           specialArgs = { inherit inputs; };
           modules = [
             ({ config, pkgs, lib, ... }: {
-              nixpkgs.overlays = [ overlays.unstable ];
+              nixpkgs.overlays = [ overlays.unstable emacs-overlay.overlay ];
             })
             {
               options.dotfiles_dir = lib.mkOption {

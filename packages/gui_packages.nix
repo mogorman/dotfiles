@@ -1,7 +1,19 @@
 { config, lib, pkgs, ... }: {
   environment.systemPackages = with pkgs; [
+    audacity
+    dbeaver
+    discord
+    godot
+    google-chrome
+    gparted
+    slack
+    zoom-us
+    insomnia
+    sweethome3d.application
+    teams
+    gnome3.vinagre
     firefox
-    gimp
+    gimp-with-plugins
     gnumeric
     libreoffice
     inkscape
@@ -71,4 +83,4 @@
 
   programs.steam.enable = true;
   virtualisation.waydroid.enable = true;
- }
+}

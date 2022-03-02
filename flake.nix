@@ -2,7 +2,7 @@
   description = "my dotfiles for servers and laptops";
 
   inputs = {
-    nixos-hardware.url = github:NixOS/nixos-hardware/master;
+    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     oldstable.url = "github:NixOS/nixpkgs/nixos-21.05";
     stable.url = "github:NixOS/nixpkgs/nixos-21.11";
     unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -43,7 +43,8 @@
     };
   };
 
-  outputs = { stable, unstable, nixos-hardware, emacs-overlay, flake-utils, ... }@inputs:
+  outputs = { stable, unstable, nixos-hardware, emacs-overlay, flake-utils, ...
+    }@inputs:
     let
       system = "x86_64-linux";
       pkgs = import stable {
@@ -61,12 +62,19 @@
       };
     in {
       nixosConfigurations = {
-         madrox = lib.nixosSystem {
+        madrox = lib.nixosSystem {
           inherit system;
           specialArgs = { inherit inputs; };
           modules = [
             ({ config, pkgs, lib, ... }: {
-              nixpkgs.overlays = [ overlays.unstable emacs-overlay.overlay ];
+              nixpkgs.overlays = [
+                overlays.unstable
+                emacs-overlay.overlay
+                (self: super: {
+                  nix-direnv =
+                    super.nix-direnv.override { enableFlakes = true; };
+                })
+              ];
             })
             {
               options.dotfiles_dir = lib.mkOption {

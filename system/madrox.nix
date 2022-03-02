@@ -3,6 +3,7 @@
     "${inputs.nixos-hardware}/microsoft/surface/firmware/surface-go/ath10k"
     ./common.nix
     ../secrets/secrets.nix
+    ../secrets/pepsi.nix
     ../packages/packages.nix
     ../packages/gui_packages.nix
     ../users/mog.nix
@@ -69,7 +70,7 @@
     "mem_sleep_default=deep"
     "acpi_enforce_resources=lax"
   ];
- security.pam.enableEcryptfs = true;
+  security.pam.enableEcryptfs = true;
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;

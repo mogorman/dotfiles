@@ -31,6 +31,7 @@
     conntrack-tools
     mcfly
     direnv
+    nix-direnv
     usbutils
     ffmpeg-full
     gitit
@@ -41,22 +42,26 @@
     intel-gpu-tools
     (callPackage ./mog_esphome.nix { })
     esptool
+    (callPackage ./sdm.nix { })
+    kubectl
+    krew
+    fzf
+    pass-otp
+    psmisc
   ];
 
   programs.bash.shellInit = ''
-export JAVA_TOOL_OPTIONS="-Dcom.eteks.sweethome3d.j3d.useOffScreen3DView=true"
-  '';
+    export JAVA_TOOL_OPTIONS="-Dcom.eteks.sweethome3d.j3d.useOffScreen3DView=true"
+      '';
   programs.bash.interactiveShellInit = ''
-eval "$(${pkgs.direnv}/bin/direnv hook bash)"
-eval "$(${pkgs.mcfly}/bin/mcfly init bash)"
-  '';
+    eval "$(${pkgs.direnv}/bin/direnv hook bash)"
+    eval "$(${pkgs.mcfly}/bin/mcfly init bash)"
+      '';
   services.pcscd.enable = true;
   programs.gnupg.agent = {
     enable = true;
     enableSSHSupport = true;
     pinentryFlavor = "curses";
   };
-  virtualisation.docker = {
-       enable        = true;
-  };
+  virtualisation.docker = { enable = true; };
 }

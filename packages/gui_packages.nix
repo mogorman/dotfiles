@@ -80,7 +80,10 @@
   hardware.pulseaudio.enable = true;
 
   powerManagement.powertop.enable = true;
-
+  environment.variables = {
+    VISUAL = "emacsclient";
+    EDITOR = "emacsclient";
+  };
   programs.steam.enable = true;
   virtualisation.waydroid.enable = true;
 }

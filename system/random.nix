@@ -331,5 +331,5 @@
       libvdpau-va-gl
     ];
   };
-
+programs.gnupg.agent.pinentryFlavor = "curses";
 }

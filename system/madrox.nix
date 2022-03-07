@@ -80,4 +80,5 @@
   services.thermald.enable = true;
   services.thermald.configFile = ../packages/thermald.xml;
   boot.plymouth.enable = true;
+  programs.gnupg.agent.pinentryFlavor = "gnome3";
 }

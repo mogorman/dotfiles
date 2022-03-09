@@ -92,8 +92,4 @@
       KEYBOARD_KEY_10082=screenlock
       KEYBOARD_KEY_70039=leftctrl
   '';
-
-  services.logind.extraConfig = ''
-    HandlePowerKey=lock
-      '';
 }

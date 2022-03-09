@@ -81,4 +81,19 @@
   services.thermald.configFile = ../packages/thermald.xml;
   boot.plymouth.enable = true;
   programs.gnupg.agent.pinentryFlavor = "gnome3";
+  # Brydge keyboard Input device ID: bus 0x5 vendor 0x3f6 product 0xa001 version 0x1
+  # power button Input device ID: bus 0x19 vendor 0x0 product 0x0 version 0x0
+
+  services.udev.extraHwdb = ''
+    evdev:input:b0019v0000p0000*
+      KEYBOARD_KEY_ce=screenlock
+
+    evdev:input:b0005v03F6pA001*
+      KEYBOARD_KEY_10082=screenlock
+      KEYBOARD_KEY_70039=leftctrl
+  '';
+
+  services.logind.extraConfig = ''
+    HandlePowerKey=lock
+      '';
 }

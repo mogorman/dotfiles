@@ -16,7 +16,7 @@
     gimp-with-plugins
     gnumeric
     libreoffice
-    inkscape
+    inkscape-with-extensions
     openscad
     ecryptfs
     ecryptfs-helper

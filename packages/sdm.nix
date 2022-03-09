@@ -6,7 +6,7 @@ in stdenv.mkDerivation {
 
   src = builtins.fetchurl {
     url = "https://app.strongdm.com/releases/cli/linux";
-    sha256 = "sha256:01vpxlgampm532xjvmjx834p1j4cmb5ypc2l81m7crasgva3syby";
+    sha256 = "sha256:0jb31xxkr5rppblq0gvxw59vaa0859wdvcj4a1h822frxf5nnzjh";
   };
 
   # preUnpack = ''

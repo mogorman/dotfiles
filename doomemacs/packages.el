@@ -55,7 +55,7 @@
 (when (featurep! :checkers syntax)
   (package! flycheck-credo :pin "e88f11ead53805c361ec7706e44c3dfee1daa19f"))
 
-(package! example :recipe
+(package! kubel :recipe
   (:host github
    :repo "mogorman/kubel"
    :branch "vterm-support"))

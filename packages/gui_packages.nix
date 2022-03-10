@@ -38,31 +38,31 @@
     gst_all_1.gst-plugins-ugly
     keybinder
     #(callPackage ../packages/fildem.nix { })
-    ((pkgs.emacsPackagesGen pkgs.emacsPgtkGcc).emacsWithPackages (epkgs:
-      (with epkgs; [
-        vterm
-        use-package
-        direnv
-        darkokai-theme
-        company
-        dashboard
-        flycheck
-        counsel
-        counsel-projectile
-        magit
-        #          forge
-        #          emacsql
-        magit-popup
-        projectile
-        lsp-mode
-        lsp-ui
-        company-quickhelp
-        #          elixir-mode
-        #          exunit
-        #          erlang
-      ])))
   ];
 
+  services.emacs = {
+    enable = true;
+    package = ((pkgs.emacsPackagesGen pkgs.emacsPgtkGcc).emacsWithPackages
+      (epkgs:
+        (with epkgs; [
+          vterm
+          use-package
+          direnv
+          company
+          dashboard
+          flycheck
+          counsel
+          counsel-projectile
+          magit
+          #          forge
+          #          emacsql
+          magit-popup
+          projectile
+          lsp-mode
+          lsp-ui
+          company-quickhelp
+        ])));
+  };
   networking.networkmanager.enable = true;
 
   # Enable the X11 windowing system.

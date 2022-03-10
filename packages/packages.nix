@@ -49,6 +49,9 @@
     pass-otp
     psmisc
     powertop
+    ripgrep
+    coreutils
+    fd
   ];
 
   programs.bash.shellInit = ''

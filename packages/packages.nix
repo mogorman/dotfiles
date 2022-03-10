@@ -48,6 +48,7 @@
     fzf
     pass-otp
     psmisc
+    powertop
   ];
 
   programs.bash.shellInit = ''

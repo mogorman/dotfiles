@@ -37,6 +37,8 @@
     gst_all_1.gst-plugins-bad
     gst_all_1.gst-plugins-ugly
     keybinder
+    xorg.xhost
+    gnome.dconf-editor
     #(callPackage ../packages/fildem.nix { })
   ];
 
@@ -84,6 +86,10 @@
     VISUAL = "emacsclient";
     EDITOR = "emacsclient";
   };
+  environment.sessionVariables = {
+   MOZ_ENABLE_WAYLAND = "1";
+  };
+
   programs.steam.enable = true;
   virtualisation.waydroid.enable = true;
 }

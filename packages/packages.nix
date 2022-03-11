@@ -52,6 +52,7 @@
     ripgrep
     coreutils
     fd
+    nix-index
   ];
 
   programs.bash.shellInit = ''

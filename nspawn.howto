@@ -1,0 +1,6 @@
+mkdir /debian
+debootstrap --arch amd64 --include=systemd-container,systemd,dbus testing /debian
+
+add export DISPLAY=:0 to .bashrc
+add PULSE_SERVER=unix:/run/user/host/pulse/native to .bashrc
+add default-server = unix:/run/user/host/pulse/native to .config/pulse/client.conf

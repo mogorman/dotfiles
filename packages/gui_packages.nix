@@ -39,6 +39,8 @@
     keybinder
     xorg.xhost
     gnome.dconf-editor
+    xorg.xeyes
+    unstable.gnomeExtensions.pop-shell
     #(callPackage ../packages/fildem.nix { })
   ];
 

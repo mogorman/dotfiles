@@ -33,6 +33,7 @@
       interface=iot0
       dhcp-range=iot0,10.0.100.10,10.0.100.244,24h
 
+      interface=wg0
       bind-interfaces
 
       no-negcache

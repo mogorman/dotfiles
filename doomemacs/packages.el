@@ -57,5 +57,5 @@
 
 (package! kubel :recipe
   (:host github
-   :repo "mogorman/kubel"
-   :branch "vterm-support"))
+   :repo "abrochard/kubel"
+   :branch "master"))

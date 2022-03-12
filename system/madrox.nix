@@ -7,6 +7,7 @@
     ../packages/packages.nix
     ../packages/gui_packages.nix
     ../users/mog.nix
+#    ../services/debian.nix
   ];
 
   fileSystems."/" = {

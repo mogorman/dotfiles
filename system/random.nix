@@ -376,4 +376,5 @@
     ];
   };
 programs.gnupg.agent.pinentryFlavor = "curses";
+security.pam.enableSSHAgentAuth = true;
 }

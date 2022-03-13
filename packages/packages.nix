@@ -53,6 +53,7 @@
     coreutils
     fd
     nix-index
+    borgbackup
   ];
 
   programs.bash.shellInit = ''

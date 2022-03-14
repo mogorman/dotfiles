@@ -277,8 +277,13 @@
     #nameservers = [ "4.4.4.4" "8.8.8.8" ];
     nat = {
       enable = true;
-      internalIPs =
-        [ "10.0.2.0/24" "10.0.2.0/24" "10.0.10.0/24" "10.0.100.0/24" "10.0.42.0/24" ];
+      internalIPs = [
+        "10.0.2.0/24"
+        "10.0.2.0/24"
+        "10.0.10.0/24"
+        "10.0.100.0/24"
+        "10.0.42.0/24"
+      ];
       internalInterfaces = [ "lan0" "lan1" "guest0" "iot0" "ve-seedbox" "wg0" ];
       externalInterface = "eth0";
       forwardPorts = [ ];
@@ -313,9 +318,9 @@
         #        4848 # tubesync
       ];
       allowedUDPPorts = [
-        53 #DNS
-        51820 #wireguard main
-        51821 #wireguard seed
+        53 # DNS
+        51820 # wireguard main
+        51821 # wireguard seed
       ];
     };
   };
@@ -349,16 +354,19 @@
 
       peers = [
         # List of allowed peers.
-        { # Feel free to give a meaning full name
-          # Public key of the peer (not a file path).
+        { # Madrox
           publicKey = "4CUkyO2vfZjZIc+fvsYI3Vg3j1ptFFNvRYyuntgo6UM=";
-          # List of IPs assigned to this peer within the tunnel subnet. Used to configure routing.
           allowedIPs = [ "10.0.42.2/32" ];
         }
-        { # John Doe
+        { # Mog Phone
           publicKey = "YUZwRf8w/dVPcD+HgYFzZhjluxuDNaxjiNefwtH+Qhc=";
           allowedIPs = [ "10.0.42.3/32" ];
         }
+        { # Trillian
+          publicKey = "TJQSuFFiBFwZmwaAqBkDQnJgFoLSqqpXWHVLecdk4wE=";
+          allowedIPs = [ "10.0.42.4/32" ];
+        }
+
       ];
     };
   };
@@ -370,11 +378,11 @@
     enable = true;
     extraPackages = with pkgs; [
       intel-media-driver # LIBVA_DRIVER_NAME=iHD
-      vaapiIntel         # LIBVA_DRIVER_NAME=i965 (older but works better for Firefox/Chromium)
+      vaapiIntel # LIBVA_DRIVER_NAME=i965 (older but works better for Firefox/Chromium)
       vaapiVdpau
       libvdpau-va-gl
     ];
   };
-programs.gnupg.agent.pinentryFlavor = "curses";
-security.pam.enableSSHAgentAuth = true;
+  programs.gnupg.agent.pinentryFlavor = "curses";
+  security.pam.enableSSHAgentAuth = true;
 }

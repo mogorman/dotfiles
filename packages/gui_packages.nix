@@ -41,7 +41,8 @@
     gnome.dconf-editor
     xorg.xeyes
     unstable.gnomeExtensions.pop-shell
-    pika-backup
+    unstable.pika-backup
+    vorta
     #(callPackage ../packages/fildem.nix { })
   ];
 

@@ -60,7 +60,27 @@ boot.kernelPackages = pkgs.linuxPackagesFor (pkgs.linux_5_16.override {
       modDirVersion = "5.16.0";
       };
   });
-
+      boot.kernelPatches = [ {
+        name = "cio2 bridge";
+        patch = null;
+        extraConfig = ''
+                #
+                # Cameras: IPU3
+                #
+#                VIDEO_IPU3_IMGU m
+                VIDEO_IPU3_CIO2 m
+                CIO2_BRIDGE y
+                INTEL_SKL_INT3472 m
+                REGULATOR_TPS68470 m
+                COMMON_CLK_TPS68470 m
+                
+                #
+                # Cameras: Sensor drivers
+                #
+                VIDEO_OV5693 m
+                VIDEO_OV8865 m
+              '';
+        } ];
 
   networking.hostName = "madrox"; # Define your hostname.
 

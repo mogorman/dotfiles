@@ -43,6 +43,8 @@
     unstable.gnomeExtensions.pop-shell
     unstable.pika-backup
     vorta
+    #gnome-network-displays
+    krita
     #(callPackage ../packages/fildem.nix { })
   ];
 

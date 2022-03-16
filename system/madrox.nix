@@ -31,18 +31,36 @@
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.kernelPackages = pkgs.linuxPackages_5_16;
+#  boot.kernelPackages = pkgs.linuxPackages_5_16;
+#
+#  boot.kernelPatches = [
+#    {
+#      name = "battery patch";
+#      patch = ../patches/battery.patch;
+#    }
+#    {
+#      name = "camera patch";
+#      patch = ../patches/camera.patch;
+#    }
+#  ];
 
-  boot.kernelPatches = [
-    {
-      name = "battery patch";
-      patch = ../patches/battery.patch;
-    }
-    {
-      name = "camera patch";
-      patch = ../patches/camera.patch;
-    }
-  ];
+boot.kernelPackages = pkgs.linuxPackagesFor (pkgs.linux_5_16.override {
+    argsOverride = rec {
+#      src = pkgs.fetchurl {
+#            url = "https://codeload.github.com/linux-surface/kernel/zip/refs/heads/v5.16-surface-devel";
+#            sha256 = "sha256-XUaeJWFk1i2r5dWptuU8QiyK95mBYz55d8nrazA+4ho=";
+#      };
+      src = pkgs.fetchFromGitHub {
+            repo ="kernel";
+            owner = "linux-surface";
+            rev = "v5.16-surface-devel";
+            sha256 ="sha256-041VL3Hn6gaHuDH9TbkaftGupGJnaOnYiCBBRjrCKuE=";
+      };
+      version = "5.16.0";
+      modDirVersion = "5.16.0";
+      };
+  });
+
 
   networking.hostName = "madrox"; # Define your hostname.
 
@@ -93,7 +111,9 @@
   virtualisation.hypervGuest.enable = true;
 
   nixpkgs.config.allowUnfree = true;
-  hardware.enableRedistributableFirmware = true;
+  #hardware.enableRedistributableFirmware = true;
+  hardware.enableAllFirmware = true;
+
   hardware.sensor.iio.enable = true;
   boot.extraModprobeConfig = ''
     options i915 enable_fbc=1 enable_rc6=1 modeset=1
@@ -106,7 +126,7 @@
   boot.kernelParams = [
     "intel_pstate=no_hwp"
     "mem_sleep_default=deep"
-    "acpi_enforce_resources=lax"
+#    "acpi_enforce_resources=lax"
   ];
   security.pam.enableEcryptfs = true;
 
@@ -130,4 +150,8 @@
       KEYBOARD_KEY_10082=screenlock
       KEYBOARD_KEY_70039=leftctrl
   '';
+
+  environment.systemPackages = with pkgs; [
+   (callPackage ../packages/libcamera.nix { })
+  ];
 }

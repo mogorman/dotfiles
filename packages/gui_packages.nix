@@ -29,7 +29,6 @@
     gnomeExtensions.gsconnect
     lm_sensors
     waydroid
-    unstable.libcamera
     dmidecode
     gst_all_1.gstreamer.dev
     gst_all_1.gstreamer

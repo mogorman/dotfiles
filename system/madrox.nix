@@ -50,7 +50,7 @@ boot.kernelPackages = pkgs.linuxPackagesFor (pkgs.linux_5_16.override {
 #    url = "git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git";
 #    rev = "v5.16.15";
 #    sha256 = "sha256-fCq/Hq47ix7sdHeSKaouXX3BaFZgAH514yt7l8RYPKU";
-#  };
+# };
 #       version = "5.16.15";
 #       modDirVersion = "5.16.15";};
 #      src = pkgs.fetchurl {
@@ -86,7 +86,7 @@ boot.kernelPackages = pkgs.linuxPackagesFor (pkgs.linux_5_16.override {
                 INTEL_SKL_INT3472 m
                 REGULATOR_TPS68470 m
                 COMMON_CLK_TPS68470 m
-                
+                GPIO_TPS68470 y
                 #
                 # Cameras: Sensor drivers
                 #
@@ -149,6 +149,15 @@ boot.kernelPackages = pkgs.linuxPackagesFor (pkgs.linux_5_16.override {
   '';
 
   environment.systemPackages = with pkgs; [
-   (pkgs.libsForQt5.callPackage ../packages/libcamera.nix { })
+#    libcamera
+   (pkgs.libsForQt5.callPackage ../packages/libcamera2.nix { })
   ];
+
+
+  programs.bash.shellInit = ''
+export GST_PLUGIN_SYSTEM_PATH_1_0="${pkgs.gst_all_1.gst-plugins-base}/lib/gstreamer-1.0/:${pkgs.gst_all_1.gst-plugins-good}/lib/gstreamer-1.0/:${pkgs.gst_all_1.gst-plugins-bad}/lib/gstreamer-1.0/:${pkgs.gst_all_1.gst-plugins-ugly}/lib/gstreamer-1.0/"
+  '';
+environment.extraInit = ''
+export PATH="$HOME/.krew/bin:/home/mog/.bin:/home/mog/.emacs.d/bin:${pkgs.gst_all_1.gstreamer.dev}/bin:$PATH"
+  '';
 }

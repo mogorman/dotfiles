@@ -74,7 +74,10 @@
                   nix-direnv =
                     super.nix-direnv.override { enableFlakes = true; };
                 })
-              ];
+             (self: super: {
+                   libcamera = super.callPackage packages/libcamera_stable.nix {};
+                })
+                 ];
             })
             {
               options.dotfiles_dir = lib.mkOption {

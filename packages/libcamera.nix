@@ -15,8 +15,9 @@
 , doxygen
 , python3
 , python3Packages
-, qt5
+, qtbase
 , libGL
+, wrapQtAppsHook
 }:
 
 stdenv.mkDerivation {
@@ -62,9 +63,12 @@ stdenv.mkDerivation {
     gtest
     graphviz
     doxygen
-    qt5.full
+    qtbase
     libGL
+    wrapQtAppsHook
   ];
+
+  propagatedBuildInputs = [ qtbase];
 
 #  mesonFlags = [ "-Dv4l2=true" "-Dqcam=disabled" ];
   mesonFlags = [ "-Dpipelines=uvcvideo,vimc,ipu3" "-Dipas=vimc,ipu3" "-Dgstreamer=enabled" ];

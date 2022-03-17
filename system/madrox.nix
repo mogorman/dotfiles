@@ -31,7 +31,6 @@
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-#  boot.kernelPackages = pkgs.linuxPackages_5_16;
 #
 #  boot.kernelPatches = [
 #    {
@@ -44,8 +43,16 @@
 #    }
 #  ];
 
+#boot.kernelPackages = pkgs.linuxPackages_5_16;
 boot.kernelPackages = pkgs.linuxPackagesFor (pkgs.linux_5_16.override {
     argsOverride = rec {
+#src = pkgs.fetchgit {
+#    url = "git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git";
+#    rev = "v5.16.15";
+#    sha256 = "sha256-fCq/Hq47ix7sdHeSKaouXX3BaFZgAH514yt7l8RYPKU";
+#  };
+#       version = "5.16.15";
+#       modDirVersion = "5.16.15";};
 #      src = pkgs.fetchurl {
 #            url = "https://codeload.github.com/linux-surface/kernel/zip/refs/heads/v5.16-surface-devel";
 #            sha256 = "sha256-XUaeJWFk1i2r5dWptuU8QiyK95mBYz55d8nrazA+4ho=";
@@ -64,10 +71,16 @@ boot.kernelPackages = pkgs.linuxPackagesFor (pkgs.linux_5_16.override {
         name = "cio2 bridge";
         patch = null;
         extraConfig = ''
+                STAGING y
+                STAGING_MEDIA y
+                MEDIA_SUPPORT m
+                PCI y
+                VIDEO_V4L2 m
+                X86 y
                 #
                 # Cameras: IPU3
                 #
-#                VIDEO_IPU3_IMGU m
+                VIDEO_IPU3_IMGU m
                 VIDEO_IPU3_CIO2 m
                 CIO2_BRIDGE y
                 INTEL_SKL_INT3472 m
@@ -110,7 +123,7 @@ boot.kernelPackages = pkgs.linuxPackagesFor (pkgs.linux_5_16.override {
   boot.kernelParams = [
     "intel_pstate=no_hwp"
     "mem_sleep_default=deep"
-#    "acpi_enforce_resources=lax"
+    "acpi_enforce_resources=lax"
   ];
   security.pam.enableEcryptfs = true;
 
@@ -136,6 +149,6 @@ boot.kernelPackages = pkgs.linuxPackagesFor (pkgs.linux_5_16.override {
   '';
 
   environment.systemPackages = with pkgs; [
-   (callPackage ../packages/libcamera.nix { })
+   (pkgs.libsForQt5.callPackage ../packages/libcamera.nix { })
   ];
 }

@@ -12,7 +12,7 @@
     sweethome3d.application
     teams
     gnome3.vinagre
-#    firefox
+    firefox
     gimp-with-plugins
     gnumeric
     libreoffice

@@ -90,7 +90,7 @@ patches = [
 
   propagatedBuildInputs = [ qtbase];
 
-  mesonFlags = [ "-Dpipelines=uvcvideo,vimc,ipu3" "-Dipas=vimc,ipu3" "-Dgstreamer=enabled" "-Dlc-compliance=disabled" ];
+  mesonFlags = [ "-Dpipelines=uvcvideo,vimc,ipu3" "-Dipas=vimc,ipu3" "-Dgstreamer=enabled" "-Dv4l2=true" "-Dlc-compliance=disabled" ];
   # Fixes error on a deprecated declaration
   NIX_CFLAGS_COMPILE = "-Wno-error=deprecated-declarations";
 

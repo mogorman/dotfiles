@@ -150,7 +150,7 @@ boot.kernelPackages = pkgs.linuxPackagesFor (pkgs.linux_5_16.override {
 
   environment.systemPackages = with pkgs; [
 #    libcamera
-   (pkgs.libsForQt5.callPackage ../packages/libcamera2.nix { })
+   (pkgs.libsForQt5.callPackage ../packages/qcam.nix { })
   ];
 
 

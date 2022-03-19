@@ -19,6 +19,23 @@
 
              '';
        };
+      "syncthing.rldn.net" = {
+        forceSSL = true;
+        useACMEHost = "rldn.net";
+        locations."/".proxyPass = "http://127.0.0.1:8384";
+        extraConfig = ''
+
+                  satisfy any;
+
+          allow 10.0.2.1/24;
+          allow 127.0.0.1;
+                  deny  all;
+
+                  auth_basic           "weymouth area";
+                  auth_basic_user_file ${./../secrets/htpasswd};
+
+             '';
+       };
        "hass.rldn.net" = {
         forceSSL = true;
         useACMEHost = "rldn.net";

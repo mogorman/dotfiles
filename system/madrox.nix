@@ -96,6 +96,23 @@ boot.kernelPackages = pkgs.linuxPackagesFor (pkgs.linux_5_16.override {
         } ];
 
   networking.hostName = "madrox"; # Define your hostname.
+  environment.etc = {
+     wg0 ={
+       source = "${../secrets/wg0.nmconnection}";
+       target = "NetworkManager/system-connections/wg0.nmconnection";
+       mode = "0600";
+     };
+     wgALL ={
+       source = "${../secrets/wgALL.nmconnection}";
+       target = "NetworkManager/system-connections/wgALL.nmconnection";
+       mode = "0600";
+     };
+     bluegroup ={
+       source = "${../secrets/bluegroup.nmconnection}";
+       target = "NetworkManager/system-connections/bluegroup.nmconnection";
+       mode = "0600";
+     };
+  };
 
   boot.initrd.availableKernelModules =
     [ "xhci_pci" "nvme" "usb_storage" "usbhid" "sd_mod" "rtsx_pci_sdmmc" ];

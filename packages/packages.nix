@@ -54,6 +54,7 @@
     fd
     nix-index
     borgbackup
+    syncthing
   ];
 
   programs.bash.shellInit = ''

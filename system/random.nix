@@ -16,6 +16,7 @@
     ../services/nginx.nix
     ../services/audiobookshelf.nix
     ../services/samba.nix
+    ../services/syncthing.nix
     ../secrets/wireguard.nix
     ../packages/packages.nix
     ../users/mog.nix

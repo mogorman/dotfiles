@@ -224,7 +224,33 @@
           '';
  
       };
+};
+        "rldn.net" = {
+        forceSSL = true;
+        useACMEHost = "rldn.net";
+
+        locations."/" = {
+          root = "/var/www/rldn.net";
+          extraConfig = ''
+            autoindex on;
+            autoindex_localtime on;
+          '';
+ 
+      };
+     };
+       "www.rldn.net" = {
+        forceSSL = true;
+        useACMEHost = "rldn.net";
+
+        locations."/" = {
+          root = "/var/www/rldn.net";
+          extraConfig = ''
+            autoindex on;
+            autoindex_localtime on;
+          '';
+ 
+      };
      };
     };
-  };
+};
 }

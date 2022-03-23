@@ -11,7 +11,7 @@
     };
     folders = {
       "share" = {        # Name of folder in Syncthing, also the folder ID
-        path = "/external/06tb/state/syncthing/share";    # Which folder to add to Syncthing
+        path = "/external/06tb/state/syncthing/share/";    # Which folder to add to Syncthing
         devices = [ "madrox" ];      # Which devices to share the folder with
       };
     };

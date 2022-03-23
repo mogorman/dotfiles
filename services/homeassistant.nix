@@ -10,7 +10,25 @@
     after = [ "docker-frigate.service" ];
     requires = [ "docker-frigate.service" ];
   };
-
+  services.zigbee2mqtt = {
+    enable = true;
+    settings = {
+      frontend = {
+      port = 8124;
+      host = "127.0.0.1";
+      uri = "https://zigbee.rldn.net";
+     };
+      mqtt = {
+        user = "zigbee";
+        password = config.services.home-assistant.config.mqtt.password;
+      };
+      homeassistant = config.services.home-assistant.enable;
+      elapsed = true;
+      permit_join = true;
+      experimental = {new_api=true;};
+      serial = { port = "tcp://zigbee:6638"; };
+    };
+  };
   services.home-assistant = {
     enable = true;
     configWritable = true;
@@ -34,7 +52,7 @@
           pkgs.openssh
           pkgs.unstable.nmap
           (callPackage ../packages/mac_vendor_lookup.nix { })
-#          (callPackage ../packages/ocpp.nix { })
+          #          (callPackage ../packages/ocpp.nix { })
         ];
     }).overrideAttrs (oldAttrs: { doInstallCheck = false; });
 
@@ -230,8 +248,7 @@
       };
       recorder.db_url = "postgresql://@/hass";
       feedreader.urls = [ "https://nixos.org/blogs.xml" ];
-#      zha = { };
-      zigbee2mqtt = {  };
+      #      zha = { };
       owntracks = { };
       media_player = [{
         platform = "emby";
@@ -269,20 +286,21 @@
       ../hass/frontend/simple-thermostat.js
     }"
     "C /var/lib/hass/www/upcoming-media-card.js 0755 hass hass - ${inputs.upcoming-media-card}/upcoming-media-card.js"
-#    "C /var/lib/hass/www/zha-network-card.js 0755 hass hass - ${inputs.zha-network-card}/zha-network-card.js"
+    #    "C /var/lib/hass/www/zha-network-card.js 0755 hass hass - ${inputs.zha-network-card}/zha-network-card.js"
     "C /var/lib/hass/www/entity-attributes-card.js 0755 hass hass - ${inputs.entity-attributes-card}/entity-attributes-card.js"
   ];
 
-    systemd.services.esphome = {
-      description = "esphome";
-      after = [ "multi-user.target" ];
-      wantedBy = [ "multi-user.target" ];
-      path = [ pkgs.unstable.esphome pkgs.esptool pkgs.git ];
-      serviceConfig = {
-        User = "mog";
-        ExecStart =
-          "${(pkgs.callPackage ../packages/mog_esphome.nix { })}/bin/esphome dashboard /home/mog/code/dotfiles/esphome";
-      };
+  systemd.services.esphome = {
+    description = "esphome";
+    after = [ "multi-user.target" ];
+    wantedBy = [ "multi-user.target" ];
+    path = [ pkgs.unstable.esphome pkgs.esptool pkgs.git ];
+    serviceConfig = {
+      User = "mog";
+      ExecStart = "${
+          (pkgs.callPackage ../packages/mog_esphome.nix { })
+        }/bin/esphome dashboard /home/mog/code/dotfiles/esphome";
     };
+  };
 
 }

@@ -98,17 +98,17 @@ boot.kernelPackages = pkgs.linuxPackagesFor (pkgs.linux_5_16.override {
   networking.hostName = "madrox"; # Define your hostname.
   environment.etc = {
      wg0 ={
-       source = "${../secrets/wg0.nmconnection}";
+       source = "${../secrets/networkmanager/wg0.nmconnection}";
        target = "NetworkManager/system-connections/wg0.nmconnection";
        mode = "0600";
      };
      wgALL ={
-       source = "${../secrets/wgALL.nmconnection}";
+       source = "${../secrets/networkmanager/wgALL.nmconnection}";
        target = "NetworkManager/system-connections/wgALL.nmconnection";
        mode = "0600";
      };
      bluegroup ={
-       source = "${../secrets/bluegroup.nmconnection}";
+       source = "${../secrets/networkmanager/bluegroup.nmconnection}";
        target = "NetworkManager/system-connections/bluegroup.nmconnection";
        mode = "0600";
      };

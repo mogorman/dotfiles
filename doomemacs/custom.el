@@ -15,9 +15,9 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:family "Victor Mono" :foundry "UKWN" :slant normal :weight medium :height 98 :width normal))))
  '(font-lock-comment-face ((t (:foreground "LightSteelBlue3" :slant italic))))
  '(font-lock-commment-face ((t (:slant 'italic))))
  '(font-lock-string-face ((t (:foreground "#e2c770" :slant italic))))
  '(hl-line ((t nil)))
  '(ivy-current-match ((t (:extend t :background "medium purple" :foreground "white")))))
+(put 'customize-themes 'disabled nil)

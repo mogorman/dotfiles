@@ -1,4 +1,10 @@
-{ config, lib, pkgs, ... }: {
+{ config, lib, pkgs, ... }: 
+let 
+    mog_zoom = pkgs.zoom-us.overrideAttrs (old: {
+      postFixup = old.postFixup + ''
+        wrapProgram $out/bin/zoom-us --unset XDG_SESSION_TYPE
+      '';});
+in {
   environment.systemPackages = with pkgs; [
     audacity
     dbeaver
@@ -7,7 +13,8 @@
     google-chrome
     gparted
     slack
-    zoom-us
+    drawio
+    mog_zoom
     insomnia
     sweethome3d.application
     teams

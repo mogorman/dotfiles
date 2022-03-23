@@ -14,18 +14,21 @@
     enable = true;
     settings = {
       frontend = {
-      port = 8124;
-      host = "127.0.0.1";
-      uri = "https://zigbee.rldn.net";
-     };
+        port = 8124;
+        host = "127.0.0.1";
+        uri = "https://zigbee.rldn.net";
+      };
       mqtt = {
         user = "zigbee";
         password = config.services.home-assistant.config.mqtt.password;
       };
       homeassistant = config.services.home-assistant.enable;
-      elapsed = true;
+      advanced = {
+        elapsed = true;
+        last_seen = "ISO_8601_local";
+      };
       permit_join = true;
-      experimental = {new_api=true;};
+      experimental = { new_api = true; };
       serial = { port = "tcp://zigbee:6638"; };
     };
   };

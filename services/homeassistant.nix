@@ -52,10 +52,10 @@
           url = "/local/upcoming-media-card.js";
           type = "module";
         }
-        {
-          url = "/local/zha-network-card.js";
-          type = "js";
-        }
+        # {
+        #   url = "/local/zha-network-card.js";
+        #   type = "js";
+        # }
         {
           url = "/local/entity-attributes-card.js?=v2";
           type = "js";
@@ -230,7 +230,8 @@
       };
       recorder.db_url = "postgresql://@/hass";
       feedreader.urls = [ "https://nixos.org/blogs.xml" ];
-      zha = { };
+#      zha = { };
+      zigbee2mqtt = {  };
       owntracks = { };
       media_player = [{
         platform = "emby";
@@ -268,7 +269,7 @@
       ../hass/frontend/simple-thermostat.js
     }"
     "C /var/lib/hass/www/upcoming-media-card.js 0755 hass hass - ${inputs.upcoming-media-card}/upcoming-media-card.js"
-    "C /var/lib/hass/www/zha-network-card.js 0755 hass hass - ${inputs.zha-network-card}/zha-network-card.js"
+#    "C /var/lib/hass/www/zha-network-card.js 0755 hass hass - ${inputs.zha-network-card}/zha-network-card.js"
     "C /var/lib/hass/www/entity-attributes-card.js 0755 hass hass - ${inputs.entity-attributes-card}/entity-attributes-card.js"
   ];
 

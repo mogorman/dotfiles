@@ -17,7 +17,7 @@
     ../services/audiobookshelf.nix
     ../services/samba.nix
     ../services/syncthing.nix
-    ../secrets/wireguard.nix
+    ../secrets/nathanbox.nix
     ../packages/packages.nix
     ../users/mog.nix
     ../users/media.nix
@@ -351,7 +351,7 @@
       # Note: The private key can also be included inline via the privateKey option,
       # but this makes the private key world-readable; thus, using privateKeyFile is
       # recommended.
-      privateKeyFile = "${../secrets/random_private}";
+      privateKeyFile = "${../secrets/wireguard/random_private}";
 
       peers = [
         # List of allowed peers.

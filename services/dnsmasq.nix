@@ -40,6 +40,10 @@
       dhcp-host=8c:fe:74:17:29:e0,r610,10.0.2.251
       dhcp-host=1c:b9:c4:36:0f:00,r600,10.0.2.252
       dhcp-host=1c:b9:c4:07:f1:50,r310,10.0.2.253
+
+      dhcp-host=9c:8e:cd:30:9b:d5,frontdoor,10.0.2.240
+      dhcp-host=9c:8e:cd:37:ce:12,sidedoor,10.0.2.241
+
       dhcp-host=b4:69:21:62:5a:c5,reddirk,10.0.100.30
       dhcp-host=30:05:5c:4d:9d:b6,printer,10.0.2.100
       dhcp-host=9c:8e:cd:32:16:9b,babycam,10.0.100.40

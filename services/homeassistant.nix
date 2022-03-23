@@ -12,6 +12,7 @@
   };
   services.zigbee2mqtt = {
     enable = true;
+    package = pkgs.unstable.zigbee2mqtt;
     settings = {
       frontend = {
         port = 8124;

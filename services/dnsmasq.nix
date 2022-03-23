@@ -14,7 +14,7 @@
       #    mode = "0440";
     };
   };
-
+  systemd.services.dnsmasq.path = [ pkgs.dnsmasq pkgs.bash pkgs.curl ];
   services.dnsmasq = {
     enable = true;
     servers = [ "8.8.8.8" "8.8.4.4" ];
@@ -35,6 +35,8 @@
 
       interface=wg0
       bind-interfaces
+
+      dhcp-script=${../secrets/dnsmasq_script.sh}
 
       no-negcache
       dhcp-host=8c:fe:74:17:29:e0,r610,10.0.2.251

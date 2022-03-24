@@ -195,6 +195,36 @@
       nmap = { };
 
       # {"id": "1640747399287", "alias": "New Automation", "description": "", "trigger": [{"platform": "device", "type": "turned_off", "device_id": "58c923e15372dfada5e4622bb53747ee", "entity_id": "switch.wallbox_availability", "domain": "switch"}], "condition": [], "action": [{"type": "turn_on", "device_id": "58c923e15372dfada5e4622bb53747ee", "entity_id": "switch.wallbox_charge_control", "domain": "switch"}], "mode": "single"}
+      "automation sunset" = {
+        id = "1627073230480";
+        alias = "Sunset";
+        trigger = [{
+          platform = "sun";
+          event = "sunset";
+          offset = "+00:15:00";
+        }];
+        action = [{
+          entity_id = "light.side_door_light";
+          domain = "light";
+          device_id = "24cc707bed0d05ad130d99358ba8e3e4";
+          type = "turn_on";
+        }];
+      };
+      "automation sunrise" = {
+        id = "1627073230481";
+        alias = "Sunrise";
+        trigger = [{
+          platform = "sun";
+          event = "sunrise";
+          offset = "+00:15:00";
+        }];
+        action = [{
+          entity_id = "light.side_door_light";
+          domain = "light";
+          type = "turn_off";
+          device_id = "24cc707bed0d05ad130d99358ba8e3e4";
+        }];
+      };
 
       #      "automation charger" = {
       #        id = "1627073230476";

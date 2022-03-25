@@ -59,3 +59,4 @@
   (:host github
    :repo "abrochard/kubel"
    :branch "master"))
+(package! emacsql-sqlite :built-in 'prefer)

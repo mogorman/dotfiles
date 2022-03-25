@@ -68,6 +68,7 @@ in {
           counsel
           counsel-projectile
           magit
+          emacsql-sqlite
           #          forge
           #          emacsql
           magit-popup

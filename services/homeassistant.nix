@@ -181,12 +181,51 @@
           event = "sunset";
           offset = "+00:15:00";
         }];
-        action = [{
-          entity_id = "light.side_door_light";
-          domain = "light";
-          device_id = "24cc707bed0d05ad130d99358ba8e3e4";
-          type = "turn_on";
-        }];
+        action = [
+          {
+            entity_id = "light.lamppost_1";
+            domain = "light";
+            type = "turn_on";
+            device_id = "c2392a738e3623d24a49752e17467c75";
+          }
+          {
+            entity_id = "light.lamppost_2";
+            domain = "light";
+            type = "turn_on";
+            device_id = "bba055d1b122c1a1329d25118dc06ea";
+          }
+          {
+            entity_id = "light.side_door_light";
+            domain = "light";
+            device_id = "24cc707bed0d05ad130d99358ba8e3e4";
+            type = "turn_on";
+          }
+          {
+            entity_id = "light.front_porch_1";
+            domain = "light";
+            device_id = "429e6e7aab59263b1bf81b04439bfd6c";
+            type = "turn_on";
+          }
+          {
+            entity_id = "light.front_porch_2";
+            domain = "light";
+            device_id = "120d7bb944f4e5583d193615266934cf";
+            type = "turn_on";
+          }
+          {
+            entity_id = "light.front_porch_3";
+            domain = "light";
+            device_id = "ab59f649413d62e1d19bb81a6177882b";
+            type = "turn_on";
+          }
+          {
+            entity_id = "cover.blinds";
+            domain = "cover";
+            device_id = "a9ba231cb93146b61dae85362d4ee13a";
+            type = "set_position";
+            position = 15;
+          }
+        ];
       };
       "automation sunrise" = {
         id = "1627073230481";
@@ -196,14 +235,77 @@
           event = "sunrise";
           offset = "+00:15:00";
         }];
-        action = [{
-          entity_id = "light.side_door_light";
-          domain = "light";
-          type = "turn_off";
-          device_id = "24cc707bed0d05ad130d99358ba8e3e4";
-        }];
+        action = [
+          {
+            entity_id = "light.lamppost_1";
+            domain = "light";
+            type = "turn_off";
+            device_id = "c2392a738e3623d24a49752e17467c75";
+          }
+          {
+            entity_id = "light.lamppost_2";
+            domain = "light";
+            type = "turn_off";
+            device_id = "bba055d1b122c1a1329d25118dc06ea";
+          }
+          {
+            entity_id = "light.side_door_light";
+            domain = "light";
+            type = "turn_off";
+            device_id = "24cc707bed0d05ad130d99358ba8e3e4";
+          }
+          {
+            entity_id = "light.front_porch_1";
+            domain = "light";
+            device_id = "429e6e7aab59263b1bf81b04439bfd6c";
+            type = "turn_off";
+          }
+          {
+            entity_id = "light.front_porch_2";
+            domain = "light";
+            device_id = "120d7bb944f4e5583d193615266934cf";
+            type = "turn_off";
+          }
+          {
+            entity_id = "light.front_porch_3";
+            domain = "light";
+            device_id = "ab59f649413d62e1d19bb81a6177882b";
+            type = "turn_off";
+          }
+          {
+            entity_id = "cover.blinds";
+            domain = "cover";
+            device_id = "a9ba231cb93146b61dae85362d4ee13a";
+            type = "set_position";
+            position = 96;
+          }
+        ];
       };
 
+      script = {
+        open_livingroom_blinds = {
+          alias = "open livingroom blinds";
+          mode = "single";
+          sequence = [{
+            entity_id = "cover.blinds";
+            domain = "cover";
+            device_id = "a9ba231cb93146b61dae85362d4ee13a";
+            type = "set_position";
+            position = 96;
+          }];
+        };
+        close_livingroom_blinds = {
+          alias = "close livingroom blinds";
+          mode = "single";
+          sequence = [{
+            entity_id = "cover.blinds";
+            domain = "cover";
+            device_id = "a9ba231cb93146b61dae85362d4ee13a";
+            type = "set_position";
+            position = 15;
+          }];
+        };
+      };
       #      "automation charger" = {
       #        id = "1627073230476";
       #        alias = "Charge Car";

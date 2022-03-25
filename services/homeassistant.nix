@@ -10,29 +10,6 @@
     after = [ "docker-frigate.service" ];
     requires = [ "docker-frigate.service" ];
   };
-  services.zigbee2mqtt = {
-    enable = true;
-    package = pkgs.unstable.zigbee2mqtt;
-    settings = {
-      frontend = {
-        port = 8124;
-        host = "127.0.0.1";
-        uri = "https://zigbee.rldn.net";
-      };
-      mqtt = {
-        user = "zigbee";
-        password = config.services.home-assistant.config.mqtt.password;
-      };
-      homeassistant = config.services.home-assistant.enable;
-      advanced = {
-        elapsed = true;
-        last_seen = "ISO_8601_local";
-      };
-      permit_join = true;
-      experimental = { new_api = true; };
-      serial = { port = "tcp://zigbee:6638"; };
-    };
-  };
   services.home-assistant = {
     enable = true;
     configWritable = true;
@@ -189,6 +166,7 @@
       zeroconf = { };
       webrtc = { };
       frigate = { };
+      dahua = { };
       #      ocpp = { };
       wallbox = { };
       ruckus = { };
@@ -306,6 +284,8 @@
     "R /var/lib/hass/custom_components"
     "d /var/lib/hass/custom_components 0755 hass hass"
     "L /var/lib/hass/custom_components/frigate - - - - ${inputs.frigate-hass-integration}/custom_components/frigate"
+    "L /var/lib/hass/custom_components/dahua - - - - ${inputs.dahua-hass}/custom_components/dahua"
+
     #    "L /var/lib/hass/custom_components/ocpp - - - - ${inputs.ocpp-hass-integration}/custom_components/ocpp"
     "L /var/lib/hass/custom_components/webrtc - - - - ${inputs.webrtc-card}/custom_components/webrtc"
     "L /var/lib/hass/custom_components/sonarr_upcoming_media - - - - ${inputs.sonarr_ha}/custom_components/sonarr_upcoming_media"

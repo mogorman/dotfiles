@@ -1,0 +1,16 @@
+diff --git a/src/amcrest2mqtt.py b/src/amcrest2mqtt.py
+index 31054dd..94b5cc2 100644
+--- a/src/amcrest2mqtt.py
++++ b/src/amcrest2mqtt.py
+@@ -42,10 +42,7 @@ def read_file(file_name):
+     return data
+ 
+ def read_version():
+-    if os.path.isfile("./VERSION"):
+-        return read_file("./VERSION")
+-
+-    return read_file("../VERSION")
++    return "1.0.16"
+ 
+ # Helper functions and callbacks
+ def log(msg, level="INFO"):

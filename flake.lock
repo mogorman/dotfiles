@@ -1,13 +1,29 @@
 {
   "nodes": {
+    "dahua-hass": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1648163036,
+        "narHash": "sha256-2GtB7TBDqcnyuUsLOyncfqVDWe/s5Uwz2TFtUh00kNE=",
+        "owner": "rroller",
+        "repo": "dahua",
+        "rev": "27cfc12d52131b5f2694c4c3019fc621bf877a2b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "rroller",
+        "repo": "dahua",
+        "type": "github"
+      }
+    },
     "dns_block": {
       "flake": false,
       "locked": {
-        "lastModified": 1648112122,
-        "narHash": "sha256-4UEQ4BgLNIyIR8417rQb95zf2vGchImoV4r7yMpVrxU=",
+        "lastModified": 1648198238,
+        "narHash": "sha256-ib/SnAHXeP0p7LdyLcX+ybWwuWMXrjSb7FaWr0sKpbY=",
         "owner": "notracking",
         "repo": "hosts-blocklists",
-        "rev": "606d61848a0ce9fc0f831edeb4a98706822bf454",
+        "rev": "2192d87c1ae246e92565f35062e3b595fadfecd3",
         "type": "github"
       },
       "original": {
@@ -18,11 +34,11 @@
     },
     "emacs-overlay": {
       "locked": {
-        "lastModified": 1648113098,
-        "narHash": "sha256-vFDXEWspO9xxn2j4tM6t8hq+EYMw92Zr7OXNihZ5PFM=",
+        "lastModified": 1648177168,
+        "narHash": "sha256-rSq1pfoVgt6Z6V0gu1RSHjG0b9QKvMEidjgvA3P3b5s=",
         "owner": "nix-community",
         "repo": "emacs-overlay",
-        "rev": "a8ebde25f295b1b9904e61976ea7c464c981d467",
+        "rev": "c5e33a703a354af02481e2affc1f5155b867cc94",
         "type": "github"
       },
       "original": {
@@ -81,11 +97,11 @@
     },
     "nixos-hardware": {
       "locked": {
-        "lastModified": 1648043664,
-        "narHash": "sha256-ghIudBWl0lgRg77GqwSBEPo7v0HouOkqjF/Va4NljGA=",
+        "lastModified": 1648141026,
+        "narHash": "sha256-h8e3+5EZFbYHTMb0DN2ACuQTJBNHpqigvmEV1w2WIuE=",
         "owner": "NixOS",
         "repo": "nixos-hardware",
-        "rev": "c326257692902fe57d3d0f513ebf9c405ccd02ad",
+        "rev": "feceb4d24f582817d8f6e737cd40af9e162dee05",
         "type": "github"
       },
       "original": {
@@ -98,11 +114,11 @@
     "ocpp-hass-integration": {
       "flake": false,
       "locked": {
-        "lastModified": 1648116285,
-        "narHash": "sha256-qzM3Kq98nE4JqABRCNoL9v4lUx7bResJ+fz7dN+j+HA=",
+        "lastModified": 1648168520,
+        "narHash": "sha256-ymiAJP0onJEPjbQECZOFfmofq+V9QINwbhzlbdwCOx8=",
         "owner": "lbbrhzn",
         "repo": "ocpp",
-        "rev": "9952fda88b721547edf9dd2db28de1d84c005ba8",
+        "rev": "2e5dfd762a4b056fc767b5bbbd341af43b6475ef",
         "type": "github"
       },
       "original": {
@@ -129,6 +145,7 @@
     },
     "root": {
       "inputs": {
+        "dahua-hass": "dahua-hass",
         "dns_block": "dns_block",
         "emacs-overlay": "emacs-overlay",
         "entity-attributes-card": "entity-attributes-card",

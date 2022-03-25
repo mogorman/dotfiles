@@ -40,9 +40,7 @@
     unstable.bazarr
     libva-utils
     intel-gpu-tools
-    (callPackage ./mog_esphome.nix { })
     esptool
-    (callPackage ./sdm.nix { })
     kubectl
     krew
     fzf
@@ -55,7 +53,10 @@
     nix-index
     borgbackup
     syncthing
-  ];
+    (callPackage ./mog_esphome.nix { })
+    (callPackage ./sdm.nix { })
+    (callPackage ./amcrest2mqtt.nix { })
+   ];
 
   programs.bash.shellInit = ''
     export JAVA_TOOL_OPTIONS="-Dcom.eteks.sweethome3d.j3d.useOffScreen3DView=true"

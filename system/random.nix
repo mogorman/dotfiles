@@ -6,6 +6,8 @@
     ../services/frigate.nix
     ../services/tubesync.nix
     ../services/mosquitto.nix
+    ../services/zigbee2mqtt.nix
+#    ../services/amcrest2mqtt.nix # dahua integration is better
     ../services/mumble.nix
     ../services/postgresql.nix
     ../services/homeassistant.nix

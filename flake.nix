@@ -41,6 +41,10 @@
       url = "github:custom-cards/entity-attributes-card";
       flake = false;
     };
+    dahua-hass = {
+      url = "github:rroller/dahua";
+     flake = false;
+    };
   };
 
   outputs = { stable, unstable, nixos-hardware, emacs-overlay, flake-utils, ...

@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+vlc /home/mog/code/dotfiles/secrets/babycam.m3u

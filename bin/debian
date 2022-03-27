@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+xhost +local:
+sudo systemd-nspawn -b -D /var/lib/machines/debian/ -M debian --bind-ro=/tmp/.X11-unix --bind=/dev/dri --bind=/dev/shm --bind=/dev/snd --bind=/run/user/1000/pulse:/run/user/host/pulse

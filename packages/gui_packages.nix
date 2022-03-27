@@ -19,6 +19,24 @@ in {
     sweethome3d.application
     teams
     gnome3.vinagre
+    gnome.dconf-editor
+    gnome.gnome-tweaks
+    gnomeExtensions.gsconnect
+    gnomeExtensions.freon
+    gnomeExtensions.gtile
+    gnomeExtensions.clipboard-indicator
+    gnomeExtensions.caffeine
+    gnomeExtensions.bluetooth-quick-connect
+    gnomeExtensions.gnome-bedtime
+    gnomeExtensions.rounded-corners
+    gnomeExtensions.sound-output-device-chooser
+    gnomeExtensions.timepp
+    gnomeExtensions.syncthing-indicator
+    gnomeExtensions.unite
+    gnomeExtensions.wireguard-indicator
+    gnomeExtensions.screen-autorotate
+    unstable.gnomeExtensions.useless-gaps
+    unstable.gnomeExtensions.pop-shell
     firefox
     gimp-with-plugins
     gnumeric
@@ -27,13 +45,12 @@ in {
     openscad
     ecryptfs
     ecryptfs-helper
-    gnome.gnome-tweaks
     jellyfin-media-player
     tilix
     vlc
     gpa
     signal-desktop
-    gnomeExtensions.gsconnect
+
     lm_sensors
     waydroid
     dmidecode
@@ -44,9 +61,9 @@ in {
     gst_all_1.gst-plugins-ugly
     keybinder
     xorg.xhost
-    gnome.dconf-editor
+
     xorg.xeyes
-    unstable.gnomeExtensions.pop-shell
+
     unstable.pika-backup
     vorta
     #gnome-network-displays

@@ -48,6 +48,10 @@
           type = "module";
         }
         {
+          url = "/local/webrtc.js";
+          type = "module";
+        } 
+        {
           url = "/local/upcoming-media-card.js";
           type = "module";
         }
@@ -83,62 +87,82 @@
             type = "entities";
             title = "Sensor";
             entities = [
-              "sensor.back_camera_fps"
-              "sensor.back_detection_fps"
-              "sensor.back_dog"
-              "sensor.back_mouse"
-              "sensor.back_person"
-              "sensor.back_process_fps"
-              "sensor.back_skipped_fps"
+              "sensor.frontdoor_camera_fps"
+              "sensor.frontdoor_detection_fps"
+              "sensor.frontdoor_dog"
+              "sensor.frontdoor_person"
+              "sensor.frontdoor_process_fps"
+              "sensor.frontdoor_skipped_fps"
 
-              "sensor.outdoor1_camera_fps"
-              "sensor.outdoor1_detection_fps"
-              "sensor.outdoor1_dog"
-              "sensor.outdoor1_mouse"
-              "sensor.outdoor1_person"
-              "sensor.outdoor1_process_fps"
-              "sensor.outdoor1_skipped_fps"
+              "sensor.sidedoor_camera_fps"
+              "sensor.sidedoor_detection_fps"
+              "sensor.sidedoor_dog"
+              "sensor.sidedoor_person"
+              "sensor.sidedoor_process_fps"
+              "sensor.sidedoor_skipped_fps"
 
-              "sensor.coral_inference_speed"
+              "sensor.coral1_inference_speed" 
+              "sensor.coral2_inference_speed"
               "sensor.detection_fps"
 
               "sensor.wallbox_portal_charging_speed"
-              "sensor.wallbox_portal_status_description"
+#              "sensor.wallbox_portal_status_description"
               "sensor.wallbox_portal_cost"
             ];
           }
           {
             type = "custom:frigate-card";
-            dimensions = { };
-            controls = { nextprev = "chevrons"; };
-            live_provider = "webrtc";
-            camera_entity = "camera.back";
-            webrtc = { url = "rtsp://doorcam:8554/unicast"; };
-            view_default = "snapshot";
-            menu_buttons = {
-              frigate_ui = true;
-              fullscreen = true;
-              frigate = false;
+            dimensions = {
+              aspect_ration_mode = "dynamic";
             };
-            menu_mode = "hover-top";
+            live = {
+              preload = true;
+              auto_unmute = true;
+              lazy_unload = true;
+            };
+            menu = {
+              mode = "hover-top";
+            };
+            cameras = [
+              {
+                camera = "camera.side_door";
+                camera_name = "sidedoor";
+                camera_entity = "camera.sidedoor";
+                live_provider = "webrtc-card";
+                webrtc_card = {
+                  entity = "camera.side_door_main";
+                };
+                frigate_url = "https://frigate.rldn.net/";
+              }
+            ];
           }
           {
             type = "custom:frigate-card";
-            dimensions = { };
-            controls = { nextprev = "chevrons"; };
-            live_provider = "webrtc";
-            camera_entity = "camera.outdoor1";
-            webrtc = {
-              url = "rtsp://admin:${config.camera_password}@outdoor1:554/";
+            dimensions = {
+              aspect_ration_mode = "dynamic";
             };
-            view_default = "snapshot";
-            menu_buttons = {
-              frigate_ui = true;
-              fullscreen = true;
-              frigate = false;
+            live = {
+              preload = true;
+              auto_unmute = true;
+              lazy_unload = true;
             };
-            menu_mode = "hover-top";
+            menu = {
+              mode = "hover-top";
+            };
+            cameras = [
+              {
+                camera = "camera.frontdoor";
+                camera_entity = "camera.front_door_main";
+                camera_name = "frontdoor";
+                live_provider = "webrtc-card";
+                webrtc_card = {
+                  entity = "camera.front_door_main";
+                };
+                frigate_url = "https://frigate.rldn.net/";
+              }
+            ];
           }
+
 
           {
             type = "custom:upcoming-media-card";
@@ -171,7 +195,17 @@
       wallbox = { };
       ruckus = { };
       nmap = { };
-
+      group =  {
+      living_room_lights = {
+        name = "living room lights";
+        entities = [
+          "light.living_room_lamp_1"
+          "light.living_room_lamp_2"
+          "light.living_room_lamp_3"
+          "light.living_room_lamp_4"
+        ];
+      };
+};
       # {"id": "1640747399287", "alias": "New Automation", "description": "", "trigger": [{"platform": "device", "type": "turned_off", "device_id": "58c923e15372dfada5e4622bb53747ee", "entity_id": "switch.wallbox_availability", "domain": "switch"}], "condition": [], "action": [{"type": "turn_on", "device_id": "58c923e15372dfada5e4622bb53747ee", "entity_id": "switch.wallbox_charge_control", "domain": "switch"}], "mode": "single"}
       "automation sunset" = {
         id = "1627073230480";
@@ -225,6 +259,13 @@
             type = "set_position";
             position = 15;
           }
+          {
+            entity_id = "cover.blinds_2";
+            domain = "cover";
+            device_id = "f94ad590146bb3e7830c374a12026eca";
+            type = "set_position";
+            position = 12;
+          }
         ];
       };
       "automation sunrise" = {
@@ -277,34 +318,81 @@
             domain = "cover";
             device_id = "a9ba231cb93146b61dae85362d4ee13a";
             type = "set_position";
+            position = 98;
+          }
+          {
+            entity_id = "cover.blinds_2";
+            domain = "cover";
+            device_id = "f94ad590146bb3e7830c374a12026eca";
+            type = "set_position";
             position = 96;
+          }
+
+        ];
+      };
+      "automation living room light switch" =  {
+        id = "1627073230482";
+        alias = "living room light switch";
+        trigger = [{
+          platform = "state";
+          entity_id = "sensor.living_room_switch_action";
+          to = "open";
+        }
+{
+          platform = "state";
+          entity_id = "sensor.living_room_switch_action";
+          to = "close";
+        }];
+        action = [
+          {
+             entity_id = "group.living_room_lights";
+             service = "light.toggle";
           }
         ];
       };
-
       script = {
         open_livingroom_blinds = {
           alias = "open livingroom blinds";
           mode = "single";
-          sequence = [{
-            entity_id = "cover.blinds";
-            domain = "cover";
-            device_id = "a9ba231cb93146b61dae85362d4ee13a";
-            type = "set_position";
-            position = 96;
-          }];
+          sequence = [
+            {
+              entity_id = "cover.blinds";
+              domain = "cover";
+              device_id = "a9ba231cb93146b61dae85362d4ee13a";
+              type = "set_position";
+              position = 98;
+            }
+            {
+              entity_id = "cover.blinds_2";
+              domain = "cover";
+              device_id = "f94ad590146bb3e7830c374a12026eca";
+              type = "set_position";
+              position = 96;
+            }
+          ];
         };
         close_livingroom_blinds = {
           alias = "close livingroom blinds";
           mode = "single";
-          sequence = [{
-            entity_id = "cover.blinds";
-            domain = "cover";
-            device_id = "a9ba231cb93146b61dae85362d4ee13a";
-            type = "set_position";
-            position = 15;
-          }];
+          sequence = [
+            {
+              entity_id = "cover.blinds";
+              domain = "cover";
+              device_id = "a9ba231cb93146b61dae85362d4ee13a";
+              type = "set_position";
+              position = 15;
+            }
+            {
+              entity_id = "cover.blinds_2";
+              domain = "cover";
+              device_id = "f94ad590146bb3e7830c374a12026eca";
+              type = "set_position";
+              position = 12;
+            }
+          ];
         };
+
+
       };
       #      "automation charger" = {
       #        id = "1627073230476";
@@ -401,6 +489,7 @@
     "C /var/lib/hass/www/simple-thermostat.js 0755 hass hass - ${
       ../hass/frontend/simple-thermostat.js
     }"
+    "C /var/lib/hass/www/webrtc.js 0755 hass hass - ${inputs.webrtc-card}/custom_components/webrtc/www/webrtc-camera.js"
     "C /var/lib/hass/www/upcoming-media-card.js 0755 hass hass - ${inputs.upcoming-media-card}/upcoming-media-card.js"
     #    "C /var/lib/hass/www/zha-network-card.js 0755 hass hass - ${inputs.zha-network-card}/zha-network-card.js"
     "C /var/lib/hass/www/entity-attributes-card.js 0755 hass hass - ${inputs.entity-attributes-card}/entity-attributes-card.js"

@@ -69,8 +69,13 @@
     preLVM = false;
     allowDiscards = true;
   };
-  boot.initrd.luks.devices."02tb" = {
-    device = "/dev/disk/by-uuid/8651a7c7-006b-45e3-8782-1bf06d415df5";
+  boot.initrd.luks.devices."16tb" = {
+    device = "/dev/disk/by-uuid/2eba0bac-7bf4-4207-a695-78e064c57665";
+    preLVM = false;
+    allowDiscards = true;
+  };
+  boot.initrd.luks.devices."10tb" = {
+    device = "/dev/disk/by-uuid/8702cb62-ad8f-4925-9595-e6c30bbb501a";
     preLVM = false;
     allowDiscards = true;
   };
@@ -133,11 +138,14 @@
     device = "/dev/disk/by-uuid/c8f67343-9418-4c66-acf7-7d62f1b1acd2";
     fsType = "ext4";
   };
-  fileSystems."/external/02tb" = {
-    device = "/dev/disk/by-uuid/92cca9f5-e56a-4bf0-82c8-192c73758598";
+  fileSystems."/external/16tb" = {
+    device = "/dev/disk/by-uuid/e79fcb6d-d723-4b9b-8d65-c86d6d89875b";
     fsType = "ext4";
   };
-
+  fileSystems."/external/10tb" = {
+    device = "/dev/disk/by-uuid/a6a7cdb4-c335-403c-b02e-21679f172e16";
+    fsType = "ext4";
+  };
   fileSystems."/boot" = {
     device = "/dev/disk/by-uuid/C833-35FD";
     fsType = "vfat";
@@ -289,7 +297,13 @@
       ];
       internalInterfaces = [ "lan0" "lan1" "guest0" "iot0" "ve-seedbox" "wg0" ];
       externalInterface = "eth0";
-      forwardPorts = [ ];
+      forwardPorts = [ 
+# {
+#    destination = "127.0.0.1:1935";
+#    proto = "tcp";
+#    sourcePort = 1935;
+#  }
+ ];
     };
     firewall = {
       enable = true;
@@ -303,11 +317,19 @@
         iptables -t nat -A POSTROUTING -s 10.0.10.0/24 -o eth0 -j MASQUERADE
         #BLOCK IOT FROM INTERNET but allow my laptop to access internet
         iptables -A FORWARD -i iot0 -s 10.0.100.30  -j ACCEPT
+
+        iptables -A FORWARD -i iot0 -s 10.0.100.41  -j ACCEPT
+        iptables -A FORWARD -i iot0 -s 10.0.100.42  -j ACCEPT
+        iptables -A FORWARD -i iot0 -s 10.0.100.72  -j ACCEPT
+
         iptables -A FORWARD -i iot0 -o eth0 -j REJECT
       '';
 
       allowedTCPPortRanges = [ ];
-      allowedUDPPortRanges = [ ];
+      allowedUDPPortRanges = [   {
+    from = 10000;
+    to = 20000;
+  } ];
 
       allowedTCPPorts = [
         22 # SSH

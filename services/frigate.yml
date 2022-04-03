@@ -10,21 +10,30 @@ mqtt:
 # Optional: Detectors configuration. Defaults to a single CPU detector
 detectors:
   # Required: name of the detector
-  coral:
+  coral1:
     # Required: type of the detector
     # Valid values are 'edgetpu' (requires device property below) and 'cpu'.
     type: edgetpu
     # Optional: device name as defined here: https://coral.ai/docs/edgetpu/multiple-edgetpu/#using-the-tensorflow-lite-python-api
-    device: pci
+    device: pci:0
     # Optional: num_threads value passed to the tflite.Interpreter (default: shown below)
     # This value is only used for CPU types
     num_threads: 3
+  coral2:
+    # Required: type of the detector
+    # Valid values are 'edgetpu' (requires device property below) and 'cpu'.
+    type: edgetpu
+    # Optional: device name as defined here: https://coral.ai/docs/edgetpu/multiple-edgetpu/#using-the-tensorflow-lite-python-api
+    device: pci:1
+    # Optional: num_threads value passed to the tflite.Interpreter (default: shown below)
+    # This value is only used for CPU types
+    num_threads: 3
+
 
 objects:
   # Optional: list of objects to track from labelmap.txt (default: shown below)
   track:
     - person
-    - mouse
     - dog
 
 ffmpeg:
@@ -37,26 +46,27 @@ ffmpeg:
     - yuv420p
 
 cameras:
-  back:
+  frontdoor:
     ffmpeg:
       inputs:
-        - path: rtsp://doorcam:8554/unicast
+        - path: "rtsp://{FRIGATE_FRONTDOOR_CREDS}@frontdoor:554/"
           roles:
             - detect
             - rtmp
     detect:
-      width: 1600
-      height: 900
-  outdoor1:
+      width: 2560
+      height: 1920
+  sidedoor:
     ffmpeg:
       inputs:
-        - path: "rtsp://admin:{FRIGATE_CAMERA_PASSWORD}@outdoor1.lan:554/"
+        - path: "rtsp://{FRIGATE_SIDEDOOR_CREDS}@sidedoor:554/"
           roles:
             - detect
             - rtmp
     detect:
-      width: 1920
-      height: 1080
+      width: 2560
+      height: 1920
+
 
 
 snapshots:

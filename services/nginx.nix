@@ -36,6 +36,35 @@
 
              '';
        };
+      "frigate.rldn.net" = {
+        forceSSL = true;
+        useACMEHost = "rldn.net";
+        locations."/".proxyPass = "http://127.0.0.1:5000";
+        extraConfig = ''
+        
+    proxy_http_version 1.1;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection "upgrade";
+    proxy_read_timeout 86400;
+                proxy_connect_timeout 10;
+        proxy_set_header Host $host;
+
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+
+        proxy_buffering off;
+
+                  satisfy any;
+
+          allow 10.0.2.1/24;
+          allow 127.0.0.1;
+                  deny  all;
+
+                  auth_basic           "weymouth area";
+                  auth_basic_user_file ${./../secrets/htpasswd};
+
+             '';
+       };
       "zigbee.rldn.net" = {
         forceSSL = true;
         useACMEHost = "rldn.net";

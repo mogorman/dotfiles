@@ -54,6 +54,7 @@
     borgbackup
     syncthing
     imagemagick
+    tor
     (callPackage ./mog_esphome.nix { })
     (callPackage ./sdm.nix { })
     (callPackage ./amcrest2mqtt.nix { })

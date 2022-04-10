@@ -177,4 +177,7 @@ export GST_PLUGIN_SYSTEM_PATH_1_0="${pkgs.gst_all_1.gst-plugins-base}/lib/gstrea
 environment.extraInit = ''
 export PATH="$HOME/.krew/bin:/home/mog/code/dotfiles/bin:$HOME/.emacs.d/bin:${pkgs.gst_all_1.gstreamer.dev}/bin:$PATH"
   '';
+
+  services.tor.client.enable = true;
+  services.tor.enable = true;
 }

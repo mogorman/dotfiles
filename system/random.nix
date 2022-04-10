@@ -17,6 +17,7 @@
     ../services/acme.nix
     ../services/nginx.nix
     ../services/audiobookshelf.nix
+    ../services/komga.nix
     ../services/samba.nix
     ../services/syncthing.nix
     ../secrets/nathanbox.nix

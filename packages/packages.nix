@@ -57,7 +57,7 @@
     (callPackage ./mog_esphome.nix { })
     (callPackage ./sdm.nix { })
     (callPackage ./amcrest2mqtt.nix { })
-   ];
+    ];
 
   programs.bash.shellInit = ''
     export JAVA_TOOL_OPTIONS="-Dcom.eteks.sweethome3d.j3d.useOffScreen3DView=true"

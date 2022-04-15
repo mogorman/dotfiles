@@ -164,6 +164,7 @@
   };
 
   networking = {
+    enableIPv6 = false;
     hostId = "72209696";
     hostName = "random";
     useDHCP = false;

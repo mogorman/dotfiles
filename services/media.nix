@@ -38,6 +38,9 @@
     dataDir = "/external/06tb/state/sonarr";
   };
 
+
+
+  systemd.services.radarr.environment.LD_LIBRARY_PATH="${lib.getLib pkgs.zlib}/lib";
   services.radarr = {
     enable = true;
     user = "media";

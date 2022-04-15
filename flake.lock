@@ -19,11 +19,11 @@
     "dns_block": {
       "flake": false,
       "locked": {
-        "lastModified": 1649492787,
-        "narHash": "sha256-vTIYL/zszRoot+hMOJzVJ1qioLnux2NxNIb3dX5qaIY=",
+        "lastModified": 1649924626,
+        "narHash": "sha256-QHkrgVN7QCUTeDPjRAyHOSf9MmsPydHLO7E1h8fk5NA=",
         "owner": "notracking",
         "repo": "hosts-blocklists",
-        "rev": "ea5176d08efa10dc5d659e0479d7b8b249eb1c0d",
+        "rev": "a3289777193a2c9bd67083f5f0e193b00922dfa8",
         "type": "github"
       },
       "original": {
@@ -34,11 +34,11 @@
     },
     "emacs-overlay": {
       "locked": {
-        "lastModified": 1649561638,
-        "narHash": "sha256-exPLOKDoXIHMTKTbpwZJav2ro9TNVhd8oQos2/4mb2c=",
+        "lastModified": 1649963026,
+        "narHash": "sha256-2gaQCVa9LWal65+i1ySFDZ6rgAVH07/GqKOf1DKle4A=",
         "owner": "nix-community",
         "repo": "emacs-overlay",
-        "rev": "ae3d3f1a0008651650cd58af19eb6afaf6f33acd",
+        "rev": "82f83fbd561c08e83faeb4a8c37fb43375d88bd1",
         "type": "github"
       },
       "original": {
@@ -66,11 +66,11 @@
     },
     "flake-utils": {
       "locked": {
-        "lastModified": 1648297722,
-        "narHash": "sha256-W+qlPsiZd8F3XkzXOzAoR+mpFqzm3ekQkJNa+PIh1BQ=",
+        "lastModified": 1649676176,
+        "narHash": "sha256-OWKJratjt2RW151VUlJPRALb7OU2S5s+f0vLj4o1bHM=",
         "owner": "numtide",
         "repo": "flake-utils",
-        "rev": "0f8662f1319ad6abf89b3380dd2722369fc51ade",
+        "rev": "a4b154ebbdc88c8498a5c7b01589addc9e9cb678",
         "type": "github"
       },
       "original": {
@@ -97,11 +97,11 @@
     },
     "nixos-hardware": {
       "locked": {
-        "lastModified": 1649488242,
-        "narHash": "sha256-GFahTvlMnqotZ8i1AO3J8OtVFrJe4QHcEPxpFH+DIEw=",
+        "lastModified": 1649849514,
+        "narHash": "sha256-zQyTr2UebTKUh1KLyLtevhHsM8umPK1LfQLGUGjRjiQ=",
         "owner": "NixOS",
         "repo": "nixos-hardware",
-        "rev": "850308db3ef0bcc7454155063b5fec28b4ffbc8c",
+        "rev": "1a0ccdbf4583ed0fce37eea7955e8ef90f840a9f",
         "type": "github"
       },
       "original": {
@@ -114,11 +114,11 @@
     "ocpp-hass-integration": {
       "flake": false,
       "locked": {
-        "lastModified": 1649509527,
-        "narHash": "sha256-5BU4gzTSuV1/NGnuHWfI6/fP0ZXy/taDptohjmObQqk=",
+        "lastModified": 1649868840,
+        "narHash": "sha256-ZuvHcRthOQX7BD91g4cJtBZXkukhONi1Lf7b4VOiGJo=",
         "owner": "lbbrhzn",
         "repo": "ocpp",
-        "rev": "821aa33f4010fecacb1390abb92ec81b1f2916a8",
+        "rev": "5e0b0cfd45d3171e8d7022966f9d6995200f6aaa",
         "type": "github"
       },
       "original": {
@@ -180,11 +180,11 @@
     },
     "stable": {
       "locked": {
-        "lastModified": 1649490789,
-        "narHash": "sha256-YrhVxwoofZSx/wLZ4GYET//8vS+uqWX572zvdmP/Etg=",
+        "lastModified": 1649883785,
+        "narHash": "sha256-GhwcnCKisE5CKPU7YzTD1bwgTNmyokjl71ENIVAcnR8=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "c86185d20d708013caf97a6adaa8dc6d72313c75",
+        "rev": "a62ce97f92b8b197ab6f278132535c1abf713ba0",
         "type": "github"
       },
       "original": {
@@ -196,11 +196,11 @@
     },
     "unstable": {
       "locked": {
-        "lastModified": 1649408932,
-        "narHash": "sha256-JhTW1OtS5fACcRXLqcTTQyYO5vLkO+bceCqeRms13SY=",
+        "lastModified": 1649809588,
+        "narHash": "sha256-f6sgDj9A8FXTVyA2zkxA66YX+j6BftxE9VHTeIMhEKE=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "42948b300670223ca8286aaf916bc381f66a5313",
+        "rev": "ff9efb0724de5ae0f9db9df2debefced7eb1571d",
         "type": "github"
       },
       "original": {
@@ -229,11 +229,11 @@
     "webrtc-card": {
       "flake": false,
       "locked": {
-        "lastModified": 1644138816,
-        "narHash": "sha256-wK+Em5LGxYqCDnYY58/+wkG/QVxUCiD7Lkf+xoo+mPY=",
+        "lastModified": 1649663404,
+        "narHash": "sha256-yg7PXnud/cTiafogDEqgRQSNfkDoaE985ba3jNAPCzA=",
         "owner": "AlexxIT",
         "repo": "WebRTC",
-        "rev": "c35ff6ab81f408489d64af485a0fead881dea973",
+        "rev": "9bdd9b9dfcb85c37e88a8e6ad8f59e8ff443c104",
         "type": "github"
       },
       "original": {

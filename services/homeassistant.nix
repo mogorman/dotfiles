@@ -415,6 +415,14 @@
       #      };
       sensor = [
         {
+          platform = "mqtt_room";
+          device_id = "iBeacon:426c7565-4368-6172-6d42-6561636f6e73-3838-4949";
+          name =  "Tommy";
+          state_topic = "espresense/rooms"
+          timeout = 20;
+          away_timeout = 40; # number of seconds after which the enitity will get status not_home
+        }
+        {
           platform = "sonarr_upcoming_media";
           api_key = "5ee9c6e6d58a428db80cd15540f58fec";
           host = "127.0.0.1";

@@ -419,8 +419,8 @@
           device_id = "iBeacon:426c7565-4368-6172-6d42-6561636f6e73-3838-4949";
           name =  "Tommy";
           state_topic = "espresense/rooms";
-          timeout = 20;
-          away_timeout = 40; # number of seconds after which the enitity will get status not_home
+          timeout = 5;
+          away_timeout = 20; # number of seconds after which the enitity will get status not_home
         }
         {
           platform = "sonarr_upcoming_media";

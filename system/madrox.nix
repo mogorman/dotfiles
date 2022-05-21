@@ -175,7 +175,8 @@ boot.kernelPackages = pkgs.linuxPackagesFor (pkgs.linux_5_16.override {
 export GST_PLUGIN_SYSTEM_PATH_1_0="${pkgs.gst_all_1.gst-plugins-base}/lib/gstreamer-1.0/:${pkgs.gst_all_1.gst-plugins-good}/lib/gstreamer-1.0/:${pkgs.gst_all_1.gst-plugins-bad}/lib/gstreamer-1.0/:${pkgs.gst_all_1.gst-plugins-ugly}/lib/gstreamer-1.0/"
   '';
 environment.extraInit = ''
-export PATH="$HOME/.krew/bin:/home/mog/code/dotfiles/bin:$HOME/.emacs.d/bin:${pkgs.gst_all_1.gstreamer.dev}/bin:$PATH"
+export PATH="$HOME/.krew/bin:/home/mog/code/dotfiles/bin:$HOME/.emacs.d/bin:${pkgs.gst_all_1.gstreamer.dev}/bin:$HOME/.npm-packages/bin:$PATH"
+export NODE_PATH=$HOME/.npm-packages/lib/node_modules
   '';
 
   services.tor.client.enable = true;

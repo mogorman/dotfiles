@@ -11,7 +11,7 @@
       git-committer-name "Matthew O'Gorman"
       git-committer-email "mog@rldn.net"
       )
-
+(server-start)
 ;;(setq exec-path (append exec-path '("/home/mog/code/pepsico/elixir-ls/release")))
 (setq lsp-elixir-server-command '("elixir-ls"))
 ;;(setq lsp-elixir-local-server-command  '("elixir-ls"))

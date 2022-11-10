@@ -38,11 +38,11 @@
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1668080947,
-        "narHash": "sha256-lo67PHtNOedK7//xrRiio297/WnbdN30t+YQ5+Dse3Q=",
+        "lastModified": 1668101004,
+        "narHash": "sha256-6B25gyZqBWCOP23vEzGlRL2qX2yZ5XwsW6rGlxAV3QA=",
         "owner": "nix-community",
         "repo": "emacs-overlay",
-        "rev": "e58b5f1dac80f717f41121a0e4008b3050d79b9d",
+        "rev": "0b01e1fd7c40a8b97e3f4754d6bcdecd4b2effc7",
         "type": "github"
       },
       "original": {
@@ -101,11 +101,11 @@
     "frigate-hass-integration": {
       "flake": false,
       "locked": {
-        "lastModified": 1667613457,
-        "narHash": "sha256-t/JJIoKrkFQD5I6e7bPc62wqVOVStfi8TeNYW1BU78E=",
+        "lastModified": 1668097799,
+        "narHash": "sha256-6XencDEsPlg0nZrH5UmFaKdTZLxpudHhcpYOc4s2BRU=",
         "owner": "blakeblackshear",
         "repo": "frigate-hass-integration",
-        "rev": "b4e6703931b99dd0d2ceee467735097d007edc19",
+        "rev": "45c8faaff0f9cb361beb53952adacac5461a8f7d",
         "type": "github"
       },
       "original": {

@@ -398,6 +398,10 @@
         { # Tom TV
           publicKey = "bfHygoBbiFkFFkr68SD2NlPbpTVQbKxnwnhVO63+MSE=";
           allowedIPs = [ "10.0.42.10/32" ];
+        }
+       { # Blue fire / livingroom frame
+          publicKey = "UfnRPugELsYoWsuFNNjvzJ+IaTxxdkcshvqKQSqG6EM=";
+          allowedIPs = [ "10.0.42.60/32" ];
         } 
       ];
     };

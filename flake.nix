@@ -3,8 +3,8 @@
 
   inputs = {
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
-    oldstable.url = "github:NixOS/nixpkgs/nixos-21.05";
-    stable.url = "github:NixOS/nixpkgs/nixos-21.11";
+    oldstable.url = "github:NixOS/nixpkgs/nixos-21.11";
+    stable.url = "github:NixOS/nixpkgs/nixos-22.05";
     unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     emacs-overlay.url = "github:nix-community/emacs-overlay/master";
     flake-utils.url = "github:numtide/flake-utils";
@@ -15,6 +15,10 @@
     };
     ocpp-hass-integration = {
       url = "github:lbbrhzn/ocpp";
+      flake = false;
+    };
+    owlet-hass-integration = {
+      url = "github:mogorman/ha-sensor.owlet";
       flake = false;
     };
     dns_block = {
@@ -47,7 +51,7 @@
     };
   };
 
-  outputs = { stable, unstable, nixos-hardware, emacs-overlay, flake-utils, ...
+  outputs = { stable, oldstable, unstable, nixos-hardware, emacs-overlay, flake-utils, ...
     }@inputs:
     let
       system = "x86_64-linux";
@@ -57,6 +61,12 @@
       };
       lib = stable.lib;
       overlays = {
+       oldstable = final: prev: {
+          oldstable = (import oldstable {
+            inherit system;
+            config = { allowUnfree = true; };
+          });
+        };
         unstable = final: prev: {
           unstable = (import unstable {
             inherit system;
@@ -73,6 +83,7 @@
             ({ config, pkgs, lib, ... }: {
               nixpkgs.overlays = [
                 overlays.unstable
+                overlays.oldstable
                 emacs-overlay.overlay
                 (self: super: {
                   nix-direnv =
@@ -108,7 +119,7 @@
           specialArgs = { inherit inputs; };
           modules = [
             ({ config, pkgs, lib, ... }: {
-              nixpkgs.overlays = [ overlays.unstable ];
+              nixpkgs.overlays = [ overlays.unstable overlays.oldstable ];
             })
             {
               options.dotfiles_dir = lib.mkOption {
@@ -116,6 +127,10 @@
                 default = "/home/mog/code/dotfiles";
               };
               options.camera_password = lib.mkOption {
+                type = lib.types.str;
+                default = "nope";
+              };
+              options.owlet_password = lib.mkOption {
                 type = lib.types.str;
                 default = "nope";
               };

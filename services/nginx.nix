@@ -1,6 +1,7 @@
 { config, lib, pkgs, ... }: {
   services.nginx = {
     enable = true;
+    package = pkgs.oldstable.nginxStable;
     virtualHosts = {
       "home.rldn.net" = {
         forceSSL = true;
@@ -19,6 +20,29 @@
 
              '';
        };
+      "pepsi.rldn.net" = {
+        forceSSL = true;
+        useACMEHost = "rldn.net";
+        locations."/".proxyPass = "http://10.0.42.2:8080";
+
+        extraConfig = ''
+        
+    proxy_http_version 1.1;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection "upgrade";
+    proxy_read_timeout 86400;
+                proxy_connect_timeout 10;
+        proxy_set_header Host $host;
+
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+
+        proxy_buffering off;
+             '';
+
+       };
+
+
       "syncthing.rldn.net" = {
         forceSSL = true;
         useACMEHost = "rldn.net";
@@ -41,7 +65,7 @@
         useACMEHost = "rldn.net";
         locations."/".proxyPass = "http://127.0.0.1:5000";
         extraConfig = ''
-        
+        add_header Cache-Control no-cache;
     proxy_http_version 1.1;
     proxy_set_header Upgrade $http_upgrade;
     proxy_set_header Connection "upgrade";
@@ -57,6 +81,7 @@
                   satisfy any;
 
           allow 10.0.2.1/24;
+          allow 10.0.42.1/24;
           allow 127.0.0.1;
                   deny  all;
 
@@ -124,6 +149,7 @@
                 proxy_connect_timeout 10;
           '';
       };
+
        "jelly.rldn.net" = {
         forceSSL = true;
         useACMEHost = "rldn.net";
@@ -131,7 +157,6 @@
     add_header X-Frame-Options "SAMEORIGIN";
     add_header X-XSS-Protection "1; mode=block";
     add_header X-Content-Type-Options "nosniff";
-
     location = / {
        # return 302 http://$host/web/;
         return 302 https://$host/web/;
@@ -176,6 +201,32 @@
         proxy_set_header X-Forwarded-Host $http_host;
     }
         '';
+      };
+      "youtube.rldn.net" = {
+        forceSSL = true;
+        useACMEHost = "rldn.net";
+        locations."/".proxyPass = "http://127.0.0.1:4848";
+        extraConfig = ''
+                 proxy_set_header Host $host;
+                proxy_set_header X-Forwarded-Proto $scheme;
+                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                proxy_set_header X-Real-IP $remote_addr;
+                proxy_redirect off;
+    proxy_http_version 1.1;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection "upgrade";
+    proxy_read_timeout 86400;
+                  
+                  satisfy any;    
+
+          allow 10.0.2.1/24;
+          allow 127.0.0.1;
+                  deny  all;
+
+                  auth_basic           "weymouth area";
+                  auth_basic_user_file ${./../secrets/htpasswd}; 
+
+             '';
       };
       "tv.rldn.net" = {
         forceSSL = true;
@@ -244,6 +295,22 @@
                   auth_basic           "weymouth area";
                   auth_basic_user_file ${./../secrets/htpasswd}; 
 
+             '';
+      };
+      "org.rldn.net" = {
+        forceSSL = true;
+        useACMEHost = "rldn.net";
+        locations."/".proxyPass = "http://10.0.42.2:9000";
+        extraConfig = ''
+                 proxy_set_header Host $host;
+                proxy_set_header X-Forwarded-Proto $scheme;
+                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                proxy_set_header X-Real-IP $remote_addr;
+                proxy_redirect off;
+    proxy_http_version 1.1;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection "upgrade";
+    proxy_read_timeout 86400;
              '';
       };
       "torrent.rldn.net" = {

@@ -1,7 +1,7 @@
 { config, lib, inputs, pkgs, ... }: {
   imports = [
     ../secrets/homeassistant.nix
-    "${inputs.unstable}/nixos/modules/services/home-automation/home-assistant.nix"
+ #  "${inputs.unstable}/nixos/modules/services/home-automation/home-assistant.nix"
   ];
 
   disabledModules = [ "services/misc/home-assistant.nix" ];
@@ -9,6 +9,7 @@
   systemd.services.home-assistant = {
     after = [ "docker-frigate.service" ];
     requires = [ "docker-frigate.service" ];
+   # reloadTriggers = [];
   };
   services.home-assistant = {
     enable = true;
@@ -32,7 +33,7 @@
           python-nmap
           pkgs.openssh
           pkgs.unstable.nmap
-          (callPackage ../packages/mac_vendor_lookup.nix { })
+ #          (callPackage ../packages/mac_vendor_lookup.nix { })
           #          (callPackage ../packages/ocpp.nix { })
         ];
     }).overrideAttrs (oldAttrs: { doInstallCheck = false; });
@@ -50,7 +51,7 @@
         {
           url = "/local/webrtc.js";
           type = "module";
-        } 
+        }
         {
           url = "/local/upcoming-media-card.js";
           type = "module";
@@ -101,68 +102,51 @@
               "sensor.sidedoor_process_fps"
               "sensor.sidedoor_skipped_fps"
 
-              "sensor.coral1_inference_speed" 
+              "sensor.coral1_inference_speed"
               "sensor.coral2_inference_speed"
               "sensor.detection_fps"
 
               "sensor.wallbox_portal_charging_speed"
-#              "sensor.wallbox_portal_status_description"
+              #              "sensor.wallbox_portal_status_description"
               "sensor.wallbox_portal_cost"
             ];
           }
           {
             type = "custom:frigate-card";
-            dimensions = {
-              aspect_ration_mode = "dynamic";
-            };
+            dimensions = { aspect_ration_mode = "dynamic"; };
             live = {
               preload = true;
               auto_unmute = true;
               lazy_unload = true;
             };
-            menu = {
-              mode = "hover-top";
-            };
-            cameras = [
-              {
-                camera = "camera.side_door";
-                camera_name = "sidedoor";
-                camera_entity = "camera.sidedoor";
-                live_provider = "webrtc-card";
-                webrtc_card = {
-                  entity = "camera.side_door_main";
-                };
-                frigate_url = "https://frigate.rldn.net/";
-              }
-            ];
+            menu = { mode = "hover-top"; };
+            cameras = [{
+              camera = "camera.side_door";
+              camera_name = "sidedoor";
+              camera_entity = "camera.sidedoor";
+              live_provider = "webrtc-card";
+              webrtc_card = { entity = "camera.side_door_main"; };
+              frigate_url = "https://frigate.rldn.net/";
+            }];
           }
           {
             type = "custom:frigate-card";
-            dimensions = {
-              aspect_ration_mode = "dynamic";
-            };
+            dimensions = { aspect_ration_mode = "dynamic"; };
             live = {
               preload = true;
               auto_unmute = true;
               lazy_unload = true;
             };
-            menu = {
-              mode = "hover-top";
-            };
-            cameras = [
-              {
-                camera = "camera.frontdoor";
-                camera_entity = "camera.front_door_main";
-                camera_name = "frontdoor";
-                live_provider = "webrtc-card";
-                webrtc_card = {
-                  entity = "camera.front_door_main";
-                };
-                frigate_url = "https://frigate.rldn.net/";
-              }
-            ];
+            menu = { mode = "hover-top"; };
+            cameras = [{
+              camera = "camera.frontdoor";
+              camera_entity = "camera.front_door_main";
+              camera_name = "frontdoor";
+              live_provider = "webrtc-card";
+              webrtc_card = { entity = "camera.front_door_main"; };
+              frigate_url = "https://frigate.rldn.net/";
+            }];
           }
-
 
           {
             type = "custom:upcoming-media-card";
@@ -195,17 +179,17 @@
       wallbox = { };
       ruckus = { };
       nmap = { };
-      group =  {
-      living_room_lights = {
-        name = "living room lights";
-        entities = [
-          "light.living_room_lamp_1"
-          "light.living_room_lamp_2"
-          "light.living_room_lamp_3"
-          "light.living_room_lamp_4"
-        ];
+      group = {
+        living_room_lights = {
+          name = "living room lights";
+          entities = [
+            "light.living_room_lamp_1"
+            "light.living_room_lamp_2"
+            "light.living_room_lamp_3"
+            "light.living_room_lamp_4"
+          ];
+        };
       };
-};
       # {"id": "1640747399287", "alias": "New Automation", "description": "", "trigger": [{"platform": "device", "type": "turned_off", "device_id": "58c923e15372dfada5e4622bb53747ee", "entity_id": "switch.wallbox_availability", "domain": "switch"}], "condition": [], "action": [{"type": "turn_on", "device_id": "58c923e15372dfada5e4622bb53747ee", "entity_id": "switch.wallbox_charge_control", "domain": "switch"}], "mode": "single"}
       "automation sunset" = {
         id = "1627073230480";
@@ -330,25 +314,25 @@
 
         ];
       };
-      "automation living room light switch" =  {
+      "automation living room light switch" = {
         id = "1627073230482";
         alias = "living room light switch";
-        trigger = [{
-          platform = "state";
-          entity_id = "sensor.living_room_switch_action";
-          to = "open";
-        }
-{
-          platform = "state";
-          entity_id = "sensor.living_room_switch_action";
-          to = "close";
-        }];
-        action = [
+        trigger = [
           {
-             entity_id = "group.living_room_lights";
-             service = "light.toggle";
+            platform = "state";
+            entity_id = "sensor.living_room_switch_action";
+            to = "open";
+          }
+          {
+            platform = "state";
+            entity_id = "sensor.living_room_switch_action";
+            to = "close";
           }
         ];
+        action = [{
+          entity_id = "group.living_room_lights";
+          service = "light.toggle";
+        }];
       };
       script = {
         open_livingroom_blinds = {
@@ -392,7 +376,6 @@
           ];
         };
 
-
       };
       #      "automation charger" = {
       #        id = "1627073230476";
@@ -415,12 +398,47 @@
       #      };
       sensor = [
         {
+          platform = "owlet";
+          username = "mog@rldn.net";
+          password = config.owlet_password;
+          region = "world";
+        }
+        {
+          platform = "template";
+          sensors = {
+            owlet_heart_rate = {
+              unit_of_measurement = "BPM";
+              value_template = "{{states.sensor.owlet_smart_sock_AC000W013420105.attributes.heart_rate}}";
+            };
+            owlet_spo2 = {
+              unit_of_measurement = "SPO2";
+              value_template = "{{states.sensor.owlet_smart_sock_AC000W013420105.attributes.oxygen_saturation}}";
+            };
+            owlet_movement = {
+              unit_of_measurement = "%";
+              value_template = "{{states.sensor.owlet_smart_sock_AC000W013420105.attributes.movement}}";
+            };
+            owlet_battery = {
+              unit_of_measurement = "%";
+              value_template = "{{states.sensor.owlet_smart_sock_AC000W013420105.attributes.battery}}";
+            };
+            owlet_rssi = {
+              unit_of_measurement = "dBm";
+              value_template = "{{states.sensor.owlet_smart_sock_AC000W013420105.attributes.ble_rssi}}";
+            };
+            owlet_alert = {
+              value_template = "{{states.sensor.owlet_smart_sock_AC000W013420105.attributes.RED_ALERT_SUMMARY}}";
+            };
+          };
+        }
+        {
           platform = "mqtt_room";
           device_id = "iBeacon:426c7565-4368-6172-6d42-6561636f6e73-3838-4949";
-          name =  "Tommy";
+          name = "Tommy";
           state_topic = "espresense/rooms";
           timeout = 5;
-          away_timeout = 20; # number of seconds after which the enitity will get status not_home
+          away_timeout =
+            20; # number of seconds after which the enitity will get status not_home
         }
         {
           platform = "sonarr_upcoming_media";
@@ -483,6 +501,7 @@
     "d /var/lib/hass/custom_components 0755 hass hass"
     "L /var/lib/hass/custom_components/frigate - - - - ${inputs.frigate-hass-integration}/custom_components/frigate"
     "L /var/lib/hass/custom_components/dahua - - - - ${inputs.dahua-hass}/custom_components/dahua"
+    "L /var/lib/hass/custom_components/owlet - - - - ${inputs.owlet-hass-integration}/custom_components/owlet"
 
     #    "L /var/lib/hass/custom_components/ocpp - - - - ${inputs.ocpp-hass-integration}/custom_components/ocpp"
     "L /var/lib/hass/custom_components/webrtc - - - - ${inputs.webrtc-card}/custom_components/webrtc"

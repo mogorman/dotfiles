@@ -20,7 +20,7 @@
         Group = "users";
         StateDirectory = "jellyfin";
         CacheDirectory = "jellyfin";
-        ExecStart = "${pkgs.jellyfin}/bin/jellyfin --datadir '/var/lib/jellyfin' --cachedir '/var/cache/jellyfin'";
+        ExecStart = "${pkgs.unstable.jellyfin}/bin/jellyfin --datadir '/var/lib/jellyfin' --cachedir '/var/cache/jellyfin'";
       };
     };
 

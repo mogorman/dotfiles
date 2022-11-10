@@ -44,7 +44,7 @@
     kubectl
     krew
     fzf
-    pass-otp
+    #pass-otp
     psmisc
     powertop
     ripgrep

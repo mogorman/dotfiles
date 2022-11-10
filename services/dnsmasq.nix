@@ -49,7 +49,7 @@
       dhcp-host=30:05:5c:4d:9d:b6,printer,10.0.2.100
       dhcp-host=9c:8e:cd:32:16:9b,babycam,10.0.100.40
       dhcp-host=9c:8e:cd:30:9b:d5,frontdoor,10.0.100.41
-      dhcp-host=9c:8e:cd:37:ce:12,sidedoor,10.0.100.42
+      dhcp-host=9c:8e:cd:37:d0:08,sidedoor,10.0.100.42
 
     '';
   };

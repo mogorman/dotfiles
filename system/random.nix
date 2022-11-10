@@ -20,9 +20,11 @@
     ../services/komga.nix
     ../services/samba.nix
     ../services/syncthing.nix
+    ../services/reboot_cameras.nix
     ../secrets/nathanbox.nix
     ../packages/packages.nix
     ../users/mog.nix
+    ../users/joe.nix
     ../users/media.nix
   ];
 
@@ -65,11 +67,11 @@
     preLVM = false;
     allowDiscards = true;
   };
-  boot.initrd.luks.devices."04tb" = {
-    device = "/dev/disk/by-uuid/07f589a2-3312-4337-8ceb-ff6226b341f3";
-    preLVM = false;
-    allowDiscards = true;
-  };
+#  boot.initrd.luks.devices."04tb" = {
+#    device = "/dev/disk/by-uuid/07f589a2-3312-4337-8ceb-ff6226b341f3";
+#    preLVM = false;
+#    allowDiscards = true;
+#  };
   boot.initrd.luks.devices."16tb" = {
     device = "/dev/disk/by-uuid/2eba0bac-7bf4-4207-a695-78e064c57665";
     preLVM = false;
@@ -135,10 +137,10 @@
     device = "/dev/disk/by-uuid/d40907e4-0ca8-44bc-b145-bf191e499c7c";
     fsType = "ext4";
   };
-  fileSystems."/external/04tb" = {
-    device = "/dev/disk/by-uuid/c8f67343-9418-4c66-acf7-7d62f1b1acd2";
-    fsType = "ext4";
-  };
+#  fileSystems."/external/04tb" = {
+#    device = "/dev/disk/by-uuid/c8f67343-9418-4c66-acf7-7d62f1b1acd2";
+#    fsType = "ext4";
+#  };
   fileSystems."/external/16tb" = {
     device = "/dev/disk/by-uuid/e79fcb6d-d723-4b9b-8d65-c86d6d89875b";
     fsType = "ext4";
@@ -393,7 +395,10 @@
           publicKey = "TJQSuFFiBFwZmwaAqBkDQnJgFoLSqqpXWHVLecdk4wE=";
           allowedIPs = [ "10.0.42.4/32" ];
         }
-
+        { # Tom TV
+          publicKey = "bfHygoBbiFkFFkr68SD2NlPbpTVQbKxnwnhVO63+MSE=";
+          allowedIPs = [ "10.0.42.10/32" ];
+        } 
       ];
     };
   };

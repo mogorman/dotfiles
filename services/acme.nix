@@ -2,7 +2,7 @@
 
   security.acme = {
     acceptTerms = true;
-    email = "mog@rldn.net";
+    defaults.email = "mog@rldn.net";
     certs."rldn.net" = {
       group = "nginx";
       email = "mog@rldn.net";

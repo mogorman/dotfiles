@@ -57,6 +57,7 @@
     gnupg
     pinentry
     nmap
+    iperf
   ];
   hardware.nitrokey.enable = true;
   # Some programs need SUID wrappers, can be configured further or are
@@ -127,11 +128,7 @@ systemd.network = {
           RequiredForOnline = "carrier";
         };
         networkConfig.LinkLocalAddressing = "no";
-      };
-      "40-eth0" = {
-         enable = true;
-         matchConfig.Name = "eth0";
-         networkConfig = {
+        networkConfig = {
            DHCP = "yes";
            DNSSEC = "yes";
            DNSOverTLS = "yes";
@@ -139,6 +136,17 @@ systemd.network = {
          };
          dhcpV4Config.RouteMetric = 1024;
       };
+#      "40-eth0" = {
+#         enable = true;
+#         matchConfig.Name = "eth0";
+#         networkConfig = {
+#           DHCP = "yes";
+#           DNSSEC = "yes";
+#           DNSOverTLS = "yes";
+#           DNS = [ "1.1.1.1" "1.0.0.1" ];
+#         };
+#         dhcpV4Config.RouteMetric = 1024;
+#      };
     };
   };
 }

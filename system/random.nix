@@ -3,25 +3,25 @@
     ./common.nix
     ../secrets/secrets.nix
     ../services/ssh.nix
-    ../services/frigate.nix
-    ../services/tubesync.nix
-    ../services/mosquitto.nix
-    ../services/zigbee2mqtt.nix
-#    ../services/amcrest2mqtt.nix # dahua integration is better
-    ../services/mumble.nix
-    ../services/postgresql.nix
-    ../services/homeassistant.nix
-    ../services/media.nix
-    ../services/dnsmasq.nix
-    ../services/avahi.nix
-    ../services/acme.nix
-    ../services/nginx.nix
-    ../services/audiobookshelf.nix
-    ../services/komga.nix
-    ../services/samba.nix
-    ../services/syncthing.nix
-    ../services/reboot_cameras.nix
-    ../secrets/nathanbox.nix
+#    ../services/frigate.nix
+#    ../services/tubesync.nix
+#    ../services/mosquitto.nix
+#    ../services/zigbee2mqtt.nix
+##    ../services/amcrest2mqtt.nix # dahua integration is better
+#    ../services/mumble.nix
+#    ../services/postgresql.nix
+#    ../services/homeassistant.nix
+#    ../services/media.nix
+#    ../services/dnsmasq.nix
+#    ../services/avahi.nix
+#    ../services/acme.nix
+#    ../services/nginx.nix
+#    ../services/audiobookshelf.nix
+#    ../services/komga.nix
+#    ../services/samba.nix
+#    ../services/syncthing.nix
+#    ../services/reboot_cameras.nix
+#    ../secrets/nathanbox.nix
     ../packages/packages.nix
     ../users/mog.nix
     ../users/joe.nix
@@ -62,26 +62,26 @@
     allowDiscards = true;
   };
 
-  boot.initrd.luks.devices."06tb" = {
-    device = "/dev/disk/by-uuid/88c2c241-b24c-4420-881f-be7df6663734";
-    preLVM = false;
-    allowDiscards = true;
-  };
-#  boot.initrd.luks.devices."04tb" = {
-#    device = "/dev/disk/by-uuid/07f589a2-3312-4337-8ceb-ff6226b341f3";
+#  boot.initrd.luks.devices."06tb" = {
+#    device = "/dev/disk/by-uuid/88c2c241-b24c-4420-881f-be7df6663734";
 #    preLVM = false;
 #    allowDiscards = true;
 #  };
-  boot.initrd.luks.devices."16tb" = {
-    device = "/dev/disk/by-uuid/2eba0bac-7bf4-4207-a695-78e064c57665";
-    preLVM = false;
-    allowDiscards = true;
-  };
-  boot.initrd.luks.devices."10tb" = {
-    device = "/dev/disk/by-uuid/8702cb62-ad8f-4925-9595-e6c30bbb501a";
-    preLVM = false;
-    allowDiscards = true;
-  };
+##  boot.initrd.luks.devices."04tb" = {
+##    device = "/dev/disk/by-uuid/07f589a2-3312-4337-8ceb-ff6226b341f3";
+##    preLVM = false;
+##    allowDiscards = true;
+##  };
+#  boot.initrd.luks.devices."16tb" = {
+#    device = "/dev/disk/by-uuid/2eba0bac-7bf4-4207-a695-78e064c57665";
+#    preLVM = false;
+#    allowDiscards = true;
+#  };
+#  boot.initrd.luks.devices."10tb" = {
+#    device = "/dev/disk/by-uuid/8702cb62-ad8f-4925-9595-e6c30bbb501a";
+#    preLVM = false;
+#    allowDiscards = true;
+#  };
 
   boot.initrd.network.enable = true;
   boot.initrd.network.ssh = {
@@ -133,22 +133,22 @@
     fsType = "ext4";
   };
 
-  fileSystems."/external/06tb" = {
-    device = "/dev/disk/by-uuid/d40907e4-0ca8-44bc-b145-bf191e499c7c";
-    fsType = "ext4";
-  };
-#  fileSystems."/external/04tb" = {
-#    device = "/dev/disk/by-uuid/c8f67343-9418-4c66-acf7-7d62f1b1acd2";
+#  fileSystems."/external/06tb" = {
+#    device = "/dev/disk/by-uuid/d40907e4-0ca8-44bc-b145-bf191e499c7c";
 #    fsType = "ext4";
 #  };
-  fileSystems."/external/16tb" = {
-    device = "/dev/disk/by-uuid/e79fcb6d-d723-4b9b-8d65-c86d6d89875b";
-    fsType = "ext4";
-  };
-  fileSystems."/external/10tb" = {
-    device = "/dev/disk/by-uuid/a6a7cdb4-c335-403c-b02e-21679f172e16";
-    fsType = "ext4";
-  };
+##  fileSystems."/external/04tb" = {
+##    device = "/dev/disk/by-uuid/c8f67343-9418-4c66-acf7-7d62f1b1acd2";
+##    fsType = "ext4";
+##  };
+#  fileSystems."/external/16tb" = {
+#    device = "/dev/disk/by-uuid/e79fcb6d-d723-4b9b-8d65-c86d6d89875b";
+#    fsType = "ext4";
+#  };
+#  fileSystems."/external/10tb" = {
+#    device = "/dev/disk/by-uuid/a6a7cdb4-c335-403c-b02e-21679f172e16";
+#    fsType = "ext4";
+#  };
   fileSystems."/boot" = {
     device = "/dev/disk/by-uuid/C833-35FD";
     fsType = "vfat";
@@ -160,62 +160,62 @@
   # high-resolution display
   hardware.video.hidpi.enable = true;
   # HARDWARE CONFIG 
-  boot.kernel.sysctl = {
-    "net.ipv4.conf.all.forwarding" = 1;
-    "net.ipv4.conf.default.forwarding" = 1;
-  };
-
+#  boot.kernel.sysctl = {
+#    "net.ipv4.conf.all.forwarding" = 1;
+#    "net.ipv4.conf.default.forwarding" = 1;
+#  };
+#
   networking = {
     enableIPv6 = false;
     hostId = "72209696";
     hostName = "random";
-    useDHCP = false;
+    useDHCP = true;
 
     hosts = {
       "127.0.0.1" = [ "random" ];
       "10.0.2.1" = [ "home-assistant.local" "random.local" ];
     };
 
-    vlans = {
-      iot0 = {
-        id = 100;
-        interface = "eth1";
-      };
-      guest0 = {
-        id = 10;
-        interface = "eth1";
-      };
-      lan0 = {
-        id = 2;
-        interface = "eth1";
-      };
-      lan1 = {
-        id = 3;
-        interface = "eth1";
-      };
-
+#    vlans = {
+#      iot0 = {
+#        id = 100;
+#        interface = "eth1";
+#      };
+#      guest0 = {
+#        id = 10;
+#        interface = "eth1";
+#      };
+#      lan0 = {
+#        id = 2;
+#        interface = "eth1";
+#      };
+#      lan1 = {
+#        id = 3;
+#        interface = "eth1";
+#      };
+#
     };
 
-    interfaces = {
+    networking.interfaces = {
       eth0 = { useDHCP = true; };
-      eth1.useDHCP = false;
-
-      lan0.ipv4.addresses = [{
-        address = "10.0.2.1";
-        prefixLength = 24;
-      }];
-      lan1.ipv4.addresses = [{
-        address = "10.0.3.1";
-        prefixLength = 24;
-      }];
-      guest0.ipv4.addresses = [{
-        address = "10.0.10.1";
-        prefixLength = 24;
-      }];
-      iot0.ipv4.addresses = [{
-        address = "10.0.100.1";
-        prefixLength = 24;
-      }];
+#      eth1.useDHCP = false;
+#
+#      lan0.ipv4.addresses = [{
+#        address = "10.0.2.1";
+#        prefixLength = 24;
+#      }];
+#      lan1.ipv4.addresses = [{
+#        address = "10.0.3.1";
+#        prefixLength = 24;
+#      }];
+#      guest0.ipv4.addresses = [{
+#        address = "10.0.10.1";
+#        prefixLength = 24;
+#      }];
+#      iot0.ipv4.addresses = [{
+#        address = "10.0.100.1";
+#        prefixLength = 24;
+#      }];
     };
 
     #  nat.enable = false;
@@ -290,69 +290,70 @@
     #  };
 
     #nameservers = [ "4.4.4.4" "8.8.8.8" ];
-    nat = {
-      enable = true;
-      internalIPs = [
-        "10.0.2.0/24"
-        "10.0.2.0/24"
-        "10.0.10.0/24"
-        "10.0.100.0/24"
-        "10.0.42.0/24"
-      ];
-      internalInterfaces = [ "lan0" "lan1" "guest0" "iot0" "ve-seedbox" "wg0" ];
-      externalInterface = "eth0";
-      forwardPorts = [ 
-# {
-#    destination = "127.0.0.1:1935";
-#    proto = "tcp";
-#    sourcePort = 1935;
-#  }
- ];
-    };
-    firewall = {
-      enable = true;
-      allowPing = true;
-      trustedInterfaces = [ "lo" "lan0" "lan1" "guest0" "docker0" "iot0" ];
-      checkReversePath = false; # https://github.com/NixOS/nixpkgs/issues/10101
-
-      extraCommands = ''
-        iptables -t nat -A POSTROUTING -s 10.0.2.0/24 -o eth0 -j MASQUERADE
-        iptables -t nat -A POSTROUTING -s 10.0.3.0/24 -o eth0 -j MASQUERADE
-        iptables -t nat -A POSTROUTING -s 10.0.10.0/24 -o eth0 -j MASQUERADE
-        #BLOCK IOT FROM INTERNET but allow my laptop to access internet
-        iptables -A FORWARD -i iot0 -s 10.0.100.30  -j ACCEPT
-
-        iptables -A FORWARD -i iot0 -s 10.0.100.41  -j ACCEPT
-        iptables -A FORWARD -i iot0 -s 10.0.100.42  -j ACCEPT
-        iptables -A FORWARD -i iot0 -s 10.0.100.72  -j ACCEPT
-
-        iptables -A FORWARD -i iot0 -o eth0 -j REJECT
-      '';
-
-      allowedTCPPortRanges = [ ];
-      allowedUDPPortRanges = [   {
-    from = 10000;
-    to = 20000;
-  } ];
-
-      allowedTCPPorts = [
-        22 # SSH
-        80 # nginx
-        443 # nginx
-        #        8096 # Jellyfin
-        #        8123 # Home assistant
-        #        5000 # Frigate
-        #        7878 # Radarr
-        #        8989 # Sonarr
-        #        4848 # tubesync
-      ];
-      allowedUDPPorts = [
-        53 # DNS
-        51820 # wireguard main
-        51821 # wireguard seed
-      ];
-    };
-  };
+#    nat = {
+#      enable = true;
+#      internalIPs = [
+#        "10.0.2.0/24"
+#        "10.0.2.0/24"
+#        "10.0.10.0/24"
+#        "10.0.100.0/24"
+#        "10.0.42.0/24"
+#      ];
+#      internalInterfaces = [ "lan0" "lan1" "guest0" "iot0" "ve-seedbox" "wg0" ];
+#      externalInterface = "eth0";
+#      forwardPorts = [ 
+## {
+##    destination = "127.0.0.1:1935";
+##    proto = "tcp";
+##    sourcePort = 1935;
+##  }
+# ];
+#    };
+networking.firewall.enable = false;
+#    firewall = {
+#      enable = true;
+#      allowPing = true;
+#      trustedInterfaces = [ "lo" "lan0" "lan1" "guest0" "docker0" "iot0" ];
+#      checkReversePath = false; # https://github.com/NixOS/nixpkgs/issues/10101
+#
+#      extraCommands = ''
+#        iptables -t nat -A POSTROUTING -s 10.0.2.0/24 -o eth0 -j MASQUERADE
+#        iptables -t nat -A POSTROUTING -s 10.0.3.0/24 -o eth0 -j MASQUERADE
+#        iptables -t nat -A POSTROUTING -s 10.0.10.0/24 -o eth0 -j MASQUERADE
+#        #BLOCK IOT FROM INTERNET but allow my laptop to access internet
+#        iptables -A FORWARD -i iot0 -s 10.0.100.30  -j ACCEPT
+#
+#        iptables -A FORWARD -i iot0 -s 10.0.100.41  -j ACCEPT
+#        iptables -A FORWARD -i iot0 -s 10.0.100.42  -j ACCEPT
+#        iptables -A FORWARD -i iot0 -s 10.0.100.72  -j ACCEPT
+#
+#        iptables -A FORWARD -i iot0 -o eth0 -j REJECT
+#      '';
+#
+#      allowedTCPPortRanges = [ ];
+#      allowedUDPPortRanges = [   {
+#    from = 10000;
+#    to = 20000;
+#  } ];
+#
+#      allowedTCPPorts = [
+#        22 # SSH
+#        80 # nginx
+#        443 # nginx
+#        #        8096 # Jellyfin
+#        #        8123 # Home assistant
+#        #        5000 # Frigate
+#        #        7878 # Radarr
+#        #        8989 # Sonarr
+#        #        4848 # tubesync
+#      ];
+#      allowedUDPPorts = [
+#        53 # DNS
+#        51820 # wireguard main
+#        51821 # wireguard seed
+#      ];
+#    };
+#  };
 
   networking.wireguard.interfaces = {
     # "wg0" is the network interface name. You can name the interface arbitrarily.

@@ -62,27 +62,6 @@
     allowDiscards = true;
   };
 
-#  boot.initrd.luks.devices."06tb" = {
-#    device = "/dev/disk/by-uuid/88c2c241-b24c-4420-881f-be7df6663734";
-#    preLVM = false;
-#    allowDiscards = true;
-#  };
-##  boot.initrd.luks.devices."04tb" = {
-##    device = "/dev/disk/by-uuid/07f589a2-3312-4337-8ceb-ff6226b341f3";
-##    preLVM = false;
-##    allowDiscards = true;
-##  };
-#  boot.initrd.luks.devices."16tb" = {
-#    device = "/dev/disk/by-uuid/2eba0bac-7bf4-4207-a695-78e064c57665";
-#    preLVM = false;
-#    allowDiscards = true;
-#  };
-#  boot.initrd.luks.devices."10tb" = {
-#    device = "/dev/disk/by-uuid/8702cb62-ad8f-4925-9595-e6c30bbb501a";
-#    preLVM = false;
-#    allowDiscards = true;
-#  };
-
   boot.initrd.network.enable = true;
   boot.initrd.network.ssh = {
     enable = true;
@@ -132,23 +111,6 @@
     device = "/dev/disk/by-uuid/41c0df27-00a5-40ee-9334-bb5737a0a124";
     fsType = "ext4";
   };
-
-#  fileSystems."/external/06tb" = {
-#    device = "/dev/disk/by-uuid/d40907e4-0ca8-44bc-b145-bf191e499c7c";
-#    fsType = "ext4";
-#  };
-##  fileSystems."/external/04tb" = {
-##    device = "/dev/disk/by-uuid/c8f67343-9418-4c66-acf7-7d62f1b1acd2";
-##    fsType = "ext4";
-##  };
-#  fileSystems."/external/16tb" = {
-#    device = "/dev/disk/by-uuid/e79fcb6d-d723-4b9b-8d65-c86d6d89875b";
-#    fsType = "ext4";
-#  };
-#  fileSystems."/external/10tb" = {
-#    device = "/dev/disk/by-uuid/a6a7cdb4-c335-403c-b02e-21679f172e16";
-#    fsType = "ext4";
-#  };
   fileSystems."/boot" = {
     device = "/dev/disk/by-uuid/C833-35FD";
     fsType = "vfat";
@@ -159,255 +121,59 @@
 
   # high-resolution display
   hardware.video.hidpi.enable = true;
-  # HARDWARE CONFIG 
-#  boot.kernel.sysctl = {
-#    "net.ipv4.conf.all.forwarding" = 1;
-#    "net.ipv4.conf.default.forwarding" = 1;
-#  };
+#  networking.wireguard.interfaces = {
+#    # "wg0" is the network interface name. You can name the interface arbitrarily.
+#    wg0 = {
+#      # Determines the IP address and subnet of the server's end of the tunnel interface.
+#      ips = [ "10.0.42.1/24" ];
 #
-  networking = {
-    enableIPv6 = false;
-    hostId = "72209696";
-    hostName = "random";
-    useDHCP = true;
-
-    hosts = {
-      "127.0.0.1" = [ "random" ];
-      "10.0.2.1" = [ "home-assistant.local" "random.local" ];
-    };
-
-#    vlans = {
-#      iot0 = {
-#        id = 100;
-#        interface = "eth1";
-#      };
-#      guest0 = {
-#        id = 10;
-#        interface = "eth1";
-#      };
-#      lan0 = {
-#        id = 2;
-#        interface = "eth1";
-#      };
-#      lan1 = {
-#        id = 3;
-#        interface = "eth1";
-#      };
+#      # The port that WireGuard listens to. Must be accessible by the client.
+#      listenPort = 51820;
 #
-    };
-
-    networking.interfaces = {
-      eth0 = { useDHCP = true; };
-#      eth1.useDHCP = false;
-#
-#      lan0.ipv4.addresses = [{
-#        address = "10.0.2.1";
-#        prefixLength = 24;
-#      }];
-#      lan1.ipv4.addresses = [{
-#        address = "10.0.3.1";
-#        prefixLength = 24;
-#      }];
-#      guest0.ipv4.addresses = [{
-#        address = "10.0.10.1";
-#        prefixLength = 24;
-#      }];
-#      iot0.ipv4.addresses = [{
-#        address = "10.0.100.1";
-#        prefixLength = 24;
-#      }];
-    };
-
-    #  nat.enable = false;
-    #  firewall.enable = false;
-    #  nftables = {
-    #    enable = true;
-    #    ruleset = ''
-    #      table ip filter {
-    #        # enable flow offloading for better throughput
-    #        flowtable f {
-    #          hook ingress priority 0;
-    #          devices = { eth0, lan0, guest0 };
-    #        }
-    #
-    #        chain output {
-    #          type filter hook output priority 100; policy accept;
-    #        }
-    #
-    #        chain input {
-    #          type filter hook input priority filter; policy drop;
-    #
-    #          # Allow trusted networks to access the router
-    #          iifname {
-    #            "lan0",
-    #          } counter accept
-    # 
-    # #         # Allow trusted networks to access the router
-    # #         iifname {
-    # #           "guest0",
-    # #         } counter accept
-    #
-    #
-    #          # Allow returning traffic from ppp0 and drop everthing else
-    #          iifname "eth0" ct state { established, related } counter accept
-    #          iifname "eth0" drop
-    #        }
-    #        
-    #        chain forward {
-    #          type filter hook forward priority filter; policy drop;
-    #
-    #          # enable flow offloading for better throughput
-    #          ip protocol { tcp, udp } flow offload @f
-    #
-    #          # Allow trusted network WAN access
-    #          iifname {
-    #                  "lan0",
-    #          } oifname {
-    #                  "eth0",
-    #          } counter accept comment "Allow trusted LAN to WAN"
-    #
-    #          # Allow established WAN to return
-    #          iifname {
-    #                  "eth0",
-    #          } oifname {
-    #                  "lan0",
-    #          } ct state established,related counter accept comment "Allow established back to LANs"
-    #        }
-    #      }
-    #
-    #      table ip nat {
-    #        chain prerouting {
-    #          type nat hook output priority filter; policy accept;
-    #        }
-    #
-    #        # Setup NAT masquerading on the ppp0 interface
-    #        chain postrouting {
-    #          type nat hook postrouting priority filter; policy accept;
-    #          oifname "eth0" masquerade
-    #        } 
-    #      }
-    #    '';
-    #  };
-
-    #nameservers = [ "4.4.4.4" "8.8.8.8" ];
-#    nat = {
-#      enable = true;
-#      internalIPs = [
-#        "10.0.2.0/24"
-#        "10.0.2.0/24"
-#        "10.0.10.0/24"
-#        "10.0.100.0/24"
-#        "10.0.42.0/24"
-#      ];
-#      internalInterfaces = [ "lan0" "lan1" "guest0" "iot0" "ve-seedbox" "wg0" ];
-#      externalInterface = "eth0";
-#      forwardPorts = [ 
-## {
-##    destination = "127.0.0.1:1935";
-##    proto = "tcp";
-##    sourcePort = 1935;
-##  }
-# ];
-#    };
-networking.firewall.enable = false;
-#    firewall = {
-#      enable = true;
-#      allowPing = true;
-#      trustedInterfaces = [ "lo" "lan0" "lan1" "guest0" "docker0" "iot0" ];
-#      checkReversePath = false; # https://github.com/NixOS/nixpkgs/issues/10101
-#
-#      extraCommands = ''
-#        iptables -t nat -A POSTROUTING -s 10.0.2.0/24 -o eth0 -j MASQUERADE
-#        iptables -t nat -A POSTROUTING -s 10.0.3.0/24 -o eth0 -j MASQUERADE
-#        iptables -t nat -A POSTROUTING -s 10.0.10.0/24 -o eth0 -j MASQUERADE
-#        #BLOCK IOT FROM INTERNET but allow my laptop to access internet
-#        iptables -A FORWARD -i iot0 -s 10.0.100.30  -j ACCEPT
-#
-#        iptables -A FORWARD -i iot0 -s 10.0.100.41  -j ACCEPT
-#        iptables -A FORWARD -i iot0 -s 10.0.100.42  -j ACCEPT
-#        iptables -A FORWARD -i iot0 -s 10.0.100.72  -j ACCEPT
-#
-#        iptables -A FORWARD -i iot0 -o eth0 -j REJECT
+#      # This allows the wireguard server to route your traffic to the internet and hence be like a VPN
+#      # For this to work you have to set the dnsserver IP of your router (or dnsserver of choice) in your clients
+#      postSetup = ''
+#        ${pkgs.iptables}/bin/iptables -t nat -A POSTROUTING -s 10.0.42.0/24 -o eth0 -j MASQUERADE
 #      '';
 #
-#      allowedTCPPortRanges = [ ];
-#      allowedUDPPortRanges = [   {
-#    from = 10000;
-#    to = 20000;
-#  } ];
+#      # This undoes the above command
+#      postShutdown = ''
+#        ${pkgs.iptables}/bin/iptables -t nat -D POSTROUTING -s 10.0.42.0/24 -o eth0 -j MASQUERADE
+#      '';
 #
-#      allowedTCPPorts = [
-#        22 # SSH
-#        80 # nginx
-#        443 # nginx
-#        #        8096 # Jellyfin
-#        #        8123 # Home assistant
-#        #        5000 # Frigate
-#        #        7878 # Radarr
-#        #        8989 # Sonarr
-#        #        4848 # tubesync
-#      ];
-#      allowedUDPPorts = [
-#        53 # DNS
-#        51820 # wireguard main
-#        51821 # wireguard seed
+#      # Path to the private key file.
+#      #
+#      # Note: The private key can also be included inline via the privateKey option,
+#      # but this makes the private key world-readable; thus, using privateKeyFile is
+#      # recommended.
+#      privateKeyFile = "${../secrets/wireguard/random_private}";
+#
+#      peers = [
+#        # List of allowed peers.
+#        { # Madrox
+#          publicKey = "4CUkyO2vfZjZIc+fvsYI3Vg3j1ptFFNvRYyuntgo6UM=";
+#          allowedIPs = [ "10.0.42.2/32" ];
+#        }
+#        { # Mog Phone
+#          publicKey = "YUZwRf8w/dVPcD+HgYFzZhjluxuDNaxjiNefwtH+Qhc=";
+#          allowedIPs = [ "10.0.42.3/32" ];
+#        }
+#        { # Trillian
+#          publicKey = "TJQSuFFiBFwZmwaAqBkDQnJgFoLSqqpXWHVLecdk4wE=";
+#          allowedIPs = [ "10.0.42.4/32" ];
+#        }
+#        { # Tom TV
+#          publicKey = "bfHygoBbiFkFFkr68SD2NlPbpTVQbKxnwnhVO63+MSE=";
+#          allowedIPs = [ "10.0.42.10/32" ];
+#        }
+#       { # Blue fire / livingroom frame
+#          publicKey = "UfnRPugELsYoWsuFNNjvzJ+IaTxxdkcshvqKQSqG6EM=";
+#          allowedIPs = [ "10.0.42.60/32" ];
+#        } 
 #      ];
 #    };
 #  };
-
-  networking.wireguard.interfaces = {
-    # "wg0" is the network interface name. You can name the interface arbitrarily.
-    wg0 = {
-      # Determines the IP address and subnet of the server's end of the tunnel interface.
-      ips = [ "10.0.42.1/24" ];
-
-      # The port that WireGuard listens to. Must be accessible by the client.
-      listenPort = 51820;
-
-      # This allows the wireguard server to route your traffic to the internet and hence be like a VPN
-      # For this to work you have to set the dnsserver IP of your router (or dnsserver of choice) in your clients
-      postSetup = ''
-        ${pkgs.iptables}/bin/iptables -t nat -A POSTROUTING -s 10.0.42.0/24 -o eth0 -j MASQUERADE
-      '';
-
-      # This undoes the above command
-      postShutdown = ''
-        ${pkgs.iptables}/bin/iptables -t nat -D POSTROUTING -s 10.0.42.0/24 -o eth0 -j MASQUERADE
-      '';
-
-      # Path to the private key file.
-      #
-      # Note: The private key can also be included inline via the privateKey option,
-      # but this makes the private key world-readable; thus, using privateKeyFile is
-      # recommended.
-      privateKeyFile = "${../secrets/wireguard/random_private}";
-
-      peers = [
-        # List of allowed peers.
-        { # Madrox
-          publicKey = "4CUkyO2vfZjZIc+fvsYI3Vg3j1ptFFNvRYyuntgo6UM=";
-          allowedIPs = [ "10.0.42.2/32" ];
-        }
-        { # Mog Phone
-          publicKey = "YUZwRf8w/dVPcD+HgYFzZhjluxuDNaxjiNefwtH+Qhc=";
-          allowedIPs = [ "10.0.42.3/32" ];
-        }
-        { # Trillian
-          publicKey = "TJQSuFFiBFwZmwaAqBkDQnJgFoLSqqpXWHVLecdk4wE=";
-          allowedIPs = [ "10.0.42.4/32" ];
-        }
-        { # Tom TV
-          publicKey = "bfHygoBbiFkFFkr68SD2NlPbpTVQbKxnwnhVO63+MSE=";
-          allowedIPs = [ "10.0.42.10/32" ];
-        }
-       { # Blue fire / livingroom frame
-          publicKey = "UfnRPugELsYoWsuFNNjvzJ+IaTxxdkcshvqKQSqG6EM=";
-          allowedIPs = [ "10.0.42.60/32" ];
-        } 
-      ];
-    };
-  };
-
+#
   nixpkgs.config.packageOverrides = pkgs: {
     vaapiIntel = pkgs.vaapiIntel.override { enableHybridCodec = true; };
   };
@@ -422,4 +188,65 @@ networking.firewall.enable = false;
   };
   programs.gnupg.agent.pinentryFlavor = "curses";
   security.pam.enableSSHAgentAuth = true;
+
+
+  networking = {
+    hostName = "random";
+    firewall.enable = false;
+    useNetworkd = true;
+    useDHCP = false;
+    interfaces.eth0.useDHCP = true; 
+  };
+
+  systemd.network = {
+    wait-online.anyInterface = true;
+    links = {
+      "10-eth1" = { matchConfig.MACAddress = "00:e0:4c:02:05:f5"; linkConfig.Name = "eth1"; };
+
+      "10-eth0" = {
+        matchConfig = {
+          MACAddress="00:e0:4c:02:05:f4";
+        };
+        linkConfig = {
+          Name="eth0";
+          MACAddress="00:e0:4c:02:05:f3";
+        };
+      };
+    };
+    netdevs = {
+      "10-bond0" = {
+        netdevConfig = {
+          Kind = "bond";
+          Name = "bond0";
+        };
+        bondConfig = {
+          Mode = "802.3ad";
+          TransmitHashPolicy = "layer3+4";
+        };
+      };
+    };
+    networks = {
+      "30-eth0" = {
+        matchConfig.Name = "eth0";
+        networkConfig.Bond = "bond0";
+      };
+
+      "30-eth1" = {
+        matchConfig.Name = "eth1";
+        networkConfig.Bond = "bond0";
+      };
+
+      "40-bond0" = {
+        matchConfig.Name = "bond0";
+        networkConfig = {
+          DHCP = "yes";
+          DNSSEC = "yes";
+          DNSOverTLS = "yes";
+          DNS = [ "1.1.1.1" "1.0.0.1" ];
+        };
+        dhcpV4Config.RouteMetric = 1024;
+      };
+    };
+  };
+
 }

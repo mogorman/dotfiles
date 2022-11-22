@@ -3,6 +3,7 @@
     ./common.nix
     ../secrets/secrets.nix
     ../services/ssh.nix
+    ../services/nfs_server.nix
     ../users/mog.nix
   ];
 
@@ -23,6 +24,12 @@
     "igb"
   ];
 
+  hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+
+  # high-resolution display
+  hardware.video.hidpi.enable = true;
+  security.pam.enableSSHAgentAuth = true;
+
   boot.initrd.kernelModules = [ "dm-snapshot" ];
   boot.kernelModules = [ "kvm-intel" ];
 
@@ -40,12 +47,11 @@
     [ { device = "/dev/disk/by-uuid/fc5d67c1-7daf-4dba-998b-5ff64ad79a11"; }
     ];
 
-
-  hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
-
-  # high-resolution display
-  hardware.video.hidpi.enable = true;
-  security.pam.enableSSHAgentAuth = true;
+  fileSystems."/export/drive_a" =
+    { device = "/dev/mapper/drive_a";
+      fsType = "ext4";
+      options = [ "nofail" "noauto" ];
+    };
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
@@ -58,6 +64,9 @@
     pinentry
     nmap
     iperf
+    speedtest-cli
+    screen
+    cryptsetup
   ];
   hardware.nitrokey.enable = true;
   # Some programs need SUID wrappers, can be configured further or are
@@ -80,20 +89,32 @@
 
   services.udev.extraRules = ''
     ATTR{idVendor}=="20a0", MODE="0660", GROUP="users"
-    ACTION=="add", SUBSYSTEM=="net", ATTR{address}=="00:e2:69:5a:40:45", NAME="eth0"
-    ACTION=="add", SUBSYSTEM=="net", ATTR{address}=="00:e2:69:5a:40:46", NAME="eth1"
-    ACTION=="add", SUBSYSTEM=="net", ATTR{address}=="00:e2:69:5a:40:47", NAME="eth2"
-    ACTION=="add", SUBSYSTEM=="net", ATTR{address}=="00:e2:69:5a:40:48", NAME="eth3"
-
   '';
 
   networking = {
     hostName = "zaphod";
+    firewall.enable = false;
     useNetworkd = true;
     useDHCP = false;
   };
 
-systemd.network = {
+  systemd.network = {
+    wait-online.anyInterface = true;
+    links = {
+      "10-eth1" = { matchConfig.MACAddress = "00:e2:69:5a:40:46"; linkConfig.Name = "eth1"; };
+      "10-eth2" = { matchConfig.MACAddress = "00:e2:69:5a:40:47"; linkConfig.Name = "eth2"; };
+      "10-eth3" = { matchConfig.MACAddress = "00:e2:69:5a:40:48"; linkConfig.Name = "eth3"; };
+
+      "10-eth0" = {
+        matchConfig = {
+          MACAddress="00:e2:69:5a:40:45";
+        };
+        linkConfig = {
+          Name="eth0";
+          MACAddress="00:e0:4c:02:05:f4";
+        };
+      };
+    };
     netdevs = {
       "10-bond0" = {
         netdevConfig = {
@@ -105,6 +126,26 @@ systemd.network = {
           TransmitHashPolicy = "layer3+4";
         };
       };
+
+      "11-lan0" = {
+        netdevConfig = { Name = "lan0"; Kind = "vlan"; };
+        vlanConfig.Id = 2;
+      };
+
+      "11-lan1" = {
+        netdevConfig = { Name = "lan1"; Kind = "vlan"; };
+        vlanConfig.Id = 3;
+      };
+
+      "11-guest0" = {
+        netdevConfig = { Name = "guest0"; Kind = "vlan"; };
+        vlanConfig.Id = 10;
+      };
+      "11-iot0" = {
+        netdevConfig = { Name = "iot0"; Kind = "vlan"; };
+        vlanConfig.Id = 100;
+      };
+
     };
     networks = {
       "30-eth1" = {
@@ -122,31 +163,92 @@ systemd.network = {
         networkConfig.Bond = "bond0";
       };
 
+     "10-eth0" = {
+        enable = true;
+        matchConfig.Name = "eth0";
+        networkConfig = {
+          DHCP = "yes";
+          DNSSEC = "yes";
+          DNSOverTLS = "yes";
+          DNS = [ "1.1.1.1" "1.0.0.1" ];
+        };
+        dhcpV4Config.RouteMetric = 1024;
+     };
+
       "40-bond0" = {
         matchConfig.Name = "bond0";
         linkConfig = {
           RequiredForOnline = "carrier";
         };
         networkConfig.LinkLocalAddressing = "no";
-        networkConfig = {
-           DHCP = "yes";
-           DNSSEC = "yes";
-           DNSOverTLS = "yes";
-           DNS = [ "1.1.1.1" "1.0.0.1" ];
-         };
-         dhcpV4Config.RouteMetric = 1024;
+        vlan = [ "lan0" "lan1" "guest0" "iot0" ];
       };
-#      "40-eth0" = {
-#         enable = true;
-#         matchConfig.Name = "eth0";
-#         networkConfig = {
-#           DHCP = "yes";
-#           DNSSEC = "yes";
-#           DNSOverTLS = "yes";
-#           DNS = [ "1.1.1.1" "1.0.0.1" ];
-#         };
-#         dhcpV4Config.RouteMetric = 1024;
-#      };
+
+      "51-lan0" = {
+        matchConfig.Name = "lan0";
+        networkConfig = {
+          DHCPServer = true;
+          MulticastDNS = true;
+          IPMasquerade = true;
+          LinkLocalAddressing = "yes";
+          Address = "10.0.2.1/24";
+
+
+        };
+        dhcpServerConfig = {
+          PoolOffset = 100;
+          EmitDNS = true;
+          DNS = [ "1.1.1.1" "1.0.0.1" ];
+        };
+      };
+
+      "51-lan1" = {
+        matchConfig.Name = "lan1";
+        networkConfig = {
+          DHCPServer = true;
+          MulticastDNS = true;
+          IPMasquerade = true;
+          LinkLocalAddressing = "yes";
+          Address = "10.0.3.1/24";
+        };
+        dhcpServerConfig = {
+          PoolOffset = 100;
+          EmitDNS = true;
+          DNS = [ "1.1.1.1" "1.0.0.1" ];
+        };
+      };
+
+      "51-guest0" = {
+        matchConfig.Name = "networkConfig";
+        networkConfig = {
+          DHCPServer = true;
+          MulticastDNS = true;
+          IPMasquerade = true;
+          LinkLocalAddressing = "yes";
+          Address = "10.0.10.1/24";
+        };
+        dhcpServerConfig = {
+          PoolOffset = 100;
+          EmitDNS = true;
+          DNS = [ "1.1.1.1" "1.0.0.1" ];
+        };
+      };
+
+      "51-iot0" = {
+        matchConfig.Name = "iot0";
+        networkConfig = {
+          DHCPServer = true;
+          MulticastDNS = true;
+          IPMasquerade = true;
+          LinkLocalAddressing = "yes";
+          Address = "10.0.100.1/24";
+        };
+        dhcpServerConfig = {
+          PoolOffset = 100;
+          EmitDNS = true;
+          DNS = [ "1.1.1.1" "1.0.0.1" ];
+        };
+      };
     };
   };
 }

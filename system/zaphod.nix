@@ -47,8 +47,26 @@
     [ { device = "/dev/disk/by-uuid/fc5d67c1-7daf-4dba-998b-5ff64ad79a11"; }
     ];
 
-  fileSystems."/export/drive_a" =
-    { device = "/dev/mapper/drive_a";
+  fileSystems."/export/drive_1" =
+    { device = "/dev/mapper/drive_1";
+      fsType = "ext4";
+      options = [ "nofail" "noauto" ];
+    };
+
+  fileSystems."/export/drive_2" =
+    { device = "/dev/mapper/drive_2";
+      fsType = "ext4";
+      options = [ "nofail" "noauto" ];
+    };
+
+  fileSystems."/export/drive_3" =
+    { device = "/dev/mapper/drive_3";
+      fsType = "ext4";
+      options = [ "nofail" "noauto" ];
+    };
+
+  fileSystems."/export/drive_4" =
+    { device = "/dev/mapper/drive_4";
       fsType = "ext4";
       options = [ "nofail" "noauto" ];
     };
@@ -91,29 +109,58 @@
     ATTR{idVendor}=="20a0", MODE="0660", GROUP="users"
   '';
 
+
+  services.resolved = {
+    enable = true;
+    fallbackDns = [ "8.8.8.8" "1.1.1.1" ];
+  };
+
+  services.unbound = {
+    enable = true;
+    settings = {
+          server = {
+            interface = [ "127.0.0.1" "10.0.2.1" "10.0.3.1" "10.0.10.1" "10.0.100.1" ];
+            access-control = [ "127.0.0.0/8 allow" 
+                               "10.0.2.0/24 allow" 
+                               "10.0.2.0/24 allow" 
+                               "10.0.10.0/24 allow" 
+                               "10.0.100.0/24 allow" 
+                             ];
+          };
+          forward-zone = [
+            {
+              name = ".";
+              forward-addr = [
+                "1.1.1.1@853#cloudflare-dns.com"
+                "1.0.0.1@853#cloudflare-dns.com"
+              ];
+              forward-tls-upstream = "yes";
+            }
+          ];
+      stub-zone = let
+        stubZone = name: addrs: { name = "${name}"; stub-addr = addrs; };
+      in
+        [
+          (stubZone "zaphod" ["10.0.2.1"])
+        ];
+        };
+  };
+
   networking = {
     hostName = "zaphod";
     firewall.enable = false;
     useNetworkd = true;
     useDHCP = false;
+    nameservers = [ "127.0.0.1" ];
   };
 
   systemd.network = {
     wait-online.anyInterface = true;
     links = {
+      "10-eth0" = { matchConfig.MACAddress = "00:e2:69:5a:40:45"; linkConfig.Name = "eth0"; }; 
       "10-eth1" = { matchConfig.MACAddress = "00:e2:69:5a:40:46"; linkConfig.Name = "eth1"; };
       "10-eth2" = { matchConfig.MACAddress = "00:e2:69:5a:40:47"; linkConfig.Name = "eth2"; };
       "10-eth3" = { matchConfig.MACAddress = "00:e2:69:5a:40:48"; linkConfig.Name = "eth3"; };
-
-      "10-eth0" = {
-        matchConfig = {
-          MACAddress="00:e2:69:5a:40:45";
-        };
-        linkConfig = {
-          Name="eth0";
-          MACAddress="00:e0:4c:02:05:f4";
-        };
-      };
     };
     netdevs = {
       "10-bond0" = {
@@ -168,9 +215,9 @@
         matchConfig.Name = "eth0";
         networkConfig = {
           DHCP = "yes";
-          DNSSEC = "yes";
-          DNSOverTLS = "yes";
-          DNS = [ "1.1.1.1" "1.0.0.1" ];
+#          DNSSEC = "yes";
+#          DNSOverTLS = "yes";
+          DNS = [ "10.0.2.1" ];
         };
         dhcpV4Config.RouteMetric = 1024;
      };
@@ -192,17 +239,16 @@
           IPMasquerade = true;
           LinkLocalAddressing = "yes";
           Address = "10.0.2.1/24";
-
-
+          DNS = [ "10.0.2.1" ];
         };
         dhcpServerConfig = {
           PoolOffset = 100;
           EmitDNS = true;
-          DNS = [ "1.1.1.1" "1.0.0.1" ];
+#          DNS = [ "1.1.1.1" "1.0.0.1" ];
         };
       };
 
-      "51-lan1" = {
+      "52-lan1" = {
         matchConfig.Name = "lan1";
         networkConfig = {
           DHCPServer = true;
@@ -214,12 +260,12 @@
         dhcpServerConfig = {
           PoolOffset = 100;
           EmitDNS = true;
-          DNS = [ "1.1.1.1" "1.0.0.1" ];
+ #         DNS = [ "1.1.1.1" "1.0.0.1" ];
         };
       };
 
-      "51-guest0" = {
-        matchConfig.Name = "networkConfig";
+      "53-guest0" = {
+        matchConfig.Name = "guest0";
         networkConfig = {
           DHCPServer = true;
           MulticastDNS = true;
@@ -230,11 +276,11 @@
         dhcpServerConfig = {
           PoolOffset = 100;
           EmitDNS = true;
-          DNS = [ "1.1.1.1" "1.0.0.1" ];
+  #        DNS = [ "1.1.1.1" "1.0.0.1" ];
         };
       };
 
-      "51-iot0" = {
+      "54-iot0" = {
         matchConfig.Name = "iot0";
         networkConfig = {
           DHCPServer = true;
@@ -246,7 +292,7 @@
         dhcpServerConfig = {
           PoolOffset = 100;
           EmitDNS = true;
-          DNS = [ "1.1.1.1" "1.0.0.1" ];
+   #       DNS = [ "1.1.1.1" "1.0.0.1" ];
         };
       };
     };

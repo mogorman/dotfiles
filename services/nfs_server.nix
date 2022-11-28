@@ -18,11 +18,11 @@
   services.nfs.server = {
     enable = true;
     exports = ''
-            /export 10.0.42.0/24(rw,fsid=0,no_subtree_check,insecure,no_root_squash) 10.0.2.1(rw,fsid=0,no_subtree_check,insecure,no_root_squash)  10.0.2.201(rw,fsid=0,no_subtree_check,insecure,no_root_squash) 
-            /export/drive_1 10.0.42.0/24(rw,no_subtree_check,insecure,no_root_squash) 10.0.2.1(rw,no_subtree_check,insecure,no_root_squash)  10.0.2.201(rw,no_subtree_check,insecure,no_root_squash) 
-            /export/drive_2 10.0.42.0/24(rw,no_subtree_check,insecure,no_root_squash) 10.0.2.1(rw,no_subtree_check,insecure,no_root_squash)  10.0.2.201(rw,no_subtree_check,insecure,no_root_squash) 
-            /export/drive_3 10.0.42.0/24(rw,no_subtree_check,insecure,no_root_squash) 10.0.2.1(rw,no_subtree_check,insecure,no_root_squash)  10.0.2.201(rw,no_subtree_check,insecure,no_root_squash) 
-            /export/drive_4 10.0.42.0/24(rw,no_subtree_check,insecure,no_root_squash) 10.0.2.1(rw,no_subtree_check,insecure,no_root_squash)  10.0.2.201(rw,no_subtree_check,insecure,no_root_squash) 
+            /export 10.0.42.0/24(rw,fsid=0,no_subtree_check,insecure,no_root_squash) 10.0.2.1(rw,fsid=0,no_subtree_check,insecure,no_root_squash)  10.0.2.2(rw,fsid=0,no_subtree_check,insecure,no_root_squash) 
+            /export/drive_1 10.0.42.0/24(rw,no_subtree_check,insecure,no_root_squash) 10.0.2.1(rw,no_subtree_check,insecure,no_root_squash)  10.0.2.2(rw,no_subtree_check,insecure,no_root_squash) 
+            /export/drive_2 10.0.42.0/24(rw,no_subtree_check,insecure,no_root_squash) 10.0.2.1(rw,no_subtree_check,insecure,no_root_squash)  10.0.2.2(rw,no_subtree_check,insecure,no_root_squash) 
+            /export/drive_3 10.0.42.0/24(rw,no_subtree_check,insecure,no_root_squash) 10.0.2.1(rw,no_subtree_check,insecure,no_root_squash)  10.0.2.2(rw,no_subtree_check,insecure,no_root_squash) 
+            /export/drive_4 10.0.42.0/24(rw,no_subtree_check,insecure,no_root_squash) 10.0.2.1(rw,no_subtree_check,insecure,no_root_squash)  10.0.2.2(rw,no_subtree_check,insecure,no_root_squash) 
     '';
   };
 }

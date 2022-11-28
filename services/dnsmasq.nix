@@ -7,7 +7,7 @@
     dnsmasq_hosts = {
       text = ''
         10.0.2.1 zaphod
-        10.0.2.1 home-assistant.local random.local
+        10.0.2.2 random home-assistant.local random.local jelly
             '';
 
       # The UNIX file mode bits
@@ -38,6 +38,7 @@
       dhcp-script=${../scripts/dnsmasq_script.sh}
 
       no-negcache
+      dhcp-host=7a:24:f6:87:9b:3a,random,10.0.2.2
       dhcp-host=8c:fe:74:17:29:e0,r610,10.0.2.251
       dhcp-host=1c:b9:c4:36:0f:00,r600,10.0.2.252
       dhcp-host=1c:b9:c4:07:f1:50,r310,10.0.2.253

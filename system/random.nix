@@ -195,7 +195,6 @@
     firewall.enable = false;
     useNetworkd = true;
     useDHCP = false;
-    interfaces.eth0.useDHCP = true; 
   };
 
   systemd.network = {

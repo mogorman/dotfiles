@@ -4,6 +4,8 @@
     ../secrets/secrets.nix
     ../services/ssh.nix
     ../services/nfs_server.nix
+    ../services/dnsmasq.nix
+    ../services/avahi.nix
     ../users/mog.nix
     ../users/joe.nix
     ../users/media.nix
@@ -111,49 +113,76 @@
     ATTR{idVendor}=="20a0", MODE="0660", GROUP="users"
   '';
 
-
   services.resolved = {
-    enable = true;
-    fallbackDns = [ "8.8.8.8" "1.1.1.1" ];
-  };
-
-  services.unbound = {
-    enable = true;
-    settings = {
-          server = {
-            interface = [ "127.0.0.1" "10.0.2.1" "10.0.3.1" "10.0.10.1" "10.0.100.1" ];
-            access-control = [ "127.0.0.0/8 allow" 
-                               "10.0.2.0/24 allow" 
-                               "10.0.2.0/24 allow" 
-                               "10.0.10.0/24 allow" 
-                               "10.0.100.0/24 allow" 
-                             ];
-          };
-          forward-zone = [
-            {
-              name = ".";
-              forward-addr = [
-                "1.1.1.1@853#cloudflare-dns.com"
-                "1.0.0.1@853#cloudflare-dns.com"
-              ];
-              forward-tls-upstream = "yes";
-            }
-          ];
-      stub-zone = let
-        stubZone = name: addrs: { name = "${name}"; stub-addr = addrs; };
-      in
-        [
-          (stubZone "zaphod" ["10.0.2.1"])
-        ];
-        };
+    enable = false;
   };
 
   networking = {
+    enableIPv6 = false;
     hostName = "zaphod";
+    useDHCP = false;
     firewall.enable = false;
     useNetworkd = true;
-    useDHCP = false;
-    nameservers = [ "127.0.0.1" ];
+
+    hosts = {
+      "127.0.0.1" = [ "zaphod" ];
+      "10.0.2.1" = [ "home-assistant.local" "random.local" ];
+    };
+
+    vlans = {
+      iot0 = {
+        id = 100;
+        interface = "bond0";
+      };
+      guest0 = {
+        id = 10;
+        interface = "bond0";
+      };
+      lan0 = {
+        id = 2;
+        interface = "bond0";
+      };
+      lan1 = {
+        id = 3;
+        interface = "bond0";
+      };
+
+    };
+
+    interfaces = {
+      eth0.useDHCP = true;
+      bond0.useDHCP = false;
+
+      lan0.ipv4.addresses = [{
+        address = "10.0.2.1";
+        prefixLength = 24;
+      }];
+      lan1.ipv4.addresses = [{
+        address = "10.0.3.1";
+        prefixLength = 24;
+      }];
+      guest0.ipv4.addresses = [{
+        address = "10.0.10.1";
+        prefixLength = 24;
+      }];
+      iot0.ipv4.addresses = [{
+        address = "10.0.100.1";
+        prefixLength = 24;
+      }];
+    };
+    nat = {
+      enable = true;
+      internalIPs = [
+        "10.0.2.0/24"
+        "10.0.2.0/24"
+        "10.0.10.0/24"
+        "10.0.100.0/24"
+        "10.0.42.0/24"
+      ];
+      internalInterfaces = [ "lan0" "lan1" "guest0" "iot0" ];
+      externalInterface = "eth0";
+      forwardPorts = [ ];
+    };
   };
 
   systemd.network = {
@@ -164,7 +193,7 @@
       "10-eth2" = { matchConfig.MACAddress = "00:e2:69:5a:40:47"; linkConfig.Name = "eth2"; };
       "10-eth3" = { matchConfig.MACAddress = "00:e2:69:5a:40:48"; linkConfig.Name = "eth3"; };
     };
-    netdevs = {
+     netdevs = {
       "10-bond0" = {
         netdevConfig = {
           Kind = "bond";
@@ -175,26 +204,6 @@
           TransmitHashPolicy = "layer3+4";
         };
       };
-
-      "11-lan0" = {
-        netdevConfig = { Name = "lan0"; Kind = "vlan"; };
-        vlanConfig.Id = 2;
-      };
-
-      "11-lan1" = {
-        netdevConfig = { Name = "lan1"; Kind = "vlan"; };
-        vlanConfig.Id = 3;
-      };
-
-      "11-guest0" = {
-        netdevConfig = { Name = "guest0"; Kind = "vlan"; };
-        vlanConfig.Id = 10;
-      };
-      "11-iot0" = {
-        netdevConfig = { Name = "iot0"; Kind = "vlan"; };
-        vlanConfig.Id = 100;
-      };
-
     };
     networks = {
       "30-eth1" = {
@@ -211,19 +220,6 @@
         matchConfig.Name = "eth3";
         networkConfig.Bond = "bond0";
       };
-
-     "10-eth0" = {
-        enable = true;
-        matchConfig.Name = "eth0";
-        networkConfig = {
-          DHCP = "yes";
-#          DNSSEC = "yes";
-#          DNSOverTLS = "yes";
-          DNS = [ "10.0.2.1" ];
-        };
-        dhcpV4Config.RouteMetric = 1024;
-     };
-
       "40-bond0" = {
         matchConfig.Name = "bond0";
         linkConfig = {
@@ -231,71 +227,6 @@
         };
         networkConfig.LinkLocalAddressing = "no";
         vlan = [ "lan0" "lan1" "guest0" "iot0" ];
-      };
-
-      "51-lan0" = {
-        matchConfig.Name = "lan0";
-        networkConfig = {
-          DHCPServer = true;
-          MulticastDNS = true;
-          IPMasquerade = true;
-          LinkLocalAddressing = "yes";
-          Address = "10.0.2.1/24";
-          DNS = [ "10.0.2.1" ];
-        };
-        dhcpServerConfig = {
-          PoolOffset = 100;
-          EmitDNS = true;
-#          DNS = [ "1.1.1.1" "1.0.0.1" ];
-        };
-      };
-
-      "52-lan1" = {
-        matchConfig.Name = "lan1";
-        networkConfig = {
-          DHCPServer = true;
-          MulticastDNS = true;
-          IPMasquerade = true;
-          LinkLocalAddressing = "yes";
-          Address = "10.0.3.1/24";
-        };
-        dhcpServerConfig = {
-          PoolOffset = 100;
-          EmitDNS = true;
- #         DNS = [ "1.1.1.1" "1.0.0.1" ];
-        };
-      };
-
-      "53-guest0" = {
-        matchConfig.Name = "guest0";
-        networkConfig = {
-          DHCPServer = true;
-          MulticastDNS = true;
-          IPMasquerade = true;
-          LinkLocalAddressing = "yes";
-          Address = "10.0.10.1/24";
-        };
-        dhcpServerConfig = {
-          PoolOffset = 100;
-          EmitDNS = true;
-  #        DNS = [ "1.1.1.1" "1.0.0.1" ];
-        };
-      };
-
-      "54-iot0" = {
-        matchConfig.Name = "iot0";
-        networkConfig = {
-          DHCPServer = true;
-          MulticastDNS = true;
-          IPMasquerade = true;
-          LinkLocalAddressing = "yes";
-          Address = "10.0.100.1/24";
-        };
-        dhcpServerConfig = {
-          PoolOffset = 100;
-          EmitDNS = true;
-   #       DNS = [ "1.1.1.1" "1.0.0.1" ];
-        };
       };
     };
   };

@@ -6,7 +6,7 @@
     };
     dnsmasq_hosts = {
       text = ''
-        10.0.2.1 random
+        10.0.2.1 zaphod
         10.0.2.1 home-assistant.local random.local
             '';
 
@@ -35,9 +35,6 @@
       interface=iot0
       dhcp-range=iot0,10.0.100.10,10.0.100.244,24h
 
-      interface=wg0
-      bind-interfaces
-
       dhcp-script=${../scripts/dnsmasq_script.sh}
 
       no-negcache
@@ -53,36 +50,36 @@
 
     '';
   };
-  containers.adfreenetwork = {
-    autoStart = true;
-    additionalCapabilities = [ "CAP_NET_ADMIN" ];
-    bindMounts = {
-      "/rootetc" = {
-        hostPath = "/etc";
-        isReadOnly = true;
-      };
-    };
-    config = {
-      networking.firewall.enable = false;
-      services.dnsmasq = {
-        enable = true;
-        servers = [ "8.8.8.8" "8.8.4.4" ];
-        extraConfig = ''
-          local=/lan/
-          domain=lan
-          no-hosts
-
-          except-interface=lo
-          interface=lan1
-          dhcp-range=lan1,10.0.3.10,10.0.3.244,24h
-          address=/floop.com/127.0.0.1
-
-          bind-interfaces
-
-          no-negcache
-          conf-file=${inputs.dns_block}/dnsmasq/dnsmasq.blacklist.txt
-        '';
-      };
-    };
-  };
+#  containers.adfreenetwork = {
+#    autoStart = true;
+#    additionalCapabilities = [ "CAP_NET_ADMIN" ];
+#    bindMounts = {
+#      "/rootetc" = {
+#        hostPath = "/etc";
+#        isReadOnly = true;
+#      };
+#    };
+#    config = {
+#      networking.firewall.enable = false;
+#      services.dnsmasq = {
+#        enable = true;
+#        servers = [ "8.8.8.8" "8.8.4.4" ];
+#        extraConfig = ''
+#          local=/lan/
+#          domain=lan
+#          no-hosts
+#
+#          except-interface=lo
+#          interface=lan1
+#          dhcp-range=lan1,10.0.3.10,10.0.3.244,24h
+#          address=/floop.com/127.0.0.1
+#
+#          bind-interfaces
+#
+#          no-negcache
+#          conf-file=${inputs.dns_block}/dnsmasq/dnsmasq.blacklist.txt
+#        '';
+#      };
+#    };
+#  };
 }

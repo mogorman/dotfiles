@@ -5,7 +5,9 @@
     ../services/ssh.nix
     ../services/nfs_server.nix
     ../users/mog.nix
-  ];
+    ../users/joe.nix
+    ../users/media.nix
+   ];
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;

@@ -24,18 +24,18 @@
       };
     };
 
-  services.jackett = {
-    enable = true;
-    user = "media";
-    group = "users";
-    dataDir = "/external/06tb/state/jackett";
-  };
+ services.jackett = {
+   enable = true;
+   user = "media";
+   group = "users";
+   dataDir = "/mnt/drive_1/state/jackett";
+ };
 
   services.sonarr = {
     enable = true;
     user = "media";
     group = "users";
-    dataDir = "/external/06tb/state/sonarr";
+    dataDir = "/mnt/drive_1/state/sonarr";
   };
 
 
@@ -45,15 +45,15 @@
     enable = true;
     user = "media";
     group = "users";
-    dataDir = "/external/06tb/state/radarr";
+    dataDir = "/mnt/drive_1/state/radarr";
   };
-#
-#  services.bazarr = {
-#    enable = false;
-#    user = "media";
-#    group = "users";
-#  };
-#
+####
+####  services.bazarr = {
+####    enable = false;
+####    user = "media";
+####    group = "users";
+####  };
+####
   systemd.services.xmltv_getter = {
     description = "Keep our tv media in sync";
     after = [ "multi-user.target" ];
@@ -68,23 +68,23 @@
     };
   };
 
-  systemd.services.unstable_bazarr = {
-    description = "Keep our subitles up to date";
-    after = [ "network.target" ];
-    wantedBy = [ "multi-user.target" ];
-    path = [ pkgs.unstable.bazarr ];
-    serviceConfig = {
-      User = "media";
-      Type = "simple";
-        ExecStart = pkgs.writeShellScript "start-bazarr" ''
-          ${pkgs.unstable.bazarr}/bin/bazarr \
-            --config '/var/lib/bazarr' \
-            --port 6767 \
-            --no-update True
-        '';
-      Restart = "on-failure";
-    };
-  };
-
-
+###  systemd.services.unstable_bazarr = {
+###    description = "Keep our subitles up to date";
+###    after = [ "network.target" ];
+###    wantedBy = [ "multi-user.target" ];
+###    path = [ pkgs.unstable.bazarr ];
+###    serviceConfig = {
+###      User = "media";
+###      Type = "simple";
+###        ExecStart = pkgs.writeShellScript "start-bazarr" ''
+###          ${pkgs.unstable.bazarr}/bin/bazarr \
+###            --config '/var/lib/bazarr' \
+###            --port 6767 \
+###            --no-update True
+###        '';
+###      Restart = "on-failure";
+###    };
+###  };
+###
+###
 }

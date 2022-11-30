@@ -3,25 +3,25 @@
     ./common.nix
     ../secrets/secrets.nix
     ../services/ssh.nix
+    ../services/postgresql.nix
+    ../services/media.nix
+    ../services/nginx.nix
+    ../services/acme.nix
+    ../secrets/nathanbox.nix
 #    ../services/frigate.nix
 #    ../services/tubesync.nix
 #    ../services/mosquitto.nix
 #    ../services/zigbee2mqtt.nix
 ##    ../services/amcrest2mqtt.nix # dahua integration is better
 #    ../services/mumble.nix
-#    ../services/postgresql.nix
 #    ../services/homeassistant.nix
-#    ../services/media.nix
 #    ../services/dnsmasq.nix
 #    ../services/avahi.nix
-#    ../services/acme.nix
-#    ../services/nginx.nix
 #    ../services/audiobookshelf.nix
 #    ../services/komga.nix
 #    ../services/samba.nix
 #    ../services/syncthing.nix
 #    ../services/reboot_cameras.nix
-#    ../secrets/nathanbox.nix
     ../packages/packages.nix
     ../users/mog.nix
     ../users/joe.nix
@@ -116,6 +116,28 @@
     fsType = "vfat";
   };
 
+
+  fileSystems."/mnt/drive_1" = {
+    device = "10.0.2.1:/drive_1";
+    fsType = "nfs";
+    options = [ "x-systemd.automount" "noauto" ];
+  };
+  fileSystems."/mnt/drive_2" = {
+    device = "10.0.2.1:/drive_2";
+    fsType = "nfs";
+    options = [ "x-systemd.automount" "noauto" ];
+  };
+  fileSystems."/mnt/drive_3" = {
+    device = "10.0.2.1:/drive_3";
+    fsType = "nfs";
+    options = [ "x-systemd.automount" "noauto" ];
+  };
+  fileSystems."/mnt/drive_4" = {
+    device = "10.0.2.1:/drive_4";
+    fsType = "nfs";
+    options = [ "x-systemd.automount" "noauto" ];
+  };
+
   swapDevices =
     [{ device = "/dev/disk/by-uuid/d9d19b7c-2abc-415b-95e5-3d4410f490f0"; }];
 
@@ -189,12 +211,33 @@
   programs.gnupg.agent.pinentryFlavor = "curses";
   security.pam.enableSSHAgentAuth = true;
 
+boot.kernel.sysctl = {
+  "net.ipv4.ip_forward" = 1;
+};
 
   networking = {
     hostName = "random";
-    firewall.enable = false;
     useNetworkd = true;
     useDHCP = false;
+
+    nat = {
+      enable = true;
+      internalInterfaces = [ "docker0" "ve-nathanbox" ];
+      externalInterface = "bond0";
+    };
+
+    firewall = {
+      enable = true;
+      allowPing = true;
+      trustedInterfaces = [ "bond0" "lo" "docker0" "ve-nathanbox" ];
+      checkReversePath = false; # https://github.com/NixOS/nixpkgs/issues/10101
+
+      extraCommands = ''
+      iptables --flush
+      iptables --table nat --flush
+      iptables -t nat -A POSTROUTING -o bond0 -j MASQUERADE  
+      '';
+    };
   };
 
   systemd.network = {

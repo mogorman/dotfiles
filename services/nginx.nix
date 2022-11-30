@@ -327,7 +327,8 @@
         proxy_cookie_path  /                  "/; Secure"; 
                   satisfy any;    
 
-          allow 10.0.2.1/24;
+          deny 10.0.2.1;
+          allow 10.0.2.0/24;
           allow 127.0.0.1;
                   deny  all;
 

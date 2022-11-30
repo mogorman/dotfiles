@@ -36,7 +36,7 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.initrd.luks.reusePassphrases = true;
-
+  boot.kernelParams=["i915.enable_guc=3"];
   hardware.enableRedistributableFirmware = true;
 
   # HARDWARE CONFIG

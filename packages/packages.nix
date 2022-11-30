@@ -33,7 +33,7 @@
     direnv
     nix-direnv
     usbutils
-    ffmpeg-full
+    unstable.jellyfin-ffmpeg
     gitit
     wireguard-tools
     ccextractor

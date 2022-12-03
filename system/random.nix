@@ -8,6 +8,8 @@
     ../services/nginx.nix
     ../services/acme.nix
     ../secrets/nathanbox.nix
+    ../services/audiobookshelf.nix
+    ../services/disable_ethernet.nix
 #    ../services/frigate.nix
 #    ../services/tubesync.nix
 #    ../services/mosquitto.nix
@@ -17,7 +19,6 @@
 #    ../services/homeassistant.nix
 #    ../services/dnsmasq.nix
 #    ../services/avahi.nix
-#    ../services/audiobookshelf.nix
 #    ../services/komga.nix
 #    ../services/samba.nix
 #    ../services/syncthing.nix
@@ -49,6 +50,7 @@
     "sdhci_pci"
     "rtsx_usb_sdmmc"
     "igb"
+    "ax88179_178a"
   ];
 
   boot.initrd.kernelModules = [ "dm-snapshot" ];
@@ -61,6 +63,31 @@
     preLVM = true;
     allowDiscards = true;
   };
+
+  boot.initrd.luks.devices.drive_1 = {
+    device = "/dev/disk/by-uuid/2eba0bac-7bf4-4207-a695-78e064c57665";
+    preLVM = true;
+    allowDiscards = true;
+  };
+
+  boot.initrd.luks.devices.drive_2 = {
+    device = "/dev/disk/by-uuid/261ffed2-dcc2-4f1d-b9c8-7222510bfbb4";
+    preLVM = true;
+    allowDiscards = true;
+  };
+
+  boot.initrd.luks.devices.drive_3 = {
+    device = "/dev/disk/by-uuid/8702cb62-ad8f-4925-9595-e6c30bbb501a";
+    preLVM = true;
+    allowDiscards = true;
+  };
+
+  boot.initrd.luks.devices.drive_4 = {
+    device = "/dev/disk/by-uuid/88c2c241-b24c-4420-881f-be7df6663734";
+    preLVM = true;
+    allowDiscards = true;
+  };
+
 
   boot.initrd.network.enable = true;
   boot.initrd.network.ssh = {
@@ -102,6 +129,14 @@
     ip a a 127.0.0.1/8 dev lo
     ip link set lo up
 
+    echo "TRYING TO GET STATIC IP ADDRESS"
+    sleep 5
+    ifconfig enp0s21f0u3 10.0.2.3 netmask 255.255.255.0 up
+    ping -c 10 10.0.2.1
+    ping -c 10 10.0.2.1
+    echo "nameserver 8.8.8.8" >> /etc/resolv.conf
+    sleep 10
+
     echo "tor: starting tor"
     tor -f ${torRc} --verify-config
     tor -f ${torRc} &
@@ -118,24 +153,20 @@
 
 
   fileSystems."/mnt/drive_1" = {
-    device = "10.0.2.1:/drive_1";
-    fsType = "nfs";
-    options = [ "x-systemd.automount" "noauto" ];
+    device = "/dev/mapper/drive_1";
+    fsType = "ext4";
   };
   fileSystems."/mnt/drive_2" = {
-    device = "10.0.2.1:/drive_2";
-    fsType = "nfs";
-    options = [ "x-systemd.automount" "noauto" ];
+    device = "/dev/mapper/drive_2";
+    fsType = "ext4";
   };
   fileSystems."/mnt/drive_3" = {
-    device = "10.0.2.1:/drive_3";
-    fsType = "nfs";
-    options = [ "x-systemd.automount" "noauto" ];
+    device = "/dev/mapper/drive_3";
+    fsType = "ext4";
   };
   fileSystems."/mnt/drive_4" = {
-    device = "10.0.2.1:/drive_4";
-    fsType = "nfs";
-    options = [ "x-systemd.automount" "noauto" ];
+    device = "/dev/mapper/drive_4";
+    fsType = "ext4";
   };
 
   swapDevices =
@@ -219,7 +250,7 @@ boot.kernel.sysctl = {
     hostName = "random";
     useNetworkd = true;
     useDHCP = false;
-
+    interfaces.enp0s21f0u3.useDHCP = false;
     nat = {
       enable = true;
       internalInterfaces = [ "docker0" "ve-nathanbox" ];
@@ -243,17 +274,8 @@ boot.kernel.sysctl = {
   systemd.network = {
     wait-online.anyInterface = true;
     links = {
-      "10-eth1" = { matchConfig.MACAddress = "00:e0:4c:02:05:f5"; linkConfig.Name = "eth1"; };
-
-      "10-eth0" = {
-        matchConfig = {
-          MACAddress="00:e0:4c:02:05:f4";
-        };
-        linkConfig = {
-          Name="eth0";
-          MACAddress="00:e0:4c:02:05:f3";
-        };
-      };
+      "11-eth1" = { matchConfig.MACAddress = "00:e0:4c:02:05:f5"; linkConfig.Name = "eth1"; };
+      "10-eth0" = { matchConfig.MACAddress = "00:e0:4c:02:05:f4"; linkConfig.Name = "eth0"; };
     };
     netdevs = {
       "10-bond0" = {

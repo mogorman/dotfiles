@@ -3,9 +3,9 @@
     ./common.nix
     ../secrets/secrets.nix
     ../services/ssh.nix
-    ../services/nfs_server.nix
     ../services/dnsmasq.nix
     ../services/avahi.nix
+    ../services/tor.nix
     ../users/mog.nix
     ../users/joe.nix
     ../users/media.nix
@@ -50,31 +50,6 @@
   swapDevices =
     [ { device = "/dev/disk/by-uuid/fc5d67c1-7daf-4dba-998b-5ff64ad79a11"; }
     ];
-
-  fileSystems."/export/drive_1" =
-    { device = "/dev/mapper/drive_1";
-      fsType = "ext4";
-      options = [ "nofail" "noauto" ];
-    };
-
-  fileSystems."/export/drive_2" =
-    { device = "/dev/mapper/drive_2";
-      fsType = "ext4";
-      options = [ "nofail" "noauto" ];
-    };
-
-  fileSystems."/export/drive_3" =
-    { device = "/dev/mapper/drive_3";
-      fsType = "ext4";
-      options = [ "nofail" "noauto" ];
-    };
-
-  fileSystems."/export/drive_4" =
-    { device = "/dev/mapper/drive_4";
-      fsType = "ext4";
-      options = [ "nofail" "noauto" ];
-    };
-
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
@@ -89,6 +64,7 @@
     speedtest-cli
     screen
     cryptsetup
+   tor
   ];
   hardware.nitrokey.enable = true;
   # Some programs need SUID wrappers, can be configured further or are
@@ -121,12 +97,11 @@
     enableIPv6 = false;
     hostName = "zaphod";
     useDHCP = false;
-    firewall.enable = false;
     useNetworkd = true;
 
     hosts = {
       "127.0.0.1" = [ "zaphod" ];
-      "10.0.2.1" = [ "home-assistant.local" "random.local" ];
+      "10.0.2.2" = [ "home-assistant.local" "random.local" ];
     };
 
     vlans = {
@@ -179,10 +154,63 @@
         "10.0.100.0/24"
         "10.0.42.0/24"
       ];
-      internalInterfaces = [ "lan0" "lan1" "guest0" "iot0" ];
+      internalInterfaces = [ "lan0" "lan1" "guest0" "iot0" "ve-nathanbox" ];
       externalInterface = "eth0";
-      forwardPorts = [ ];
+      forwardPorts = [ 
+        {
+          destination = "10.0.2.2:80";
+          proto = "tcp";
+          sourcePort = 80;
+        }
+        {
+          destination = "10.0.2.2:443";
+          proto = "tcp";
+          sourcePort = 443;
+        }
+      ];
     };
+    firewall = {
+      enable = true;
+      allowPing = true;
+      trustedInterfaces = [ "lo" "lan0" "lan1" "guest0" "iot0" ];
+      checkReversePath = false; # https://github.com/NixOS/nixpkgs/issues/10101
+
+      extraCommands = ''
+        iptables -t nat -A POSTROUTING -s 10.0.2.0/24 -o eth0 -j MASQUERADE
+        iptables -t nat -A POSTROUTING -s 10.0.3.0/24 -o eth0 -j MASQUERADE
+        iptables -t nat -A POSTROUTING -s 10.0.10.0/24 -o eth0 -j MASQUERADE
+        #BLOCK IOT FROM INTERNET but allow my laptop to access internet
+        iptables -A FORWARD -i iot0 -s 10.0.100.30  -j ACCEPT
+        iptables -A FORWARD -i iot0 -s 10.0.100.41  -j ACCEPT
+        iptables -A FORWARD -i iot0 -s 10.0.100.42  -j ACCEPT
+        iptables -A FORWARD -i iot0 -s 10.0.100.72  -j ACCEPT
+        iptables -A FORWARD -i iot0 -o eth0 -j REJECT
+       '';
+
+      allowedTCPPortRanges = [ ];
+      allowedUDPPortRanges = [   {
+    from = 10000;
+    to = 20000;
+  } ];
+
+      allowedTCPPorts = [
+        22 # SSH
+        80 # nginx
+        443 # nginx
+        #        8096 # Jellyfin
+        #        8123 # Home assistant
+        #        5000 # Frigate
+        #        7878 # Radarr
+        #        8989 # Sonarr
+        #        4848 # tubesync
+      ];
+      allowedUDPPorts = [
+        53 # DNS
+        51820 # wireguard main
+        51821 # wireguard seed
+      ];
+    };
+
   };
 
   systemd.network = {

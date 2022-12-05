@@ -19,11 +19,11 @@
     "dns_block": {
       "flake": false,
       "locked": {
-        "lastModified": 1670153412,
-        "narHash": "sha256-5XpEEJ0euDNFHeIWnghP3YQu8qUIRX0RCVyIK6wevw8=",
+        "lastModified": 1670240374,
+        "narHash": "sha256-+d6sj09b7fhnL2opa4g6pxJTams3ywcI/3xnnwkePBI=",
         "owner": "notracking",
         "repo": "hosts-blocklists",
-        "rev": "4cb84e36610601cde1c250c3a4d2fdf9e5180e99",
+        "rev": "966ab27a5f539f51028e8bd54a00602b474f1ff1",
         "type": "github"
       },
       "original": {
@@ -38,11 +38,11 @@
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1670194159,
-        "narHash": "sha256-ky7z2iSGSZdi9sSv9GXAgyF4cDQAT7Rn2Td0avXC9So=",
+        "lastModified": 1670264298,
+        "narHash": "sha256-Spj2nMBXq6S/fAtagi2EotlbyXhMb0RPA0vy5JhnD9w=",
         "owner": "nix-community",
         "repo": "emacs-overlay",
-        "rev": "d17b8b8fc033debb3e75cfc44aaaf8f47d5e04fd",
+        "rev": "612fc9ab31d2cdfe6ca99d606c49072d90c4e42b",
         "type": "github"
       },
       "original": {
@@ -160,7 +160,7 @@
         "type": "github"
       }
     },
-    "oldstable": {
+    "olderstable": {
       "locked": {
         "lastModified": 1659446231,
         "narHash": "sha256-hekabNdTdgR/iLsgce5TGWmfIDZ86qjPhxDg/8TlzhE=",
@@ -172,6 +172,22 @@
       "original": {
         "owner": "NixOS",
         "ref": "nixos-21.11",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "oldstable": {
+      "locked": {
+        "lastModified": 1670083709,
+        "narHash": "sha256-UL4czXyVoKSCqAbNkfJEu2M+XhIVNwBGkyDt+UbtA5E=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "e09913998d89659044c29ef5df4a86542e78a2ef",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-22.05",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -202,6 +218,7 @@
         "frigate-hass-integration": "frigate-hass-integration",
         "nixos-hardware": "nixos-hardware",
         "ocpp-hass-integration": "ocpp-hass-integration",
+        "olderstable": "olderstable",
         "oldstable": "oldstable",
         "owlet-hass-integration": "owlet-hass-integration",
         "sonarr_ha": "sonarr_ha",
@@ -230,16 +247,16 @@
     },
     "stable": {
       "locked": {
-        "lastModified": 1670083709,
-        "narHash": "sha256-UL4czXyVoKSCqAbNkfJEu2M+XhIVNwBGkyDt+UbtA5E=",
+        "lastModified": 1670104339,
+        "narHash": "sha256-212aAMSy5uxzrUbHmvUm3oHh8c02wXJ7lyNjDa5NSAM=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "e09913998d89659044c29ef5df4a86542e78a2ef",
+        "rev": "2d10e73416ec1449ef74aeac7faf2cf8c556ff5a",
         "type": "github"
       },
       "original": {
         "owner": "NixOS",
-        "ref": "nixos-22.05",
+        "ref": "nixos-22.11",
         "repo": "nixpkgs",
         "type": "github"
       }

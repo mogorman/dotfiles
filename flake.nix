@@ -3,8 +3,9 @@
 
   inputs = {
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
-    oldstable.url = "github:NixOS/nixpkgs/nixos-21.11";
-    stable.url = "github:NixOS/nixpkgs/nixos-22.05";
+    olderstable.url = "github:NixOS/nixpkgs/nixos-21.11";
+    oldstable.url = "github:NixOS/nixpkgs/nixos-22.05";
+    stable.url = "github:NixOS/nixpkgs/nixos-22.11";
     unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     emacs-overlay.url = "github:nix-community/emacs-overlay/master";
     flake-utils.url = "github:numtide/flake-utils";

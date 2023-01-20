@@ -316,7 +316,7 @@
       "torrent.rldn.net" = {
         forceSSL = true;
         useACMEHost = "rldn.net";
-        locations."/".proxyPass = "http://10.0.2.37:8080";
+        locations."/".proxyPass = "http://172.17.0.1:8080";
         extraConfig = ''
                  proxy_set_header Host $host;
                 proxy_set_header X-Forwarded-Proto $scheme;
@@ -337,7 +337,31 @@
 
              '';
       };
-        "ogormanvein.com" = {
+      "octoprint.rldn.net" = {
+        forceSSL = true;
+        useACMEHost = "rldn.net";
+        extraConfig = ''
+
+proxy_set_header Upgrade $http_upgrade;
+proxy_set_header Connection $http_connection;
+proxy_http_version 1.1;
+ location / {
+    proxy_set_header Host $host;
+    proxy_set_header X-Forwarded-Scheme $scheme;
+    proxy_set_header X-Forwarded-Proto  $scheme;
+    proxy_set_header X-Forwarded-For    $remote_addr;
+    proxy_set_header X-Real-IP		$remote_addr;
+    proxy_pass       http://10.0.2.91:80;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection $http_connection;
+    proxy_http_version 1.1;
+    proxy_set_header X-Real-IP $remote_addr;
+proxy_set_header X-Scheme https;
+client_max_body_size 0;
+  }
+            '';
+      };
+         "ogormanvein.com" = {
         forceSSL = true;
         useACMEHost = "ogormanvein.com";
 

@@ -7,16 +7,16 @@
     ../services/media.nix
     ../services/nginx.nix
     ../services/acme.nix
-    ../secrets/nathanbox.nix
+#    ../secrets/nathanbox.nix
     ../services/audiobookshelf.nix
     ../services/disable_ethernet.nix
 #    ../services/frigate.nix
+#    ../services/homeassistant.nix
 #    ../services/tubesync.nix
 #    ../services/mosquitto.nix
 #    ../services/zigbee2mqtt.nix
 ##    ../services/amcrest2mqtt.nix # dahua integration is better
 #    ../services/mumble.nix
-#    ../services/homeassistant.nix
 #    ../services/dnsmasq.nix
 #    ../services/avahi.nix
 #    ../services/komga.nix
@@ -262,6 +262,17 @@ boot.kernel.sysctl = {
       allowPing = true;
       trustedInterfaces = [ "bond0" "lo" "docker0" "ve-nathanbox" ];
       checkReversePath = false; # https://github.com/NixOS/nixpkgs/issues/10101
+
+     allowedTCPPorts = [
+        22 # SSH
+        8096 # nginx
+        #        8096 # Jellyfin
+        #        8123 # Home assistant
+        #        5000 # Frigate
+        #        7878 # Radarr
+        #        8989 # Sonarr
+        #        4848 # tubesync
+      ];      
 
       extraCommands = ''
       iptables --flush

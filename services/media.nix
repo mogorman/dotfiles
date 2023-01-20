@@ -10,6 +10,7 @@
 #};
 #};
 #
+
  systemd.services.jellyfin = {
       description = "Jellyfin Media Server";
       after = [ "network.target" ];
@@ -47,13 +48,13 @@
     group = "users";
     dataDir = "/mnt/drive_1/state/radarr";
   };
-####
-####  services.bazarr = {
-####    enable = false;
-####    user = "media";
-####    group = "users";
-####  };
-####
+
+  services.bazarr = {
+    enable = true;
+    user = "media";
+    group = "users";
+  };
+
   systemd.services.xmltv_getter = {
     description = "Keep our tv media in sync";
     after = [ "multi-user.target" ];

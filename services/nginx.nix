@@ -149,6 +149,25 @@
                 proxy_connect_timeout 10;
           '';
       };
+       "pb.rldn.net" = {
+        forceSSL = true;
+        useACMEHost = "rldn.net";
+        locations."/".proxyPass = "http://127.0.0.1:5055";
+
+          extraConfig = ''
+                proxy_set_header Host $host;
+                proxy_set_header X-Forwarded-Proto $scheme;
+                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                proxy_set_header X-Real-IP $remote_addr;
+                proxy_redirect off;
+    proxy_http_version 1.1;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection "upgrade";
+    proxy_read_timeout 86400;
+                proxy_connect_timeout 10;
+          '';
+      };
+
 
        "jelly.rldn.net" = {
         forceSSL = true;

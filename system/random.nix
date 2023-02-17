@@ -12,7 +12,7 @@
     ../services/disable_ethernet.nix
 #    ../services/frigate.nix
 #    ../services/homeassistant.nix
-#    ../services/tubesync.nix
+    ../services/tubesync.nix
 #    ../services/mosquitto.nix
 #    ../services/zigbee2mqtt.nix
 ##    ../services/amcrest2mqtt.nix # dahua integration is better

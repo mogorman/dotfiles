@@ -74,6 +74,16 @@
             config = { allowUnfree = true; };
           });
         };
+        jellyfin-web = final: prev: {
+           jellyfin-web = prev.jellyfin-web.override (oldAttrs: { installPhase = ''
+              runHook preInstall
+              mkdir -p $out/share
+              cp -a dist $out/share/jellyfin-web
+              sed  's~</body[^>]*>~<script plugin="Jellyscrub" version="1.0.0.0" mog="true" src="/Trickplay/ClientScript"></script>&~' < dist/index.html > $out/share/jellyfin-web/index.html
+              runHook postInstall
+           ''; 
+         });
+         };
       };
     in {
       nixosConfigurations = {
@@ -153,7 +163,7 @@
           specialArgs = { inherit inputs; };
           modules = [
             ({ config, pkgs, lib, ... }: {
-              nixpkgs.overlays = [ overlays.unstable overlays.oldstable ];
+              nixpkgs.overlays = [ overlays.unstable overlays.oldstable overlays.jellyfin-web ];
             })
             {
               options.dotfiles_dir = lib.mkOption {

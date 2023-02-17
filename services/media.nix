@@ -25,6 +25,22 @@
       };
     };
 
+ systemd.services.jellyseerr = {
+      description = "Jellyfin Media Getter";
+      after = [ "network.target" ];
+      wantedBy = [ "multi-user.target" ];
+      path = [ pkgs.nodejs pkgs.yarn ];
+
+      serviceConfig = {
+        User = "media";
+        Group = "users";
+        WorkingDirectory = "/mnt/drive_1/state/jellyseerr";
+        StateDirectory =   "/mnt/drive_1/state/jellyseerr";
+        CacheDirectory =   "/mnt/drive_1/state/jellyseerr";
+        ExecStart = "${pkgs.yarn}/bin/yarn start";
+      };
+    };
+
  services.jackett = {
    enable = true;
    user = "media";

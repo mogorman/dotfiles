@@ -7,7 +7,7 @@
     dnsmasq_hosts = {
       text = ''
         10.0.2.1 zaphod rldn.net.
-        10.0.2.2 random home-assistant.local random.local jelly.rldn.net. tv.rldn.net. movies.rldn.net. torrent.rldn.net. books.rldn.net.
+        10.0.2.2 random home-assistant.local random.local jelly.rldn.net tv.rldn.net movies.rldn.net torrent.rldn.net books.rldn.net hass.rldn.net frigate.rldn.net octoprint.rldn.net pb.rldn.net youtube.rldn.net habitica.rldn.net
             '';
 
       # The UNIX file mode bits
@@ -42,6 +42,8 @@
       dhcp-host=8c:fe:74:17:29:e0,r610,10.0.2.251
       dhcp-host=1c:b9:c4:36:0f:00,r600,10.0.2.252
       dhcp-host=1c:b9:c4:07:f1:50,r310,10.0.2.253
+      dhcp-host=b8:27:eb:39:c4:7f,octoprint,10.0.2.91
+
 
       dhcp-host=b4:69:21:62:5a:c5,reddirk,10.0.100.30
       dhcp-host=30:05:5c:4d:9d:b6,printer,10.0.2.100

@@ -9,6 +9,7 @@
     ../users/mog.nix
     ../users/joe.nix
     ../users/media.nix
+    ../users/tim.nix
    ];
 
   boot.loader.systemd-boot.enable = true;
@@ -167,6 +168,11 @@
           proto = "tcp";
           sourcePort = 443;
         }
+        {
+          destination = "10.0.2.2:8096";
+          proto = "tcp";
+          sourcePort = 7777;
+        }
       ];
     };
     firewall = {
@@ -197,6 +203,7 @@
         22 # SSH
         80 # nginx
         443 # nginx
+        7777  # jellyfin for pop
         #        8096 # Jellyfin
         #        8123 # Home assistant
         #        5000 # Frigate

@@ -23,12 +23,13 @@
 #    ../services/samba.nix
 #    ../services/syncthing.nix
 #    ../services/reboot_cameras.nix
+    ../services/ersatztv.nix
     ../packages/packages.nix
     ../users/mog.nix
     ../users/joe.nix
     ../users/media.nix
   ];
-
+  programs.steam.enable = true;
   services.udev.extraRules = ''
     SUBSYSTEM=="apex", MODE="0660", GROUP="users"
     ACTION=="add", SUBSYSTEM=="net", ATTR{address}=="00:e0:4c:02:05:f5", NAME="eth1"

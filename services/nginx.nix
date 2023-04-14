@@ -6,8 +6,14 @@
       "home.rldn.net" = {
         forceSSL = true;
         useACMEHost = "rldn.net";
-        locations."/".proxyPass = "http://127.0.0.1:2099";
-        extraConfig = ''
+        locations."/" = {
+          root = "/var/www/rldn.net";
+          extraConfig = ''
+            autoindex on;
+            autoindex_localtime on;
+          '';
+         };
+         extraConfig = ''
                  
                   satisfy any;    
 
@@ -432,6 +438,48 @@ client_max_body_size 0;
  
       };
      };
+
+      "habitica.rldn.net" = {
+        forceSSL = true;
+        useACMEHost = "rldn.net";
+        locations."/".proxyPass = "http://10.0.2.192:8080";
+        locations."/apk" = {
+          root = "/var/www/rldn.net/";
+          extraConfig = ''
+            autoindex on;
+            autoindex_localtime on;
+          '';
+         };
+ # disable registeration
+        locations."/api/v3/user/auth/local/register" = {
+          root = "/var/www/rldn.net";
+          extraConfig = ''
+            autoindex on;
+            autoindex_localtime on;
+          '';
+         };
+        locations."/api/v4/user/auth/local/register" = {
+          root = "/var/www/rldn.net";
+          extraConfig = ''
+            autoindex on;
+            autoindex_localtime on;
+          '';
+         };
+         extraConfig = ''
+                 proxy_set_header Host $host;
+                proxy_set_header X-Forwarded-Proto $scheme;
+                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                proxy_set_header X-Real-IP $remote_addr;
+                proxy_redirect off;
+    proxy_http_version 1.1;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection "upgrade";
+    proxy_read_timeout 86400;
+    client_max_body_size 10000M;
+             '';
+      };
+ 
+
     };
 };
 }

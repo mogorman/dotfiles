@@ -7,7 +7,7 @@
     dnsmasq_hosts = {
       text = ''
         10.0.2.1 zaphod rldn.net.
-        10.0.2.2 random home-assistant.local random.local jelly.rldn.net tv.rldn.net movies.rldn.net torrent.rldn.net books.rldn.net hass.rldn.net frigate.rldn.net octoprint.rldn.net pb.rldn.net youtube.rldn.net habitica.rldn.net home.rldn.net
+        10.0.2.2 random home-assistant.local random.local jelly.rldn.net tv.rldn.net movies.rldn.net torrent.rldn.net books.rldn.net hass.rldn.net frigate.rldn.net octoprint.rldn.net pb.rldn.net youtube.rldn.net habitica.rldn.net home.rldn.net zigbee.rldn.net
             '';
 
       # The UNIX file mode bits

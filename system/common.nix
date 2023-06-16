@@ -2,12 +2,12 @@
 
 {
   nixpkgs.config.allowUnfree = true;
-  system.stateVersion = "22.05";
+  system.stateVersion = "23.05";
   fileSystems."/".options = [ "noatime" "nodiratime" "discard" ];
   time.timeZone = "US/Eastern";
   boot.kernel.sysctl = { "vm.swappiness" = 1; };
-  boot.tmpOnTmpfs = true;
-  boot.cleanTmpDir = true;
+  boot.tmp.useTmpfs = true;
+  boot.tmp.cleanOnBoot = true;
   i18n.defaultLocale = "en_US.utf8";
 
   fonts = {
@@ -22,6 +22,10 @@
       victor-mono
       terminus_font
       terminus_font_ttf
+      fira
+      fira-mono
+      fira-code
+      fira-code-symbols
     ];
   };
   programs.gnupg.agent = {
